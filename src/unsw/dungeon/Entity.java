@@ -49,4 +49,8 @@ public class Entity {
     public int getX() {
         return x().get();
     }
+    
+    public boolean isBlocking() {
+    	return false;
+    }
 }

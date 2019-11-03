@@ -12,8 +12,24 @@ package unsw.dungeon;
 
 public class Key extends Entity {
 
-    public Key(int x, int y) {
+	private int id;
+	
+    public Key(int x, int y, int id) {
         super(x, y);
+        this.id = id;
     }
 
+    public boolean obtainKey(Inventory inventory) {
+    	inventory.addObject(this);
+    	Dungeon.removeObject(this);
+    	return true;
+    }
+    
+    public boolean applyKey(Door door) {
+    	if (door.getDoorID() == this.id) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
 }
