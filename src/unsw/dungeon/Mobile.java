@@ -1,64 +1,52 @@
-package unsw.dungeon;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 /**
- * An entity in the dungeon.
+ * Team: Desktop_Support
+ * Members: Liam (z5207407) and Dheeraj (z5204820)
  * 
- * @author Robert Clifton-Everest
- *
+ * Started: 24/10/2019 | Last edited: 3/11/2019
+ * 
+ * Acknowledgement: some of the code may be similar to the lab code.
  */
-public abstract class Entity {
-    // IntegerProperty is used so that changes to the entities position can be
-    // externally observed. 
-    private IntegerProperty x, y;
-    private BooleanProperty seeable;
-    
-    /**
-     * Create an entity positioned in square (x,y)
-     * 
-     * @param x
-     * @param y
-     */
-    public Entity(int x, int y) {
-        this.x = new SimpleIntegerProperty(x);
-        this.y = new SimpleIntegerProperty(y);
-        this.seeable = new SimpleBooleanProperty(true);
+
+
+package unsw.dungeon;
+/**
+ * Implements the Mobile abstract class, used with entities in the dungeon that are moveable
+ */
+public abstract class Mobile extends Entity {
+
+    private Dungeon dungeon = null;
+    private boolean active;
+
+    public Mobile(Dungeon dungeon, int x, int y) {
+        super(x, y);
+        
+        this.dungeon = dungeon;
+        this.active = true;
     }
 
-    public IntegerProperty x() {
+    public Dungeon dungeon() {
         
-        return x;
+        return this.dungeon;
     }
 
-    public IntegerProperty y() {
+    public void dead() {
+        this.triggerSeeable(false);
         
-        return y;
-    }
-    
-    public BooleanProperty seeable() {
+        dungeon.delEntity(this);
         
-    	return seeable;
-    }
-    
-    public void triggerSeeable(boolean transparency) {
-        
-    	this.seeable.set(transparency);
+        this.active = false;
     }
 
-    public int getY() {
+    public boolean active() {
         
-        return y().get();
-    }
-
-    public int getX() {
-        
-        return x().get();
+        return this.active;
     }
     
+    public void createActive(boolean active) {
+        
+        this.active = active;
+    }
+
     /**
      * 
      * Function scans for any interaction against a token
