@@ -132,7 +132,7 @@ public class Inventory {
                 // d.switchState();
                 Key k1 = (Key) t;
                 
-                if (k1.useKey(d)) {
+                if (k1.appleKey(d)) {
                     
                     return true;
                 }
