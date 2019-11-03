@@ -12,8 +12,23 @@ package unsw.dungeon;
 
 public class Boulder extends Entity {
 
+	private double speed;
+	
     public Boulder(int x, int y) {
         super(x, y);
+        this.speed = 0;
     }
 
+    @Override
+    public boolean isBlocking() {
+    	return true;
+    }
+    
+    public void setSpeed(Double speed) {
+    	this.speed = speed;
+    }
+    
+    public Double getSpeed() {
+    	return this.speed;
+    }
 }

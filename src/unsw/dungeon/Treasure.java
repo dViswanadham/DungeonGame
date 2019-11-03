@@ -10,10 +10,16 @@
 
 package unsw.dungeon;
 
-public class Treasure extends Entity {
+public class Treasure extends Token {
 
     public Treasure(int x, int y) {
         super(x, y);
     }
-
+    
+    @Override
+    public boolean collectObject(Dungeon dungeon, Inventory inventory) {
+    	inventory.addObject(this);
+    	Dungeon.removeObject(this);
+    	return true;
+    }
 }

@@ -10,6 +10,8 @@
 
 package unsw.dungeon;
 
+import java.util.List;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -18,12 +20,12 @@ import javafx.beans.property.SimpleIntegerProperty;
  * @author Robert Clifton-Everest
  *
  */
-public class Entity {
+public class Entity implements Observable {
 
     // IntegerProperty is used so that changes to the entities position can be
     // externally observed.
     private IntegerProperty x, y;
-
+    private List<Observer> observers;
     /**
      * Create an entity positioned in square (x,y)
      * @param x
@@ -53,4 +55,24 @@ public class Entity {
     public boolean isBlocking() {
     	return false;
     }
+    
+    @Override
+    public String toString() {
+    	return String.format("<%s | %d, %d>", this.getClass().getName(), this.getX(), this.getY());
+    }
+    
+    @Override
+    public void registerObserver(Observer observer) {
+    	observers.add(observer);
+    }
+    
+    @Override
+    public void notifyObservers() {
+    	observers.forEach(observer -> observer.update(this));
+    }
+
+	@Override
+	public void removeObserver(Observer observer) {
+		observers.remove(observer);
+	}
 }

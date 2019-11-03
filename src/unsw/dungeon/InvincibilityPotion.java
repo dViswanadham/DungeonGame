@@ -31,4 +31,12 @@ public class InvincibilityPotion extends Entity {
     public void onPotionExpires() {
     	// return state of monster and player interaction
     }
+    
+    @Override
+    public boolean collectObject(Dungeon dungeon, Inventory inventory) {
+    	inventory.addObject(this);
+    	Dungeon.removeObject(this);
+    	notifyObservers();
+    	return true;
+    }
 }

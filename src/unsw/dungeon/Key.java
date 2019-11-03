@@ -10,26 +10,37 @@
 
 package unsw.dungeon;
 
-public class Key extends Entity {
+public class Key extends Token {
 
 	private int id;
 	
     public Key(int x, int y, int id) {
-        super(x, y);
+        super(x,y);
         this.id = id;
     }
 
-    public boolean obtainKey(Inventory inventory) {
+    @Override
+    public boolean collectObject(Dungeon dungeon, Inventory inventory) {
     	inventory.addObject(this);
     	Dungeon.removeObject(this);
+    	notifyObservers();
     	return true;
     }
     
-    public boolean applyKey(Door door) {
+    public boolean applyKey(Door door, Inventory inventory) {
     	if (door.getDoorID() == this.id) {
+    		abandonKey(door, inventory);
     		return true;
     	} else {
     		return false;
+    	}
+    }
+    
+    public boolean abandonKey(Door door, Inventory inventory) {
+    	int id = door.getDoorID();
+    	for (Token t : inventory.getTokenList()) {
+    		// remove key based on matching id with door
+    		return true;
     	}
     }
 }
