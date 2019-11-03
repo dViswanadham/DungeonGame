@@ -78,33 +78,9 @@ public abstract class Entity {
      * @param object
      * @return boolean
      */
-    public boolean scanSquare(Barrier object) {
+    public boolean scanSquare(Wall object) {
         
         return false;
-    }
-    
-    /**
-     * 
-     * Function scans for any interaction against a part-barrier
-     * 
-     * @param object
-     * @return boolean
-     */
-    public boolean scanSquare(PartBarrier object) {
-        
-        return false;
-    }
-    
-    /**
-     * 
-     * Function scans for any interaction against a non-barrier
-     * 
-     * @param object
-     * @return boolean
-     */
-    public boolean scanSquare(NonBarrier object) {
-        
-        return true;
     }
     
     /**
