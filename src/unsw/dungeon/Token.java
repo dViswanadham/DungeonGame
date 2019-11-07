@@ -24,12 +24,14 @@ public class Token extends Entity {
 	}
 
 	public boolean depositInventory() {
+	    
+        return false;
 		
 	}
 
     public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-    	inventory.addObject(this);
-    	Dungeon.removeObject(this);
+        // inventory.addItem(this);
+        dungeon.removeEntity(this);
     	notifyObservers();
     	return true;
     }

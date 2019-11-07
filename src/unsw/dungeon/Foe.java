@@ -15,7 +15,7 @@ package unsw.dungeon;
  * @author Robert Clifton-Everest
  *
  */
-public class Enemy extends Entity {
+public class Foe extends Entity {
 
     private Dungeon dungeon;
 
@@ -24,7 +24,7 @@ public class Enemy extends Entity {
      * @param x
      * @param y
      */
-    public Enemy(Dungeon dungeon, int x, int y) {
+    public Foe(Dungeon dungeon, int x, int y) {
         super(x, y);
         this.dungeon = dungeon;
     }

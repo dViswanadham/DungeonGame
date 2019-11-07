@@ -32,7 +32,7 @@ public abstract class Entity implements ObsInterface {
         this.seeable = new SimpleBooleanProperty(true);
         this.observers = new ArrayList<>();
     }
-
+    
     public IntegerProperty x() {
         return x;
     }
@@ -48,11 +48,11 @@ public abstract class Entity implements ObsInterface {
     public void triggerSeeable(boolean transparency) {
     	this.seeable.set(transparency);
     }
-
+    
     public int getY() {
         return y().get();
     }
-
+    
     public int getX() {
         return x().get();
     }
@@ -91,7 +91,7 @@ public abstract class Entity implements ObsInterface {
     }
     
     public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-    	inventory.addObject(this);
+    	// inventory.addItem(this);
     	dungeon.removeEntity(this);
     	notifyObservers();
     	return true;

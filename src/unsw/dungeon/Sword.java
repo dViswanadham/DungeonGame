@@ -18,8 +18,8 @@ public class Sword extends Token {
 
     @Override
     public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-    	inventory.addObject(this);
-    	Dungeon.removeObject(this);
+    	// inventory.addItem(this);
+    	dungeon.removeEntity(this);
     	notifyObservers();
     	return true;
     }

@@ -11,7 +11,7 @@ public class Inventory {
     private Dungeon dungeon;
     private int tokenNum = 1;
 
-    public Inventory(Dungeon dungeon) {
+    public Inventory() {
         this.tokenList = new ArrayList<>();
         this.dungeon = dungeon;
     }

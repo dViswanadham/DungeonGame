@@ -54,4 +54,14 @@ public class Dungeon {
     public void addEntity(Entity entity) {
         entities.add(entity);
     }
+    
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+    }
+
+    public List<Entity> obtainBlocked(int x, int y) {
+        // TODO Auto-generated method stub
+        
+        return null;
+    }
 }

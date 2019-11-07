@@ -21,8 +21,8 @@ public class Key extends Token {
 
     @Override
     public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-    	inventory.addObject(this);
-    	Dungeon.removeObject(this);
+    	// inventory.addItem(this);
+    	dungeon.addEntity(this);
     	notifyObservers();
     	return true;
     }
@@ -38,9 +38,10 @@ public class Key extends Token {
     
     public boolean abandonKey(Door door, Inventory inventory) {
     	int id = door.getDoorID();
-    	for (Token t : inventory.getTokenList()) {
-    		// remove key based on matching id with door
-    		return true;
-    	}
+//    	for (Token t : inventory.getTokenList()) {
+//    		// remove key based on matching id with door
+//    		return true;
+//    	}
+    	return false;
     }
 }

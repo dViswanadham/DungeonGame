@@ -24,7 +24,7 @@ import javafx.beans.property.BooleanProperty;
  *
  */
 public class Player extends Mobile implements ObsInterface {
-    private Chest chest;
+    private Inventory inventory;
     private ArrayList<Constructor> observePl;
     private BooleanProperty active;
     private SimpleIntegerProperty health;
@@ -40,7 +40,7 @@ public class Player extends Mobile implements ObsInterface {
      */
     public Player(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
-        this.chest = new Chest(dungeon);
+        this.inventory = new Inventory();
         this.observePl = new ArrayList<>();
         this.active = new SimpleBooleanProperty(true);
         this.health = new SimpleIntegerProperty(5);
@@ -48,9 +48,9 @@ public class Player extends Mobile implements ObsInterface {
     }
     
     public void dead() {
-    	this.setVisibility(false);
+    	this.triggerSeeable(false);
     	dungeon().removeEntity(this);
-        setAlive(false);
+        createActive(false);
         active.set(false);
     }
     
@@ -78,7 +78,7 @@ public class Player extends Mobile implements ObsInterface {
             y().set(getY() - 1);
         }
         
-        alertObs();
+        notifyObservers();
     }
     
     /**
@@ -101,7 +101,7 @@ public class Player extends Mobile implements ObsInterface {
             y().set(getY() + 1);
         }
         
-        alertObs();
+        notifyObservers();
     }
     
     /**
@@ -124,7 +124,7 @@ public class Player extends Mobile implements ObsInterface {
             x().set(getX() - 1);
         }
         
-        alertObs();
+        notifyObservers();
     }
     
     /**
@@ -147,7 +147,7 @@ public class Player extends Mobile implements ObsInterface {
             x().set(getX() + 1);
         }
         
-        alertObs();
+        notifyObservers();
     }
     
     public SimpleIntegerProperty obtainHealth() {
@@ -178,14 +178,12 @@ public class Player extends Mobile implements ObsInterface {
      * @return boolean (i.e. negative if the player_object cannot move to the desired location)
      */
     public boolean blocked(int x, int y) {
-        List<Entity> blocking = dungeon().getCollidingEntity(x, y);
+        List<Entity> blocking = dungeon().obtainBlocked(x, y);
         
         if (blocking == null) {
             
             return true;
         }
-        
-        boolean blocked = true;
         
         for(Entity f : blocking) {
             if (!f.scanSquare(this)) {
@@ -197,9 +195,9 @@ public class Player extends Mobile implements ObsInterface {
         return true;
     }
 
-    public Chest obtainChest() {
+    public Inventory obtainChest() {
         
-        return chest;
+        return inventory;
     }
     
     /**
@@ -209,14 +207,14 @@ public class Player extends Mobile implements ObsInterface {
      * @param f
      * @return boolean (i.e. positive if the player_object manages to kill an enemy and negative if the player_object dies instead)
      */
-    public boolean triggerInvincibility(Foe f) {
-        if (chest.useConsumable(f)) {
-            
-            return true;
-        }
-        
-        return false;
-    }
+//    public boolean triggerInvincibility(Foe f) {
+//        if (inventory.applyToken(f)) {
+//            
+//            return true;
+//        }
+//        
+//        return false;
+//    }
     
     /**
      * 
@@ -225,10 +223,10 @@ public class Player extends Mobile implements ObsInterface {
      * @param door
      * @return boolean
      */
-    public boolean scanSquare(Door door) {
-        
-        return chest.useConsumable(door);
-    }
+//    public boolean scanSquare(Door door) {
+//        
+//        return inventory.applyToken(door);
+//    }
     
     /**
      * 
@@ -237,7 +235,7 @@ public class Player extends Mobile implements ObsInterface {
      * @param f
      * @return boolean
      */
-    public boolean scanSquare(Barrier f) {
+    public boolean scanSquare(Wall f) {
         
         return false;
     }
@@ -247,23 +245,23 @@ public class Player extends Mobile implements ObsInterface {
      * Function is in charge of mobile entity interactions e.g. with foes
      * 
      */
-    public boolean scanSquare(Mobile f) {
-        if (f instanceof Foe) {
-            
-            f.scanSquare(this);
-        }
-        
-        return true;
-    }
+//    public boolean scanSquare(Mobile f) {
+//        if (f instanceof Foe) {
+//            
+//            f.scanSquare(this);
+//        }
+//        
+//        return true;
+//    }
 
     @Override
-    public void enlistObs(Constructor c) {
+    public void registerObserver(Constructor c) {
         
         observePl.add(c);
     }
 
     @Override
-    public void discardObs(Constructor c) {
+    public void removeObserver(Constructor c) {
         if (observePl.contains(c)) {
             
             observePl.remove(c);
@@ -271,7 +269,7 @@ public class Player extends Mobile implements ObsInterface {
     }
 
     @Override
-    public void alertObs() {
+    public void notifyObservers() {
         for(Constructor c : observePl) {
             
             c.update(this);
