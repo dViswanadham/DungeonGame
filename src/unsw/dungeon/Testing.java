@@ -39,9 +39,6 @@ class Testing {
         dungeon.addEntity(sword2);
         dungeon.addEntity(potion);
         
-        q1.blocked(0, 0);
-        q3.blocked(2, 0);
-        
         Foe f1 = new Foe(dungeon, 0, 1);
         Foe f2 = new Foe(dungeon, 1, 1);
         Foe f3 = new Foe(dungeon, 2, 1);
@@ -113,9 +110,6 @@ class Testing {
         dungeon.addEntity(p1);
         dungeon.addEntity(p2);
         dungeon.addEntity(p3);
-        
-        q1.blocked(0, 0);
-        q2.blocked(1, 0);
         
         Foe f1 = new Foe(dungeon, 0, 1);
         Foe f2 = new Foe(dungeon, 1, 1);

@@ -23,12 +23,12 @@ import javafx.beans.property.BooleanProperty;
  * @author Robert Clifton-Everest
  *
  */
-public class Player extends Mobile implements ObsInterface {
+public class Player extends Mobile implements Observable {
     private Inventory inventory;
-    private ArrayList<Constructor> observePl;
+    private ArrayList<Observer> observers;
     private BooleanProperty active;
-    private SimpleIntegerProperty health;
-    private int totalHealth;
+    private Dungeon dungeon;
+    private int x, y;
     
     /**
      * 
@@ -40,16 +40,17 @@ public class Player extends Mobile implements ObsInterface {
      */
     public Player(Dungeon dungeon, int x, int y) {
         super(dungeon, x, y);
+        this.dungeon = dungeon;
+        this.x = x;
+        this.y = y;
         this.inventory = new Inventory();
-        this.observePl = new ArrayList<>();
+        this.observers = new ArrayList<>();
         this.active = new SimpleBooleanProperty(true);
-        this.health = new SimpleIntegerProperty(5);
-        this.totalHealth = 5;
     }
     
     public void dead() {
     	this.triggerSeeable(false);
-    	dungeon().removeEntity(this);
+    	dungeon.removeEntity(this);
         createActive(false);
         active.set(false);
     }
@@ -63,21 +64,17 @@ public class Player extends Mobile implements ObsInterface {
      * and alerting all observers
      */
     public void moveUp() {
-        if (!active()) {
-            
-            return;
-        }
-        
-        if (getY() <= 0) {
-            
-            return;
-        }
-        
-        if (blocked(getX(), getY() - 1)) {
-            
-            y().set(getY() - 1);
-        }
-        
+    	List<Entity> entities = dungeon.getEntityList();
+    	if (!active()) {
+    		return;
+    	} else {
+        	for (Entity e : entities) {
+        		if (e.getX() == x && e.getY() == y++) {
+        			if (e.isBlocking()) return;
+        			else y().set(y++);
+        		}
+        	} 		
+    	}
         notifyObservers();
     }
     
@@ -86,21 +83,18 @@ public class Player extends Mobile implements ObsInterface {
      * and alerting all observers
      */
     public void moveDown() {
-        if (!active()) {
-            
-            return;
-        }
-        
-        if (getY() >= dungeon().getHeight() - 1) {
-            
-            return;
-        }
-        
-        if (blocked(getX(), getY() + 1)) {
-            
-            y().set(getY() + 1);
-        }
-        
+    	
+    	List<Entity> entities = dungeon.getEntityList();
+    	if (!active()) {
+    		return;
+    	} else {
+        	for (Entity e : entities) {
+        		if (e.getX() == x && e.getY() == y--) {
+        			if (e.isBlocking()) return;
+        			else y().set(y--);
+        		}
+        	} 		
+    	}
         notifyObservers();
     }
     
@@ -109,21 +103,17 @@ public class Player extends Mobile implements ObsInterface {
      * and alerting all observers
      */
     public void moveLeft() {
-        if (!active()) {
-            
-            return;
-        }
-        
-        if (getX() <= 0) {
-            
-            return;
-        }
-        
-        if (blocked(getX() - 1, getY())) {
-            
-            x().set(getX() - 1);
-        }
-        
+    	List<Entity> entities = dungeon.getEntityList();
+    	if (!active()) {
+    		return;
+    	} else {
+        	for (Entity e : entities) {
+        		if (e.getX() == x-- && e.getY() == y) {
+        			if (e.isBlocking()) return;
+        			else x().set(x--);
+        		}
+        	} 		
+    	}
         notifyObservers();
     }
     
@@ -132,71 +122,21 @@ public class Player extends Mobile implements ObsInterface {
      * and alerting all observers
      */
     public void moveRight() {
-        if (!active()) {
-            
-            return;
-        }
-        
-        if (getX() >= dungeon().getWidth() - 1) {
-            
-            return;
-        }
-        
-        if (blocked(getX() + 1, getY())) {
-            
-            x().set(getX() + 1);
-        }
-        
+    	List<Entity> entities = dungeon.getEntityList();
+    	if (!active()) {
+    		return;
+    	} else {
+        	for (Entity e : entities) {
+        		if (e.getX() == x++ && e.getY() == y) {
+        			if (e.isBlocking()) return;
+        			else y().set(x++);
+        		}
+        	} 		
+    	}
         notifyObservers();
     }
-    
-    public SimpleIntegerProperty obtainHealth() {
-        
-    	return this.health;
-    }
-    
-    public void injured() {
-        
-    	this.health.set(this.health.get() - 1);
-    }
-    
-    public int obtainTotalHealth() {
-        
-    	return this.totalHealth;
-    }
-    
-    public void fixHealthPool(int health) {
-        
-    	this.totalHealth = health;
-    	this.health.set(health);
-    }
-    
-    /**
-     * 
-     * @param x (x co-ord of blocking entity)
-     * @param y (y co-ord of blocking entity)
-     * @return boolean (i.e. negative if the player_object cannot move to the desired location)
-     */
-    public boolean blocked(int x, int y) {
-        List<Entity> blocking = dungeon().obtainBlocked(x, y);
-        
-        if (blocking == null) {
-            
-            return true;
-        }
-        
-        for(Entity f : blocking) {
-            if (!f.scanSquare(this)) {
-                
-                return false;
-            }
-        }
-        
-        return true;
-    }
-
-    public Inventory obtainChest() {
-        
+  
+    public Inventory obtainInventory() {
         return inventory;
     }
     
@@ -215,64 +155,24 @@ public class Player extends Mobile implements ObsInterface {
 //        
 //        return false;
 //    }
-    
-    /**
-     * 
-     * Function determines if the player_object is blocked by a door or not
-     * 
-     * @param door
-     * @return boolean
-     */
-//    public boolean scanSquare(Door door) {
-//        
-//        return inventory.applyToken(door);
-//    }
-    
-    /**
-     * 
-     * Function determines whether player_object is blocked by a barrier such as a wall
-     * 
-     * @param f
-     * @return boolean
-     */
-    public boolean scanSquare(Wall f) {
-        
-        return false;
-    }
-    
-    /**
-     * 
-     * Function is in charge of mobile entity interactions e.g. with foes
-     * 
-     */
-//    public boolean scanSquare(Mobile f) {
-//        if (f instanceof Foe) {
-//            
-//            f.scanSquare(this);
-//        }
-//        
-//        return true;
-//    }
 
     @Override
-    public void registerObserver(Constructor c) {
-        
-        observePl.add(c);
+    public void registerObserver(Observer o) {
+        observers.add(o);
     }
 
     @Override
-    public void removeObserver(Constructor c) {
-        if (observePl.contains(c)) {
-            
-            observePl.remove(c);
+    public void removeObserver(Observer o) {
+        if (observers.contains(o)) {
+            observers.remove(o);
         }
     }
 
     @Override
     public void notifyObservers() {
-        for(Constructor c : observePl) {
+        for(Observer o : observers) {
             
-            c.update(this);
+            o.update(this);
         }
     }
 }

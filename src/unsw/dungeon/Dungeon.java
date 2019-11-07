@@ -64,4 +64,8 @@ public class Dungeon {
         
         return null;
     }
+    
+    public List<Entity> getEntityList() {
+    	return entities;
+    }
 }
