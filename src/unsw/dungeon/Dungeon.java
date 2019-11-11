@@ -27,12 +27,18 @@ public class Dungeon {
     private int width, height;
     private List<Entity> entities;
     private Player player;
+    private boolean status;
+    private Inventory inventory;
+    private boolean endGame;
 
     public Dungeon(int width, int height) {
         this.width = width;
         this.height = height;
         this.entities = new ArrayList<>();
         this.player = null;
+        this.status = true;
+        this.endGame = false;
+        this.inventory = new Inventory(this);
     }
 
     public int getWidth() {
@@ -58,6 +64,42 @@ public class Dungeon {
     public void removeEntity(Entity entity) {
         entities.remove(entity);
     }
+    
+    public List<Entity> getEntityList() {
+    	return entities;
+    }
+    
+    public Inventory getInventory() {
+    	return inventory;
+    }
+    
+    public boolean getStatus() {
+    	return status;
+    }
+    
+    public void collectSword(Sword s) {
+    	inventory.collectSword(s);
+    }
+    
+    public void collectTreasure(Treasure t) {
+    	inventory.collectTreasure(t);
+    }
+    
+    public void collectKey(Key k) {
+    	inventory.collectKey(k);
+    }
+    
+    public void killPlayer() {
+    	this.status = false;
+    }
+    
+    public void endGame() {
+    	this.endGame = true;
+    }
+    
+    public boolean isGameOver() {
+    	return endGame;
+    }
 
     public List<Entity> obtainBlocked(int x, int y) {
         // TODO Auto-generated method stub
@@ -65,7 +107,5 @@ public class Dungeon {
         return null;
     }
     
-    public List<Entity> getEntityList() {
-    	return entities;
-    }
+
 }

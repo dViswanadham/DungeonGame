@@ -30,10 +30,10 @@ class Testing {
         dungeon.addEntity(q2);
         dungeon.addEntity(q3);
         
-        Sword sword1 = new Sword(0,0);
-        Sword sword2 = new Sword(2,0);
+        Sword sword1 = new Sword(0, 0, dungeon);
+        Sword sword2 = new Sword(2, 0, dungeon);
         
-        InvincibilityPotion potion = new InvincibilityPotion(2,0);
+        InvincibilityPotion potion = new InvincibilityPotion(2,0, dungeon);
         
         dungeon.addEntity(sword1);
         dungeon.addEntity(sword2);
@@ -57,13 +57,12 @@ class Testing {
         dungeon.addEntity(f7);
         dungeon.addEntity(f8);
         
-        q1.moveDown();
-        q2.moveDown();
-        q3.moveDown();
-        
-        assertEquals(q1.active(), true);
-        assertEquals(q2.active(), true);
-        assertEquals(q3.active(), true);
+        q1.move(Direction.DOWN);
+        q2.move(Direction.DOWN);
+        q3.move(Direction.DOWN);
+        assertTrue(q1.isActive());
+        assertTrue(q2.isActive());
+        assertTrue(q3.isActive());
         assertTrue(sword1 != null);
     }
     
@@ -75,14 +74,14 @@ class Testing {
         
         dungeon.addEntity(q1);
         
-        Boulder b1 = new Boulder(1, 0);
+        Boulder b1 = new Boulder(1, 0, dungeon);
         
         dungeon.addEntity(b1);
         
         Foe e1 = new Foe(dungeon, 2, 0);
         
         dungeon.addEntity(e1);
-        q1.moveRight();
+        q1.move(Direction.RIGHT);
         
         assertTrue(q1.getX() == 1);
         assertTrue(b1.getX() == 1);
@@ -103,9 +102,9 @@ class Testing {
         dungeon.addEntity(q2);
         dungeon.addEntity(q3);
         
-        InvincibilityPotion p1 = new InvincibilityPotion(0, 0);
-        InvincibilityPotion p2 = new InvincibilityPotion(1, 0);
-        InvincibilityPotion p3 = new InvincibilityPotion(2, 1);
+        InvincibilityPotion p1 = new InvincibilityPotion(0, 0, dungeon);
+        InvincibilityPotion p2 = new InvincibilityPotion(1, 0, dungeon);
+        InvincibilityPotion p3 = new InvincibilityPotion(2, 1, dungeon);
         
         dungeon.addEntity(p1);
         dungeon.addEntity(p2);
@@ -124,13 +123,13 @@ class Testing {
             p2.getDuration();
         }
         
-        q1.moveDown();
-        q2.moveDown();
-        q3.moveDown();
+        q1.move(Direction.DOWN);
+        q2.move(Direction.DOWN);
+        q3.move(Direction.DOWN);
         
-        assertEquals(q1.active(), true);
-        assertEquals(q2.active(), true);
-        assertEquals(q3.active(), true);
+        assertTrue(q1.isActive());
+        assertTrue(q2.isActive());
+        assertTrue(q3.isActive());
 //        assertEquals(f1.active(), false);
 //        assertEquals(f2.active(), true);
 //        assertEquals(f3.active(), true);

@@ -15,6 +15,7 @@ import java.util.List;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 
 
 /**
@@ -39,11 +40,11 @@ public class Player extends Mobile implements Observable {
      * @param y
      */
     public Player(Dungeon dungeon, int x, int y) {
-        super(dungeon, x, y);
-        this.dungeon = dungeon;
+        super(x, y, dungeon);
         this.x = x;
         this.y = y;
-        this.inventory = new Inventory();
+        this.dungeon = dungeon;
+        this.inventory = new Inventory(dungeon);
         this.observers = new ArrayList<>();
         this.active = new SimpleBooleanProperty(true);
     }
@@ -51,89 +52,11 @@ public class Player extends Mobile implements Observable {
     public void dead() {
     	this.triggerSeeable(false);
     	dungeon.removeEntity(this);
-        createActive(false);
         active.set(false);
     }
     
     public BooleanProperty activeAttribute() {
     	return this.active;
-    }
-    
-    /**
-     * Moves the player_object up one square, scanning for a free space
-     * and alerting all observers
-     */
-    public void moveUp() {
-    	List<Entity> entities = dungeon.getEntityList();
-    	if (!active()) {
-    		return;
-    	} else {
-        	for (Entity e : entities) {
-        		if (e.getX() == x && e.getY() == y++) {
-        			if (e.isBlocking()) return;
-        			else y().set(y++);
-        		}
-        	} 		
-    	}
-        notifyObservers();
-    }
-    
-    /**
-     * Moves the player_object down one square, scanning for a free space
-     * and alerting all observers
-     */
-    public void moveDown() {
-    	
-    	List<Entity> entities = dungeon.getEntityList();
-    	if (!active()) {
-    		return;
-    	} else {
-        	for (Entity e : entities) {
-        		if (e.getX() == x && e.getY() == y--) {
-        			if (e.isBlocking()) return;
-        			else y().set(y--);
-        		}
-        	} 		
-    	}
-        notifyObservers();
-    }
-    
-    /**
-     * Moves the player_object left one square, scanning for a free space
-     * and alerting all observers
-     */
-    public void moveLeft() {
-    	List<Entity> entities = dungeon.getEntityList();
-    	if (!active()) {
-    		return;
-    	} else {
-        	for (Entity e : entities) {
-        		if (e.getX() == x-- && e.getY() == y) {
-        			if (e.isBlocking()) return;
-        			else x().set(x--);
-        		}
-        	} 		
-    	}
-        notifyObservers();
-    }
-    
-    /**
-     * Moves the player_object right one square, scanning for a free space
-     * and alerting all observers
-     */
-    public void moveRight() {
-    	List<Entity> entities = dungeon.getEntityList();
-    	if (!active()) {
-    		return;
-    	} else {
-        	for (Entity e : entities) {
-        		if (e.getX() == x++ && e.getY() == y) {
-        			if (e.isBlocking()) return;
-        			else y().set(x++);
-        		}
-        	} 		
-    	}
-        notifyObservers();
     }
   
     public Inventory obtainInventory() {
@@ -171,7 +94,6 @@ public class Player extends Mobile implements Observable {
     @Override
     public void notifyObservers() {
         for(Observer o : observers) {
-            
             o.update(this);
         }
     }

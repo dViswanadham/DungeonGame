@@ -12,10 +12,15 @@ package unsw.dungeon;
 
 public class Key extends Token {
 
+	private int x, y;
+	private Dungeon dungeon;
 	private int id;
 	
-    public Key(int x, int y, int id) {
-        super(x,y);
+    public Key(int x, int y, Dungeon dungeon, int id) {
+        super(x, y, dungeon);
+        this.x = x;
+        this.y = y;
+        this.dungeon = dungeon;
         this.id = id;
     }
 

@@ -20,15 +20,17 @@ public abstract class Entity implements Observable {
     private IntegerProperty x, y;
     private BooleanProperty seeable;
     private ArrayList<Observer> observers;
+    private Dungeon dungeon;
     /**
      * Create an entity positioned in square (x,y)
      * 
      * @param x
      * @param y
      */
-    public Entity(int x, int y) {
+    public Entity(int x, int y, Dungeon dungeon) {
         this.x = new SimpleIntegerProperty(x);
         this.y = new SimpleIntegerProperty(y);
+        this.dungeon = dungeon;
         this.seeable = new SimpleBooleanProperty(true);
         this.observers = new ArrayList<>();
     }
@@ -39,6 +41,10 @@ public abstract class Entity implements Observable {
 
     public IntegerProperty y() {
         return y;
+    }
+    
+    public Dungeon getDungeon() {
+    	return dungeon;
     }
     
     public BooleanProperty seeable() {

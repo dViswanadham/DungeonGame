@@ -10,10 +10,29 @@
 
 package unsw.dungeon;
 
+import java.util.List;
+
 public class FloorSwitch extends Entity {
 
-    public FloorSwitch(int x, int y) {
-        super(x, y);
+	private int x, y;
+	private Dungeon dungeon;
+	
+    public FloorSwitch(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
+        this.x = x;
+        this.y = y;
+        this.dungeon = dungeon;
     }
 
+    public boolean isActivated() {
+    	List<Entity> entities = dungeon.getEntityList();
+    	for (Entity e : entities) {
+    		if (e instanceof Boulder || e instanceof Player) {
+    			if (e.getX() == x && e.getY() == y) {
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
 }

@@ -12,8 +12,14 @@ package unsw.dungeon;
 
 public class Treasure extends Token {
 
-    public Treasure(int x, int y) {
-        super(x, y);
+	private int x, y;
+	private Dungeon dungeon;
+	
+    public Treasure(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
+        this.x = x;
+        this.y = y;
+        this.dungeon = dungeon;
     }
     
     @Override

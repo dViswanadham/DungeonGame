@@ -13,9 +13,14 @@ package unsw.dungeon;
 public class Boulder extends Entity {
 
 	private double speed;
+	private int x, y;
+	private Dungeon dungeon;
 	
-    public Boulder(int x, int y) {
-        super(x, y);
+    public Boulder(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
+        this.x = x;
+        this.y = y;
+        this.dungeon = dungeon;
         this.speed = 0;
     }
 

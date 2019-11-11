@@ -12,14 +12,19 @@ package unsw.dungeon;
 
 public class Token extends Entity {
 	
+	private int x, y;
+	private Dungeon dungeon;
 	private Inventory inventory;
 	
-	public Token(int x, int y) {
-        super(x,y);
+	public Token(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
+        this.x = x;
+        this.y = y;
+        this.dungeon = dungeon;
 	}
 	
 	public boolean createInventory() {
-		inventory = new Inventory();
+		inventory = new Inventory(dungeon);
 		return true;
 	}
 

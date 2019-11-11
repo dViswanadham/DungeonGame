@@ -9,78 +9,69 @@
 
 
 package unsw.dungeon;
+
+import java.util.List;
+
 /**
  * Implements the Mobile abstract class, used with entities in the dungeon that are moveable
  */
 public abstract class Mobile extends Entity {
 
-    private Dungeon dungeon = null;
+    private Dungeon dungeon;
     private boolean active;
 
-    public Mobile(Dungeon dungeon, int x, int y) {
-        super(x, y);
-        
+    public Mobile(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
         this.dungeon = dungeon;
         this.active = true;
     }
 
     public Dungeon dungeon() {
-        
-        return this.dungeon;
+        return dungeon;
     }
 
-    public void dead() {
-        this.triggerSeeable(false);
-        
-        dungeon.removeEntity(this);
-        
-        this.active = false;
-    }
-
-    public boolean active() {
-        
-        return this.active;
+    public void inactive() {
+    	if (dungeon.isGameOver()) this.active = false;
     }
     
-    public void createActive(boolean active) {
-        
-        this.active = active;
-    }
-
-    /**
-     * 
-     * Function scans for any interaction against a token
-     * 
-     * @param object
-     * @return boolean
-     */
-    public boolean scanSquare(Token object) {
-        
-        return false;
+    public boolean isActive() {
+    	return active;
     }
     
-    /**
-     * 
-     * Function scans for any interaction against a barrier
-     * 
-     * @param object
-     * @return boolean
-     */
-    public boolean scanSquare(Wall object) {
-        
-        return false;
-    }
-
-    
-    /**
-     * 
-     * Function scans for any interaction against a mobile entity (e.g. foes)
-     * 
-     * @param object
-     * @return boolean
-     */
-    public boolean scanSquare(Mobile object) {
-        
-        return false;
+    public void move(Direction direction) {
+    	
+    	if (!isActive()) {
+    		List<Entity> entities = dungeon.getEntityList();
+        	if (direction == Direction.UP) {
+            	for (Entity e : entities) {
+            		if (e.getX() == this.getX() && e.getY() == (this.getY() + 1)) {
+            			if (e.isBlocking()) return;
+            			else y().set(this.getY() + 1);
+            		}
+            	} 	
+        	} else if (direction == Direction.DOWN) {
+            	for (Entity e : entities) {
+            		if (e.getX() == this.getX() && e.getY() == (this.getY() - 1)) {
+            			if (e.isBlocking()) return;
+            			else y().set(this.getY() - 1);
+            		}
+            	} 	
+        	} else if (direction == Direction.RIGHT) {
+            	for (Entity e : entities) {
+            		if (e.getX() == (this.getX() + 1) && e.getY() == this.getY()) {
+            			if (e.isBlocking()) return;
+            			else x().set(this.getX() + 1);
+            		}
+            	} 	
+        	} else {
+            	for (Entity e : entities) {
+            		if (e.getX() == (this.getX() - 1) && e.getY() == this.getY()) {
+            			if (e.isBlocking()) return;
+            			else x().set(this.getX() - 1);
+            		}
+            	} 	
+        	}	
+        	notifyObservers();
+    	}
     }
 }

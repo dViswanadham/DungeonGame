@@ -12,8 +12,14 @@ package unsw.dungeon;
 
 public class Sword extends Token {
 
-    public Sword(int x, int y) {
-        super(x,y);
+	private int x, y;
+	private Dungeon dungeon;
+	
+    public Sword(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
+        this.x = x;
+        this.y = y;
+        this.dungeon = dungeon;
     }
 
     @Override
