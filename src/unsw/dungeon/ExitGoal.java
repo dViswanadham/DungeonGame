@@ -10,6 +10,11 @@
 
 package unsw.dungeon;
 
-public class DeathScreenController {
-    
+public class ExitGoal extends Goal {
+
+	public ExitGoal(Dungeon dungeon) {
+		super(dungeon);
+		// TODO Auto-generated constructor stub
+	}
+    // #TODO
 }

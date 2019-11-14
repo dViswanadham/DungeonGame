@@ -25,6 +25,7 @@ import javafx.beans.property.IntegerProperty;
  *
  */
 public class Player extends Mobile implements Observable {
+	
     private Inventory inventory;
     private ArrayList<Observer> observers;
     private BooleanProperty active;
@@ -57,22 +58,6 @@ public class Player extends Mobile implements Observable {
     public Inventory obtainInventory() {
         return inventory;
     }
-    
-    /**
-     * 
-     * Function triggers Invincibility based on correct token (Potion)
-     * 
-     * @param f
-     * @return boolean (i.e. positive if the player_object manages to kill an enemy and negative if the player_object dies instead)
-     */
-//    public boolean triggerInvincibility(Foe f) {
-//        if (inventory.applyToken(f)) {
-//            
-//            return true;
-//        }
-//        
-//        return false;
-//    }
 
     @Override
     public void registerObserver(Observer o) {

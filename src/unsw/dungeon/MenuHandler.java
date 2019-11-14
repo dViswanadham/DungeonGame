@@ -10,6 +10,11 @@
 
 package unsw.dungeon;
 
-public class ObjFloorSwitch extends DungeonObjectives{
-    // #TODO
+import java.io.IOException;
+
+public class MenuHandler {
+    public MenuHandler(DungeonController dControl) throws IOException {
+        
+    }
+    
 }

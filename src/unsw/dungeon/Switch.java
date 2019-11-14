@@ -12,23 +12,19 @@ package unsw.dungeon;
 
 import java.util.List;
 
-public class FloorSwitch extends Entity {
+public class Switch extends Entity {
 
-	private int x, y;
-	private Dungeon dungeon;
 	
-    public FloorSwitch(int x, int y, Dungeon dungeon) {
+    public Switch(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
     }
 
     public boolean isActivated() {
-    	List<Entity> entities = dungeon.getEntityList();
+    	List<Entity> entities = getDungeon().getEntityList();
     	for (Entity e : entities) {
     		if (e instanceof Boulder || e instanceof Player) {
-    			if (e.getX() == x && e.getY() == y) {
+    			if (e.getX() == getX() && e.getY() == getY()) {
+    				System.out.println("activated");
     				return true;
     			}
     		}

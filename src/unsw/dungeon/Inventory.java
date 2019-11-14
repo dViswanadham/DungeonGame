@@ -43,8 +43,11 @@ public class Inventory {
     	swords.add(sword);
     }
     
-    public boolean useSword() {
-    	return true;
+    public void useSword(Sword sword) {
+    	sword.setDurability(sword.getDurability() - 1);
+    	if (sword.getDurability() == 0) {
+    		breakSword(sword);
+    	}
     }
     
     public List<Sword> getSwordList() {
@@ -58,7 +61,7 @@ public class Inventory {
     public int getSwordUsability(Sword sword) {
     	for (Sword s: swords) {
     		if (s.equals(sword)) {
-    			// return sword durability count
+    			return sword.getDurability();
     		}
     	}
     	return 0;

@@ -15,20 +15,18 @@ package unsw.dungeon;
  * @author Robert Clifton-Everest
  *
  */
-public class Foe extends Entity {
-
-	private int x, y;
-	private Dungeon dungeon;
+public class Enemy extends Mobile {
 	
-    public Foe(Dungeon dungeon, int x, int y) {
+    public Enemy(Dungeon dungeon, int x, int y) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
     }
 
     public void setFoePath() {
     	
     }
     
+    @Override
+    public boolean isBlocking() {
+    	return true;
+    }
 }

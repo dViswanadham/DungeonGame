@@ -10,6 +10,6 @@
 
 package unsw.dungeon;
 
-public class QuickMenuController {
+public class EndGameController {
     
 }

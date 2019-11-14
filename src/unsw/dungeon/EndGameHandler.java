@@ -10,6 +10,11 @@
 
 package unsw.dungeon;
 
-public class ObjExit extends DungeonObjectives{
-    // #TODO
+import java.io.IOException;
+
+public class EndGameHandler {
+    public EndGameHandler(DungeonController dControl, String text) throws IOException {
+        
+    }
+    
 }

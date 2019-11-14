@@ -12,15 +12,10 @@ package unsw.dungeon;
 
 public class InvincibilityPotion extends Entity {
 
-	private int x, y;
-	private Dungeon dungeon;
 	private int duration;
 	
     public InvincibilityPotion(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
         this.duration = 5000;
         
     }
@@ -38,9 +33,8 @@ public class InvincibilityPotion extends Entity {
     }
     
     @Override
-    public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-    	// inventory.addItem(this);
-    	dungeon.addEntity(this);
+    public boolean collectObject(Inventory inventory) {
+    	getDungeon().addEntity(this);
     	notifyObservers();
     	return true;
     }

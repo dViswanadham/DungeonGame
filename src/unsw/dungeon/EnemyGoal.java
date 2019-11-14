@@ -10,6 +10,11 @@
 
 package unsw.dungeon;
 
-public class DungeonObjectives {
-    
+public class EnemyGoal extends Goal {
+
+	public EnemyGoal(Dungeon dungeon) {
+		super(dungeon);
+		// TODO Auto-generated constructor stub
+	}
+    // #TODO
 }

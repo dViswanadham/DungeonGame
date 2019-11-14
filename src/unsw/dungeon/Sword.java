@@ -11,21 +11,26 @@
 package unsw.dungeon;
 
 public class Sword extends Token {
-
-	private int x, y;
-	private Dungeon dungeon;
+	
+	private int durability;
 	
     public Sword(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
+        this.durability = 5;
+    }
+    
+    public int getDurability() {
+    	return durability;
+    }
+    
+    public void setDurability(int newDurability) {
+    	this.durability = newDurability;
     }
 
     @Override
-    public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-    	// inventory.addItem(this);
-    	dungeon.removeEntity(this);
+    public boolean collectObject(Inventory inventory) {
+    	inventory.collectSword(this);
+    	getDungeon().removeEntity(this);
     	notifyObservers();
     	return true;
     }

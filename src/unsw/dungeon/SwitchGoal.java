@@ -10,11 +10,11 @@
 
 package unsw.dungeon;
 
-import java.io.IOException;
+public class SwitchGoal extends Goal {
 
-public class DeathScreenHandler {
-    public DeathScreenHandler(DungeonController dControl, String text) throws IOException {
-        
-    }
-    
+	public SwitchGoal(Dungeon dungeon) {
+		super(dungeon);
+		// TODO Auto-generated constructor stub
+	}
+    // #TODO
 }

@@ -35,6 +35,16 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image playerImage;
     private Image wallImage;
     private Image exitImage;
+    private Image boulderImage;
+    private Image swordImage;
+    private Image openDoorImage;
+    private Image closedDoorImage;
+    private Image keyImage;
+    private Image floorSwitchImage;
+    private Image portalImage;
+    private Image enemyImage;
+    private Image invincibilityPotionImage;
+    private Image treasureImage;
 
     public DungeonControllerLoader(String filename)
             throws FileNotFoundException {
@@ -43,6 +53,16 @@ public class DungeonControllerLoader extends DungeonLoader {
         playerImage = new Image("/human_new.png");
         wallImage = new Image("/brick_brown_0.png");
         exitImage = new Image("/exit.png");
+        boulderImage = new Image("/boulder.png");
+        swordImage = new Image("/greatsword_1_new.png");
+        openDoorImage = new Image("/open_door.png");
+        closedDoorImage = new Image("/closed_door.png");
+        keyImage = new Image("/key.png");
+        floorSwitchImage = new Image("/pressure_plate.png");
+        portalImage = new Image("/portal.png");
+        enemyImage = new Image("/deep_elf_master_archer.png");
+        invincibilityPotionImage = new Image("/brilliant_blue_new.png");
+        treasureImage = new Image("/gold_pile.png");
     }
 
     @Override
@@ -61,6 +81,30 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(Exit exit) {
     	ImageView view = new ImageView(exitImage);
     	addEntity(exit, view);
+    }
+    
+    @Override
+    public void onLoad(Boulder boulder) {
+    	ImageView view = new ImageView(boulderImage);
+    	addEntity(boulder, view);
+    }
+    
+    @Override
+    public void onLoad(Switch floorswitch) {
+    	ImageView view = new ImageView(floorSwitchImage);
+    	addEntity(floorswitch, view);
+    }
+    
+    @Override
+    public void onLoad(Treasure treasure) {
+    	ImageView view = new ImageView(treasureImage);
+    	addEntity(treasure, view);
+    }
+    
+    @Override
+    public void onLoad(InvincibilityPotion potion) {
+    	ImageView view = new ImageView(invincibilityPotionImage);
+    	addEntity(potion, view);
     }
 
     private void addEntity(Entity entity, ImageView view) {

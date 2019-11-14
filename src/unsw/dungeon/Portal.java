@@ -11,14 +11,8 @@
 package unsw.dungeon;
 
 public class Portal extends Entity {
-
-	private int x, y;
-	private Dungeon dungeon;
 	
     public Portal(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
     }
 }

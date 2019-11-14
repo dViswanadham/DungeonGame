@@ -39,14 +39,14 @@ class Testing {
         dungeon.addEntity(sword2);
         dungeon.addEntity(potion);
         
-        Foe f1 = new Foe(dungeon, 0, 1);
-        Foe f2 = new Foe(dungeon, 1, 1);
-        Foe f3 = new Foe(dungeon, 2, 1);
-        Foe f4 = new Foe(dungeon, 2, 1);
-        Foe f5 = new Foe(dungeon, 2, 1);
-        Foe f6 = new Foe(dungeon, 2, 1);
-        Foe f7 = new Foe(dungeon, 2, 1);
-        Foe f8 = new Foe(dungeon, 2, 1);
+        Enemy f1 = new Enemy(dungeon, 0, 1);
+        Enemy f2 = new Enemy(dungeon, 1, 1);
+        Enemy f3 = new Enemy(dungeon, 2, 1);
+        Enemy f4 = new Enemy(dungeon, 2, 1);
+        Enemy f5 = new Enemy(dungeon, 2, 1);
+        Enemy f6 = new Enemy(dungeon, 2, 1);
+        Enemy f7 = new Enemy(dungeon, 2, 1);
+        Enemy f8 = new Enemy(dungeon, 2, 1);
         
         dungeon.addEntity(f1);
         dungeon.addEntity(f2);
@@ -78,7 +78,7 @@ class Testing {
         
         dungeon.addEntity(b1);
         
-        Foe e1 = new Foe(dungeon, 2, 0);
+        Enemy e1 = new Enemy(dungeon, 2, 0);
         
         dungeon.addEntity(e1);
         q1.move(Direction.RIGHT);
@@ -110,9 +110,9 @@ class Testing {
         dungeon.addEntity(p2);
         dungeon.addEntity(p3);
         
-        Foe f1 = new Foe(dungeon, 0, 1);
-        Foe f2 = new Foe(dungeon, 1, 1);
-        Foe f3 = new Foe(dungeon, 2, 1);
+        Enemy f1 = new Enemy(dungeon, 0, 1);
+        Enemy f2 = new Enemy(dungeon, 1, 1);
+        Enemy f3 = new Enemy(dungeon, 2, 1);
         
         dungeon.addEntity(f1);
         dungeon.addEntity(f2);

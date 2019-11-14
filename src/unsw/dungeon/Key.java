@@ -12,41 +12,22 @@ package unsw.dungeon;
 
 public class Key extends Token {
 
-	private int x, y;
-	private Dungeon dungeon;
 	private int id;
 	
-    public Key(int x, int y, Dungeon dungeon, int id) {
+    public Key(int x, int y, Dungeon dungeon, Inventory inventory, int id) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
         this.id = id;
     }
 
     @Override
-    public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-    	// inventory.addItem(this);
-    	dungeon.addEntity(this);
+    public boolean collectObject(Inventory inventory) {
+    	inventory.collectKey(this);
+    	getDungeon().addEntity(this);
     	notifyObservers();
     	return true;
     }
     
-    public boolean applyKey(Door door, Inventory inventory) {
-    	if (door.getDoorID() == this.id) {
-    		abandonKey(door, inventory);
-    		return true;
-    	} else {
-    		return false;
-    	}
-    }
-    
-    public boolean abandonKey(Door door, Inventory inventory) {
-    	int id = door.getDoorID();
-//    	for (Token t : inventory.getTokenList()) {
-//    		// remove key based on matching id with door
-//    		return true;
-//    	}
-    	return false;
+    public void applyKey(Door door, Inventory inventory) {
+    	inventory.useKey(door, this);
     }
 }

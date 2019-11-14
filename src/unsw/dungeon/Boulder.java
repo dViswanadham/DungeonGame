@@ -10,23 +10,23 @@
 
 package unsw.dungeon;
 
-public class Boulder extends Entity {
+public class Boulder extends Mobile {
 
 	private double speed;
-	private int x, y;
-	private Dungeon dungeon;
 	
     public Boulder(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
         this.speed = 0;
     }
 
     @Override
     public boolean isBlocking() {
     	return true;
+    }
+    
+    @Override
+    public void move(Direction direction) {
+    	
     }
     
     public void setSpeed(Double speed) {

@@ -33,7 +33,6 @@ public abstract class Mobile extends Entity {
     }
     
     public void move(Direction direction) {
-    	
 		List<Entity> entities = getDungeon().getEntityList();
     	if (direction == Direction.UP) {
     		if (getY() > 0) {
@@ -41,10 +40,13 @@ public abstract class Mobile extends Entity {
         			if (e != null) {
             			if (e.getX() == getX() && e.getY() == getY() - 1) {
             				if (e.isBlocking()) {
-                				System.out.println("object found");
                 				return;
             				} else {
+            					if (getDungeon().isGameOver()) {
+            						System.out.println("Game Over");
+            					}
             					y().set(getY() - 1);
+            					return;
             				}
             			}
         			}
@@ -57,10 +59,13 @@ public abstract class Mobile extends Entity {
         			if (e != null) {
             			if (e.getX() == getX() && e.getY() == getY() + 1) {
             				if (e.isBlocking()) {
-                				System.out.println("object found");
                 				return;
             				} else {
             					y().set(getY() + 1);
+            					if (getDungeon().isGameOver()) {
+            						System.out.println("Game Over");
+            					}
+            					return;
             				}
             			}
         			}
@@ -73,10 +78,13 @@ public abstract class Mobile extends Entity {
         			if (e != null) {
             			if (e.getX() == getX() + 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
-                				System.out.println("object found");
                 				return;
             				} else {
+            					if (getDungeon().isGameOver()) {
+            						System.out.println("Game Over");
+            					}
             					x().set(getX() + 1);
+            					return;
             				}
             			}		
         			}
@@ -89,10 +97,13 @@ public abstract class Mobile extends Entity {
         			if (e != null) {
             			if (e.getX() == getX() - 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
-                				System.out.println("object found");
                 				return;
             				} else {
+            					if (getDungeon().isGameOver()) {
+            						System.out.println("Game Over");
+            					}
             					x().set(getX() - 1);
+            					return;
             				}
             			}
         			}
@@ -100,9 +111,6 @@ public abstract class Mobile extends Entity {
         		x().set(getX() - 1);
         	}
     	}	
-    	if (getDungeon().isGameOver()) {
-    		System.out.println("Game Over");
-    	}
     	notifyObservers();
     }
 }

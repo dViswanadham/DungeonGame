@@ -7,14 +7,8 @@
  * Acknowledgement: some of the code may be similar to the lab code.
  */
 
-
 package unsw.dungeon;
 
-import java.io.IOException;
+public class MenuController {
 
-public class QuickMenuHandler {
-    public QuickMenuHandler(DungeonController dControl) throws IOException {
-        
-    }
-    
 }

@@ -10,6 +10,11 @@
 
 package unsw.dungeon;
 
-public class ObjTreasure extends DungeonObjectives{
+public class TreasureGoal extends Goal {
+
+	public TreasureGoal(Dungeon dungeon) {
+		super(dungeon);
+		// TODO Auto-generated constructor stub
+	}
     // #TODO
 }

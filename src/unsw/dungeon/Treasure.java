@@ -12,20 +12,15 @@ package unsw.dungeon;
 
 public class Treasure extends Token {
 
-	private int x, y;
-	private Dungeon dungeon;
 	
     public Treasure(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
     }
     
     @Override
-    public boolean collectObject(Dungeon dungeon, Inventory inventory) {
-        // inventory.addItem(this);
-        dungeon.removeEntity(this);
+    public boolean collectObject(Inventory inventory) {
+    	inventory.collectTreasure(this);
+        getDungeon().removeEntity(this);
     	return true;
     }
 }

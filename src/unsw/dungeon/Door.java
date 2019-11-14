@@ -17,14 +17,9 @@ public class Door extends Entity {
 	private boolean state;
 	public static final boolean OPEN = true;
 	public static final boolean CLOSED = false;
-	private int x, y;
-	private Dungeon dungeon;
 	
     public Door(int x, int y, Dungeon dungeon, int id) {
     	super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
     	this.id = id;
     	this.state = CLOSED;
     }
