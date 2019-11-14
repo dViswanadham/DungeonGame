@@ -17,21 +17,15 @@ import java.util.List;
  */
 public abstract class Mobile extends Entity {
 
-    private Dungeon dungeon;
     private boolean active;
 
     public Mobile(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.dungeon = dungeon;
         this.active = true;
     }
 
-    public Dungeon dungeon() {
-        return dungeon;
-    }
-
     public void inactive() {
-    	if (dungeon.isGameOver()) this.active = false;
+    	if (getDungeon().isGameOver()) this.active = false;
     }
     
     public boolean isActive() {
@@ -40,38 +34,75 @@ public abstract class Mobile extends Entity {
     
     public void move(Direction direction) {
     	
-    	if (!isActive()) {
-    		List<Entity> entities = dungeon.getEntityList();
-        	if (direction == Direction.UP) {
-            	for (Entity e : entities) {
-            		if (e.getX() == this.getX() && e.getY() == (this.getY() + 1)) {
-            			if (e.isBlocking()) return;
-            			else y().set(this.getY() + 1);
-            		}
-            	} 	
-        	} else if (direction == Direction.DOWN) {
-            	for (Entity e : entities) {
-            		if (e.getX() == this.getX() && e.getY() == (this.getY() - 1)) {
-            			if (e.isBlocking()) return;
-            			else y().set(this.getY() - 1);
-            		}
-            	} 	
-        	} else if (direction == Direction.RIGHT) {
-            	for (Entity e : entities) {
-            		if (e.getX() == (this.getX() + 1) && e.getY() == this.getY()) {
-            			if (e.isBlocking()) return;
-            			else x().set(this.getX() + 1);
-            		}
-            	} 	
-        	} else {
-            	for (Entity e : entities) {
-            		if (e.getX() == (this.getX() - 1) && e.getY() == this.getY()) {
-            			if (e.isBlocking()) return;
-            			else x().set(this.getX() - 1);
-            		}
-            	} 	
-        	}	
-        	notifyObservers();
+		List<Entity> entities = getDungeon().getEntityList();
+    	if (direction == Direction.UP) {
+    		if (getY() > 0) {
+        		for (Entity e : entities) {
+        			if (e != null) {
+            			if (e.getX() == getX() && e.getY() == getY() - 1) {
+            				if (e.isBlocking()) {
+                				System.out.println("object found");
+                				return;
+            				} else {
+            					y().set(getY() - 1);
+            				}
+            			}
+        			}
+        		}
+    			y().set(getY() - 1);
+    		}
+    	} else if (direction == Direction.DOWN) {
+    		if (getY() < getDungeon().getHeight() - 1) {
+        		for (Entity e : entities) {
+        			if (e != null) {
+            			if (e.getX() == getX() && e.getY() == getY() + 1) {
+            				if (e.isBlocking()) {
+                				System.out.println("object found");
+                				return;
+            				} else {
+            					y().set(getY() + 1);
+            				}
+            			}
+        			}
+        		}
+        		y().set(getY() + 1);
+    		}
+    	} else if (direction == Direction.RIGHT) {
+    		if (getX() < getDungeon().getWidth() - 1) {
+        		for (Entity e : entities) {
+        			if (e != null) {
+            			if (e.getX() == getX() + 1 && e.getY() == getY()) {
+            				if (e.isBlocking()) {
+                				System.out.println("object found");
+                				return;
+            				} else {
+            					x().set(getX() + 1);
+            				}
+            			}		
+        			}
+        		}
+        		x().set(getX() + 1);
+    		}
+    	} else {
+        	if (getX() > 0) {
+        		for (Entity e : entities) {
+        			if (e != null) {
+            			if (e.getX() == getX() - 1 && e.getY() == getY()) {
+            				if (e.isBlocking()) {
+                				System.out.println("object found");
+                				return;
+            				} else {
+            					x().set(getX() - 1);
+            				}
+            			}
+        			}
+        		}
+        		x().set(getX() - 1);
+        	}
+    	}	
+    	if (getDungeon().isGameOver()) {
+    		System.out.println("Game Over");
     	}
+    	notifyObservers();
     }
 }

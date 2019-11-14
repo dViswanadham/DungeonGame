@@ -12,24 +12,9 @@ package unsw.dungeon;
 
 public class Exit extends Entity {
 
-	private int x, y;
-	private Dungeon dungeon;
 	
     public Exit(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
-    }
-
-    @Override
-    public boolean isBlocking() {
-    	Player player = dungeon.getPlayer();
-    	if (player.getX() == x && player.getY() == y) {
-    		dungeon.endGame();
-    		return false;
-    	}
-    	return true;
     }
     
 }

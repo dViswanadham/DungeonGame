@@ -28,8 +28,6 @@ public class Player extends Mobile implements Observable {
     private Inventory inventory;
     private ArrayList<Observer> observers;
     private BooleanProperty active;
-    private Dungeon dungeon;
-    private int x, y;
     
     /**
      * 
@@ -41,17 +39,14 @@ public class Player extends Mobile implements Observable {
      */
     public Player(Dungeon dungeon, int x, int y) {
         super(x, y, dungeon);
-        this.x = x;
-        this.y = y;
-        this.dungeon = dungeon;
-        this.inventory = new Inventory(dungeon);
+        this.inventory = new Inventory(getDungeon());
         this.observers = new ArrayList<>();
         this.active = new SimpleBooleanProperty(true);
     }
     
     public void dead() {
     	this.triggerSeeable(false);
-    	dungeon.removeEntity(this);
+    	getDungeon().removeEntity(this);
         active.set(false);
     }
     

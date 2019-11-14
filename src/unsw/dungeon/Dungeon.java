@@ -98,6 +98,15 @@ public class Dungeon {
     }
     
     public boolean isGameOver() {
+    	for (Entity e : entities) {
+    		if (e instanceof Exit) {
+    			Player player = getPlayer();
+    			if (player.getX() == e.getX() && player.getY() == e.getY()) {
+    				endGame();
+    				break;
+    			}
+    		}
+    	}
     	return endGame;
     }
 
