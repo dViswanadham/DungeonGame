@@ -10,8 +10,6 @@
 
 package unsw.dungeon;
 
-public interface Observer {
-
-	public void update(Entity e);
-	
+public class ObjFloorSwitch extends DungeonObjectives{
+    // #TODO
 }
