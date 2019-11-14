@@ -2,7 +2,7 @@
  * Team: Desktop_Support
  * Members: Liam (z5207407) and Dheeraj (z5204820)
  * 
- * Started: 24/10/2019 | Last edited: 3/11/2019
+ * Started: 24/10/2019 | Last edited: 14/11/2019
  * 
  * Acknowledgement: some of the code may be similar to the lab code.
  */
@@ -33,7 +33,7 @@ class Testing {
         Sword sword1 = new Sword(0, 0, dungeon);
         Sword sword2 = new Sword(2, 0, dungeon);
         
-        InvincibilityPotion potion = new InvincibilityPotion(2,0, dungeon);
+        InvincibilityPotion potion = new InvincibilityPotion(2, 0, dungeon);
         
         dungeon.addEntity(sword1);
         dungeon.addEntity(sword2);
