@@ -42,9 +42,6 @@ public abstract class Mobile extends Entity {
             				if (e.isBlocking()) {
                 				return;
             				} else {
-            					if (getDungeon().isGameOver()) {
-            						System.out.println("Game Over");
-            					}
             					y().set(getY() - 1);
             					return;
             				}
@@ -62,9 +59,6 @@ public abstract class Mobile extends Entity {
                 				return;
             				} else {
             					y().set(getY() + 1);
-            					if (getDungeon().isGameOver()) {
-            						System.out.println("Game Over");
-            					}
             					return;
             				}
             			}
@@ -80,9 +74,6 @@ public abstract class Mobile extends Entity {
             				if (e.isBlocking()) {
                 				return;
             				} else {
-            					if (getDungeon().isGameOver()) {
-            						System.out.println("Game Over");
-            					}
             					x().set(getX() + 1);
             					return;
             				}
@@ -99,9 +90,6 @@ public abstract class Mobile extends Entity {
             				if (e.isBlocking()) {
                 				return;
             				} else {
-            					if (getDungeon().isGameOver()) {
-            						System.out.println("Game Over");
-            					}
             					x().set(getX() - 1);
             					return;
             				}

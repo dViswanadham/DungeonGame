@@ -26,6 +26,7 @@ public class InvincibilityPotion extends Entity {
     
     public void onPlayerGetPotion() {
     	// update player and monster interaction
+    	System.out.println("updating player and monster interaction");
     }
     
     public void onPotionExpires() {
@@ -34,7 +35,8 @@ public class InvincibilityPotion extends Entity {
     
     @Override
     public boolean collectObject(Inventory inventory) {
-    	getDungeon().addEntity(this);
+    	getDungeon().removeEntity(this);
+    	onPlayerGetPotion();
     	notifyObservers();
     	return true;
     }

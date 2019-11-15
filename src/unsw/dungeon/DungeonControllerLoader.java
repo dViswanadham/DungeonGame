@@ -106,10 +106,28 @@ public class DungeonControllerLoader extends DungeonLoader {
     	ImageView view = new ImageView(invincibilityPotionImage);
     	addEntity(potion, view);
     }
+    
+    @Override
+    public void onLoad(Sword sword) {
+    	ImageView view = new ImageView(swordImage);
+    	addEntity(sword, view);
+    }
+    
+    @Override
+    public void onLoad(Enemy enemy) {
+    	ImageView view = new ImageView(enemyImage);
+    	addEntity(enemy, view);
+    }
 
     private void addEntity(Entity entity, ImageView view) {
         trackPosition(entity, view);
         entities.add(view);
+    }
+    
+    @Override
+    public void removeEntity(Entity entity, ImageView view) {
+    	trackPosition(entity, view);
+    	entities.remove(view);
     }
 
     /**

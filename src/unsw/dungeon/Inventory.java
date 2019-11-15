@@ -30,6 +30,7 @@ public class Inventory {
     }
     
     public void collectTreasure(Treasure treasure) {
+    	System.out.println("removing treasure");
     	dungeon.removeEntity(treasure);
     	treasures.add(treasure);
     }
@@ -39,6 +40,7 @@ public class Inventory {
     }
     
     public void collectSword(Sword sword) {
+    	System.out.println("removing sword");
     	dungeon.removeEntity(sword);
     	swords.add(sword);
     }
@@ -68,6 +70,7 @@ public class Inventory {
     }
     
     public void collectKey(Key key) {
+    	System.out.println("removing key");
     	dungeon.removeEntity(key);
     	keys.add(key);
     }

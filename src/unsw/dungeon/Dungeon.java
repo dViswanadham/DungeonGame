@@ -38,7 +38,6 @@ public class Dungeon {
         this.player = null;
         this.status = true;
         this.endGame = false;
-        this.inventory = new Inventory(this);
     }
 
     public int getWidth() {
@@ -83,6 +82,7 @@ public class Dungeon {
     
     public void collectTreasure(Treasure t) {
     	inventory.collectTreasure(t);
+    	player.getInventory().collectTreasure(t);
     }
     
     public void collectKey(Key k) {

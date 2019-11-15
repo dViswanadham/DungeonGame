@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import javafx.scene.image.ImageView;
+
 /**
  * Loads a dungeon from a .json file.
  *
@@ -84,7 +86,27 @@ public abstract class DungeonLoader {
         	Switch floorswitch = new Switch(x, y, dungeon);
         	onLoad(floorswitch);
         	entity = floorswitch;
-        // TODO Handle other possible entities
+        	break;
+        case "treasure":
+        	Treasure treasure = new Treasure(x, y, dungeon);
+        	onLoad(treasure);
+        	entity = treasure;
+        	break;
+        case "invincibility":
+        	InvincibilityPotion potion = new InvincibilityPotion(x, y, dungeon);
+        	onLoad(potion);
+        	entity = potion;
+        	break;
+        case "sword":
+        	Sword sword = new Sword(x, y, dungeon);
+        	onLoad(sword);
+        	entity = sword;
+        	break;
+        case "enemy":
+        	Enemy enemy = new Enemy(dungeon, x, y);
+        	onLoad(enemy);
+        	entity = enemy;
+        	break;
         }
         dungeon.addEntity(entity);
     }
@@ -102,7 +124,11 @@ public abstract class DungeonLoader {
     public abstract void onLoad(Treasure treasure);
     
     public abstract void onLoad(InvincibilityPotion potion);
+    
+    public abstract void onLoad(Sword sword);
 
-    // TODO Create additional abstract methods for the other entities
+    public abstract void onLoad(Enemy enemy);
+    
+    public abstract void removeEntity(Entity entity, ImageView view);
 
 }

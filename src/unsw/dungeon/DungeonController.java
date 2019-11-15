@@ -56,6 +56,10 @@ public class DungeonController {
             squares.getChildren().add(entity);
 
     }
+    
+    public void removeEntity() {
+    	
+    }
 
     @FXML
     public void handleKeyPress(KeyEvent event) {
