@@ -10,13 +10,12 @@
 
 package unsw.dungeon;
 
-public class Boulder extends Mobile {
+import java.util.List;
 
-	private double speed;
+public class Boulder extends Mobile {
 	
     public Boulder(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.speed = 0;
     }
 
     @Override
@@ -24,16 +23,16 @@ public class Boulder extends Mobile {
     	return true;
     }
     
-    @Override
-    public void move(Direction direction) {
-    	
-    }
-    
-    public void setSpeed(Double speed) {
-    	this.speed = speed;
-    }
-    
-    public Double getSpeed() {
-    	return this.speed;
+    public boolean isActivated() {
+    	List<Entity> entities = getDungeon().getEntityList();
+    	for (Entity e : entities) {
+    		if (e instanceof Switch) {
+    			if (e.getX() == getX() && e.getY() == getY()) {
+    				System.out.println("activated");
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
     }
 }
