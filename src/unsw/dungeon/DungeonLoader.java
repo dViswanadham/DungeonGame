@@ -59,7 +59,7 @@ public abstract class DungeonLoader {
         dungeon.linkObsExit();
         dungeon.bootFlag();
         
-        JSONObject objectives = json.getJSONObject("Goals");
+        JSONObject objectives = json.getJSONObject("goal-condition");
         
         Goals conditions = dungeonObjectives(objectives, dungeon);
         dungeon.createAim(conditions);
