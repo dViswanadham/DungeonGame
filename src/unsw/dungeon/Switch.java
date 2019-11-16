@@ -18,11 +18,23 @@ public class Switch extends Entity implements Observer, GoalsObservable {
     public Switch(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
     }
+    
+    public boolean isActivated() {
+    	List<Entity> entities = getDungeon().getEntityList();
+    	for (Entity e : entities) {
+    		if (e instanceof Boulder) {
+    			if (e.getX() == getX() && e.getY() == getY()) {
+    				System.out.println("activated");
+    				return true;
+    			}
+    		}
+    	}
+    	return false;
+    }
 
     @Override
     public void registerObserver(GoalsObserver obs) {
         switchObserver = obs;
-        
         obs.appendObs(this);
     }
 
@@ -30,7 +42,6 @@ public class Switch extends Entity implements Observer, GoalsObservable {
     public void removeObserver(GoalsObserver obs) {
         if (switchObserver == obs) {
             switchObserver.deleteObs(this);
-            
             switchObserver = null;
         }
         
@@ -39,7 +50,6 @@ public class Switch extends Entity implements Observer, GoalsObservable {
     @Override
     public void refresh(Observable e) {
         if (switchObserver != null) {
-            
             switchObserver.refresh(this);
         }
     }

@@ -73,8 +73,8 @@ public class SwitchGoal extends Goals implements GoalsObserver {
         boolean complete = true;
         int iterator = 0;
         
-        for(GoalsObservable fl_switch : observers) {
-            if (((Switch) fl_switch).isActivated() != true) {
+        for(GoalsObservable s : observers) {
+            if (((Switch) s).isActivated() != true) {
                 complete = false;
             
             } else {

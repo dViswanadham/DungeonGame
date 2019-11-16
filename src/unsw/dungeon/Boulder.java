@@ -28,7 +28,8 @@ public class Boulder extends Mobile {
     	for (Entity e : entities) {
     		if (e instanceof Switch) {
     			if (e.getX() == getX() && e.getY() == getY()) {
-    				System.out.println("activated");
+    				Switch s = (Switch) e; 
+    				s.isActivated();
     				return true;
     			}
     		}
