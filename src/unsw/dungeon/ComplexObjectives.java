@@ -22,7 +22,7 @@ public class ComplexObjectives extends Goals {
     private BooleanProperty completedObj;
     
     public ComplexObjectives(String type) {
-        // type is "AND" or "OR" for complex objectives
+        // Type is "AND" or "OR" for complex objectives
         this.type = type;
         this.objectives = new ArrayList<>();
         this.completedObj = new SimpleBooleanProperty(false);
@@ -51,7 +51,7 @@ public class ComplexObjectives extends Goals {
     /**
      * Obtain the objectives of the goal
      * 
-     * @return objectives (List<DungeonGoals>)
+     * @return objectives (List<Goals>)
      */
     
     public List<Goals> obtainObjectives() {

@@ -14,93 +14,100 @@ import java.util.ArrayList;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-/**
- * Implements the floor switch goal as detailed in the spec to complete or partially complete a dungeon
- * @author z5161251
- *
- */
+
 public class SwitchGoal extends Goals implements GoalsObserver {
-    private String name;
-    private SimpleBooleanProperty achieved;
-    private ArrayList<GoalsObservable> subjects;
-    private SimpleIntegerProperty progress;
-    private SimpleIntegerProperty total;
+    private String type;
+    private SimpleBooleanProperty completedObj;
+    private ArrayList<GoalsObservable> observers;
+    private SimpleIntegerProperty checkpoint;
+    private SimpleIntegerProperty sum;
     
-    public SwitchGoal(String name) {
-        this.name = name;
-        this.progress = new SimpleIntegerProperty(0);
-        this.achieved = new SimpleBooleanProperty(false);
-        this.subjects = new ArrayList<GoalsObservable>();
-        this.total = new SimpleIntegerProperty(subjects.size());
+    public SwitchGoal(String type) {
+        this.type = type;
+        this.checkpoint = new SimpleIntegerProperty(0);
+        this.completedObj = new SimpleBooleanProperty(false);
+        this.observers = new ArrayList<GoalsObservable>();
+        this.sum = new SimpleIntegerProperty(observers.size());
     }
     
-    public SimpleIntegerProperty getProgress() {
-        return this.progress;
+    public SimpleIntegerProperty obtainCheckpoint() {
+        
+        return this.checkpoint;
     }
     
-    public SimpleIntegerProperty getTotal() {
-        return this.total;
+    public SimpleIntegerProperty obtainSum() {
+        
+        return this.sum;
     }
     
-    public void setProgress(int p) {        
-        this.progress.set(p);
+    public void applyCheckpoint(int c) {   
+        
+        this.checkpoint.set(c);
     }
     
-    public void add(Goals goal) {
+    public void append(Goals goal) {
+        
         throw new UnsupportedOperationException();
     }
 
-    public void remove(Goals goal) {
+    public void discard(Goals goal) {
+        
         throw new UnsupportedOperationException();
     }
     
-    public String getName() {
-        return this.name;
+    public String obtainType() {
+        
+        return this.type;
     }
 
-    public SimpleBooleanProperty achieved() {
-        return achieved;
+    public SimpleBooleanProperty completed() {
+        
+        return completedObj;
     }
 
     /**
-     * Checks to see whether all floor switches are in their 'on' state
+     * Function determines whether the switches are activated or not.
      */
     @Override
     public void update(GoalsObservable obj) {
-        boolean done = true;
-        int count = 0;
+        boolean complete = true;
+        int iterator = 0;
         
-        for (GoalsObservable fs : subjects) {
-            if (((Switch) fs).isActivated() != true) {
-                done = false;
+        for(GoalsObservable fl_switch : observers) {
+            if (((Switch) fl_switch).isActivated() != true) {
+                complete = false;
             
             } else {
                 
-                count++;
+                iterator++;
             }
         }
         
-        setProgress(count);
+        applyCheckpoint(iterator);
         
-        achieved.set(done);
+        completedObj.set(complete);
         
-        if (achieved.get()) {
+        if (completedObj.get()) {
             
-            System.out.println("Switch goal has been completed.");
+            System.out.println("The Switch Goal is completed.");
         }
     }
-
+    
     @Override
     public void appendObs(GoalsObservable obj) {
-        subjects.add(obj);
-        System.out.println("Object added: " + obj.getClass());
-        this.total.set(subjects.size());
+        observers.add(obj);
+        System.out.println("The following obj is attached: " + obj.getClass());
+        
+        this.sum.set(observers.size());
     }
 
     @Override
     public void deleteObs(GoalsObservable obj) {
-        if (subjects.contains(obj))
-            subjects.remove(obj);
-        this.total.set(subjects.size());
+        if (observers.contains(obj)) {
+            
+            observers.remove(obj);
+        }
+        
+        this.sum.set(observers.size());
     }
 }
