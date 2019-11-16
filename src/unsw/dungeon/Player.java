@@ -139,31 +139,43 @@ public class Player extends Mobile implements Observable {
 		Dungeon dungeon = getDungeon();
 		Inventory inventory = getInventory();
 		boolean flag = false;
+		boolean boulderFlag = false;
     	if (direction == Direction.UP) {
     		if (getY() > 0) {
         		for (Entity e : entities) {
         			if (e != null) {
-        				if (e.getX() == getX() && e.getY() == getY() - 2 && !(e instanceof Switch)) flag = true; 
+        				Boulder boulder = null;
+        				for (Entity entity : entities) {
+            				if (entity.getX() == getX() && entity.getY() == getY() - 2 && !(entity instanceof Switch)) flag = true;
+            				if (entity.getX() == getX() && entity.getY() == getY() - 1 && entity instanceof Boulder) {
+            					boulder = (Boulder) entity;
+            					boulderFlag = true; 
+            				}
+        				}
             			if (e.getX() == getX() && e.getY() == getY() - 1) {
             				if (e.isBlocking()) {
             					if (e instanceof Boulder) {
+            						boulder = (Boulder) e;
             						if (!flag) {
-            							e.y().set(e.getY() - 1);
+               							e.y().set(e.getY() - 1);
             							y().set(getY() - 1);
+            							boulder.isActivated();
             						}
+            					} else {
+            						blockingEntityBehaviour(dungeon, inventory, e);
             					}
-                				return;
+            					return;
             				} else {
-            					if (e instanceof Switch) {
-            						Switch s = (Switch) e;
-            						if (s.isActivated()) {
-            							return;
-            						} else {
-            							continue;
-            						}
+            					if (!boulderFlag || e instanceof Switch) {
+                					if (boulder != null && e instanceof Switch && !flag) {
+                						boulder.y().set(boulder.getY() - 1);
+                						y().set(getY() - 1);
+                					} else if (!boulderFlag && e instanceof Switch) {
+                						y().set(getY() - 1);
+                					} else {
+                						tokenEntityBehaviour(dungeon, inventory, e);
+                					}
             					}
-            					y().set(getY() - 1);
-            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}
@@ -175,35 +187,38 @@ public class Player extends Mobile implements Observable {
     		if (getY() < getDungeon().getHeight() - 1) {
         		for (Entity e : entities) {
         			if (e != null) {
-        				if (e.getX() == getX() && e.getY() == getY() + 2 && !(e instanceof Switch)) flag = true; 
+        				Boulder boulder = null;
+        				for (Entity entity : entities) {
+            				if (entity.getX() == getX() && entity.getY() == getY() + 2 && !(entity instanceof Switch)) flag = true;
+            				if (entity.getX() == getX() && entity.getY() == getY() + 1 && entity instanceof Boulder) {
+            					boulder = (Boulder) entity;
+            					boulderFlag = true; 
+            				}
+        				}
             			if (e.getX() == getX() && e.getY() == getY() + 1) {
             				if (e.isBlocking()) {
             					if (e instanceof Boulder) {
+            						boulder = (Boulder) e;
             						if (!flag) {
             							e.y().set(e.getY() + 1);
             							y().set(getY() + 1);
-            						}
+            							boulder.isActivated();
+            						}  
+            					} else {
+            						blockingEntityBehaviour(dungeon, inventory, e);
             					}
                 				return;
             				} else {
-            					if (e instanceof Switch) {
-            						Switch s = (Switch) e;
-            						if (s.isActivated()) {
-            							for (Entity boulder : entities) {
-            								if (boulder instanceof Boulder) {
-            									if (boulder.getX() == e.getX() && boulder.getY() == e.getY()) {
-                        							boulder.y().set(boulder.getY() + 1);
-                        							y().set(getY() + 1);
-            									}
-            								}
-            							}
-            							return;
-            						} else {
-            							continue;
-            						}
+            					if (!boulderFlag || e instanceof Switch) {
+                					if (boulder != null && e instanceof Switch && !flag) {
+                						boulder.y().set(boulder.getY() + 1);
+                						y().set(getY() + 1);
+                					} else if (!boulderFlag && e instanceof Switch) {
+                						y().set(getY() + 1);
+                					} else {
+                						tokenEntityBehaviour(dungeon, inventory, e);
+                					}
             					}
-            					y().set(getY() + 1);
-            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}
@@ -215,29 +230,38 @@ public class Player extends Mobile implements Observable {
     		if (getX() < getDungeon().getWidth() - 1) {
         		for (Entity e : entities) {
         			if (e != null) {
-        				if (e.getX() == getX() + 2 && e.getY() == getY() && !(e instanceof Switch)) flag = true; 
+        				Boulder boulder = null;
+        				for (Entity entity : entities) {
+            				if (entity.getX() == getX() + 2 && entity.getY() == getY() && !(entity instanceof Switch)) flag = true;
+            				if (entity.getX() == getX() + 1 && entity.getY() == getY() && entity instanceof Boulder) {
+            					boulder = (Boulder) entity;
+            					boulderFlag = true; 
+            				}
+        				}
             			if (e.getX() == getX() + 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
             					if (e instanceof Boulder) {
+            						boulder = (Boulder) e;
             						if (!flag) {
-            							e.x().set(e.getX() + 1);
-            							x().set(getX() + 1);
+               							e.x().set(e.getX() + 1);
+               							x().set(getX() + 1);
+            							boulder.isActivated();
             						}
             					} else {
             						blockingEntityBehaviour(dungeon, inventory, e);
             					}
-                				return;
+            					return;
             				} else {
-            					if (e instanceof Switch) {
-            						Switch s = (Switch) e;
-            						if (s.isActivated()) {
-            							return;
-            						} else {
-            							continue;
-            						}
+            					if (!boulderFlag || e instanceof Switch) {
+                  					if (boulder != null && e instanceof Switch && !flag) {
+                  						boulder.x().set(boulder.getX() + 1);
+                  						x().set(getX() + 1);
+                  					} else if (!boulderFlag && e instanceof Switch) {
+                  						x().set(getX() + 1);
+                  					} else {
+                  						tokenEntityBehaviour(dungeon, inventory, e);
+                  					}
             					}
-            					x().set(getX() + 1);
-            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}		
@@ -249,29 +273,38 @@ public class Player extends Mobile implements Observable {
         	if (getX() > 0) {
         		for (Entity e : entities) {
         			if (e != null) {
-        				if (e.getX() == getX() - 2 && e.getY() == getY() && !(e instanceof Switch)) flag = true;
+        				Boulder boulder = null;
+        				for (Entity entity : entities) {
+            				if (entity.getX() == getX() - 2 && entity.getY() == getY() && !(entity instanceof Switch)) flag = true;
+            				if (entity.getX() == getX() - 1 && entity.getY() == getY() && entity instanceof Boulder) {
+            					boulder = (Boulder) entity;
+            					boulderFlag = true; 
+            				}
+        				}
             			if (e.getX() == getX() - 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
             					if (e instanceof Boulder) {
+            						boulder = (Boulder) e;
             						if (!flag) {
-            							e.x().set(e.getX() - 1);
+               							e.x().set(e.getX() - 1);
             							x().set(getX() - 1);
+            							boulder.isActivated();
             						}
             					} else {
             						blockingEntityBehaviour(dungeon, inventory, e);
             					}
-                				return;
+            					return;
             				} else {
-            					if (e instanceof Switch) {
-            						Switch s = (Switch) e;
-            						if (s.isActivated()) {
-            							return;
-            						} else {
-            							continue;
-            						}
+            					if (!boulderFlag || e instanceof Switch) {
+                					if (boulder != null && e instanceof Switch && !flag) {
+                						boulder.x().set(boulder.getX() - 1);
+                						x().set(getX() - 1);
+                					} else if (!boulderFlag && e instanceof Switch) {
+                						x().set(getX() - 1);
+                					} else {
+                						tokenEntityBehaviour(dungeon, inventory, e);
+                					}
             					}
-            					x().set(getX() - 1);
-            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}
@@ -298,7 +331,7 @@ public class Player extends Mobile implements Observable {
     @Override
     public void notifyObservers() {
         for(Observer o : observers) {
-            o.refresh(this);
+            o.update(this);
         }
     }
 }
