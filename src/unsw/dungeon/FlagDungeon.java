@@ -27,7 +27,7 @@ public class FlagDungeon {
     }
     
     // @Override
-    public void update(Observable obj) {
+    public void refresh(Observable obj) {
         this.iterator++;
         
         for(FlagDungeonClient obs : receiver) {

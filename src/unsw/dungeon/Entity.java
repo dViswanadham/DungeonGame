@@ -98,7 +98,7 @@ public abstract class Entity implements Observable {
 	@Override
 	public void notifyObservers() {
 		for (Observer o : observers) {
-			o.update(this);
+			o.refresh(this);
 		}
 	}
 }

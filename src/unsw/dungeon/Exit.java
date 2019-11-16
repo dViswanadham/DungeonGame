@@ -11,49 +11,61 @@
 package unsw.dungeon;
 
 public class Exit extends Entity implements Observer, Observable {
-    private boolean playerExit = false;
-    private Observer exitObserver = null;
+    private boolean exitPl = false;
+    private Observer exitObs = null;
     
     public Exit(int x, int y, Dungeon dungeon) {
+        
         super(x, y, dungeon);
     }
+    
     /**
-     * Used to notify oberservers of when a player is on the Exit
+     * Function is used to alert oberservers when the player_object is on the exit
      */
     @Override
-    public void update(Observable obj) {
-        if (!(obj instanceof Player))
+    public void refresh(Observable o) {
+        if (!(o instanceof Player)) {
+            
             return;
-        Player player = (Player) obj;
-        if (player.getX() == getX() && player.getY() == getY()) {
-            playerExit = true;
+        }
+        
+        Player pl = (Player) o;
+        
+        if (pl.getX() == getX() && pl.getY() == getY()) {
+            exitPl = true;
             notifyObservers();
+            
         } else {
-            playerExit = false;
+            exitPl = false;
             notifyObservers();
         }
     }
 
-    public boolean getStatus() {
-        return playerExit;
+    public boolean obtainCondition() {
+        
+        return exitPl;
     }
 
     @Override
-    public void registerObserver(Observer o) {
-        System.out.println("Registered observer " + o.getClass());
-        exitObserver = o;
+    public void registerObserver(Observer observer) {
+        System.out.println("Catalogued the observer " + observer.getClass());
+        
+        exitObs = observer;
     }
 
     @Override
-    public void removeObserver(Observer o) {
-        if (exitObserver == o) {
-            exitObserver = null;
+    public void removeObserver(Observer observer) {
+        if (exitObs == observer) {
+            
+            exitObs = null;
         }
     }
 
     @Override
     public void notifyObservers() {
-        if (exitObserver != null)
-            exitObserver.update(this);
+        if (exitObs != null) {
+            
+            exitObs.refresh(this);
+        }
     }
 }

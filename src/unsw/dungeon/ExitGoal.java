@@ -10,40 +10,46 @@
 
 package unsw.dungeon;
 /**
- * Implements the ExitGoal that must be achieved in order to finish a dungeon if presribed
+ * Implements the ExitGoal that must be completedObj in order to finish a dungeon if presribed
  */
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class ExitGoal extends Goals implements Observer {
-    private String name;
-    private SimpleBooleanProperty achieved;
-
-    public ExitGoal(String name) {
-        // name should be either "AND" or "OR" for MultipleGoals
-        this.name = name;
-        this.achieved = new SimpleBooleanProperty(false);
+    private String type;
+    private SimpleBooleanProperty completedObj;
+    
+    public ExitGoal(String type) {
+        this.type = type;
+        
+        this.completedObj = new SimpleBooleanProperty(false);
     }
     
-    public String getName() {
-        return this.name;
+    public String obtainType() {
+        
+        return this.type;
     }
 
-    public void add(Goals goal) {
+    public void append(Goals goal) {
+        
         throw new UnsupportedOperationException();
     }
 
-    public void remove(Goals goal) {
+    public void discard(Goals goal) {
+        
         throw new UnsupportedOperationException();
     }
 
-    public SimpleBooleanProperty achieved() {
-        return achieved;
+    public SimpleBooleanProperty completed() {
+        
+        return completedObj;
     }
 
     @Override
-    public void update(Observable obj) {
-        achieved.set(((Exit) obj).getStatus());
-        if (achieved.get())
-            System.out.println("ExitGoal has been achieved");
+    public void refresh(Observable obj) {
+        completedObj.set(((Exit) obj).obtainCondition());
+        
+        if (completedObj.get()) {
+            System.out.println("ExitGoal completed");
+        }
     }
 }

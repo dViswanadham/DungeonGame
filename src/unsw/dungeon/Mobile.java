@@ -44,69 +44,89 @@ public abstract class Mobile extends Entity {
 		List<Entity> entities = getDungeon().getEntityList();
     	if (direction == Direction.UP) {
     		if (getY() > 0) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() && e.getY() == getY() - 1) {
             				if (e.isBlocking()) {
+            				    
                 				return;
+                				
             				} else {
             					y().set(getY() - 1);
+            					
             					return;
             				}
             			}
         			}
         		}
+        		
     			y().set(getY() - 1);
     		}
+    		
     	} else if (direction == Direction.DOWN) {
     		if (getY() < getDungeon().getHeight() - 1) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() && e.getY() == getY() + 1) {
             				if (e.isBlocking()) {
+            				    
                 				return;
+                				
             				} else {
             					y().set(getY() + 1);
+            					
             					return;
             				}
             			}
         			}
         		}
+        		
         		y().set(getY() + 1);
     		}
+    		
     	} else if (direction == Direction.RIGHT) {
     		if (getX() < getDungeon().getWidth() - 1) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() + 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
+            				    
                 				return;
+                				
             				} else {
             					x().set(getX() + 1);
+            					
             					return;
             				}
             			}		
         			}
         		}
+        		
         		x().set(getX() + 1);
     		}
+    		
     	} else {
         	if (getX() > 0) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() - 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
+            				    
                 				return;
+                				
             				} else {
             					x().set(getX() - 1);
+            					
             					return;
             				}
             			}
         			}
         		}
+        		
         		x().set(getX() - 1);
         	}
-    	}	
+    	}
+    	
     	notifyObservers();
     }
 }

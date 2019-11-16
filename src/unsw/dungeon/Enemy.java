@@ -23,56 +23,87 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(y, x, dungeon);
+        
         this.moveCount = 0;
     }
 
     public void moveUp() {
-        if (getY() <= 0)
+        if (getY() <= 0) {
+            
             return;
-        if (blocked(getX(), getY() - 1))
+        }
+        
+        if (blocked(getX(), getY() - 1)) {
+            
             y().set(getY() - 1);
+        }
     }
 
     public void moveDown() {
-        if (getY() >= getDungeon().getHeight() - 1)
+        if (getY() >= getDungeon().getHeight() - 1) {
+            
             return;
-        if (blocked(getX(), getY() + 1))
+        }
+        
+        if (blocked(getX(), getY() + 1)) {
+            
             y().set(getY() + 1);
+        }
     }
 
     public void moveLeft() {
-        if (getX() <= 0)
+        if (getX() <= 0) {
+            
             return;
-        if (blocked(getX() - 1, getY()))
+        }
+        
+        if (blocked(getX() - 1, getY())) {
+            
             x().set(getX() - 1);
+        }
     }
 
     public void moveRight() {
-        if (getX() >= getDungeon().getWidth() - 1)
+        if (getX() >= getDungeon().getWidth() - 1) {
+            
             return;
-        if (blocked(getX() + 1, getY()))
+        }
+        
+        if (blocked(getX() + 1, getY())) {
+            
             x().set(getX() + 1);
+        }
     }
     
     public boolean blocked(int x, int y) {
         List<Entity> colliding = getDungeon().obtainTargetSquare(x, y);
         
-        if (colliding == null)
+        if (colliding == null) {
+            
             return true;
-        for (Entity f : colliding) {
-            if (!f.isBlocking())
-                return false;
         }
+        
+        for(Entity f : colliding) {
+            if (!f.isBlocking()) {
+                
+                return false;
+            }
+        }
+        
         return true;
     }
 
-    public boolean resolveCollision(Mobile e) {
-        if (e instanceof Enemy)
+    public boolean scanSquare(Mobile e) {
+        if (e instanceof Enemy) {
+            
             return true;
-        if (!(e instanceof Player))
+        }
+        
+        if (!(e instanceof Player)) {
+            
             return true;
-
-        // If player is going to die, player will die and return false
+        }
+        
         Player p = (Player) e;
         
         if (!p.getInvincibleStatus()) {
@@ -81,17 +112,19 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
             
             return false;
             
-        }else {
-            // Else, this entity will die
+        } else {
             dead();
+            
             notifyObservers();
         }
+        
         return true;
     }
 
     @Override
     public void registerObserver(GoalsObserver o) {
         enemyObserver = o;
+        
         o.appendObs(this);
     }
 

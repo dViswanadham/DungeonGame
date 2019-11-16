@@ -298,7 +298,7 @@ public class Player extends Mobile implements Observable {
     @Override
     public void notifyObservers() {
         for(Observer o : observers) {
-            o.update(this);
+            o.refresh(this);
         }
     }
 }

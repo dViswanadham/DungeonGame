@@ -22,62 +22,73 @@ public class ComplexObjectives extends Goals {
     private BooleanProperty completedObj;
     
     public ComplexObjectives(String type) {
-        // type should be either "AND" or "OR" for MultipleGoals
+        // type is "AND" or "OR" for complex objectives
         this.type = type;
         this.objectives = new ArrayList<>();
         this.completedObj = new SimpleBooleanProperty(false);
     }
 
     /**
-     * Add subgoal for this multiplegoals and attaching a listener for completedObj state of the subgoal
+     * Function appends goals & relevant listener for completedObj of the minigoals
      */
     public void append(Goals goal) {
         objectives.add(goal);
+        
         goal.completedObj().addListener((event) -> {
-            // Call completedObj on any change on subgoal
+            // Get completedObj everytime the goals are changed
             completedObj();
         });
     }
 
     /**
-     * Remove subgoal for this multiplegoals
+     * Function discards goal for the complex objectives
      */
-    public void remove(Goals goal) {
+    public void discard(Goals goal) {
+        
         objectives.add(goal);
     }
     
     /**
-     * Get objectives of this multiplegoals
+     * Obtain the objectives of the goal
+     * 
      * @return objectives (List<DungeonGoals>)
      */
-    public List<Goals> getGoals() {
+    
+    public List<Goals> obtainObjectives() {
+        
         return this.objectives;
     }
 
     /**
-     * Checks if the status of this multipleGoals is true/false and returns the booleanproperty of the completedObj state
+     * Function determines whether the progress of these complex objectives is 
+     * true or false and returns the relevant bool property
+     * 
      * @return BooleanProperty
      */
     public BooleanProperty completedObj() {
         if (this.objectives.size() == 0)
             return completedObj;
         
-        boolean tempStatus = true;
+        boolean progress = true;
 
         if (type.equals("AND")) {
-            for (Goals a : objectives) {
-                if (!a.completedObj().get())
-                    tempStatus = false;
+            for(Goals g : objectives) {
+                if (!g.completedObj().get())
+                    
+                    progress = false;
             }
+            
         } else {
-            tempStatus = false;
-            for (Goals a : objectives) {
-                if (a.completedObj().get())
-                    tempStatus = true;
+            progress = false;
+            
+            for(Goals g : objectives) {
+                if (g.completedObj().get())
+                    
+                    progress = true;
             }
         }
         
-        completedObj.set(tempStatus);
+        completedObj.set(progress);
 
         return completedObj;
     }
