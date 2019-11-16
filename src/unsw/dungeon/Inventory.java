@@ -49,7 +49,9 @@ public class Inventory {
     	sword.setDurability(sword.getDurability() - 1);
     	if (sword.getDurability() == 0) {
     		breakSword(sword);
+    		System.out.println("sword broke");
     	}
+    	System.out.println("sword used");
     }
     
     public List<Sword> getSwordList() {

@@ -29,6 +29,7 @@ public class Player extends Mobile implements Observable {
     private Inventory inventory;
     private ArrayList<Observer> observers;
     private BooleanProperty active;
+    private Boolean invincible;
     
     /**
      * 
@@ -43,6 +44,7 @@ public class Player extends Mobile implements Observable {
         this.inventory = new Inventory(getDungeon());
         this.observers = new ArrayList<>();
         this.active = new SimpleBooleanProperty(true);
+        this.invincible = false;
     }
     
     public void dead() {
@@ -59,6 +61,56 @@ public class Player extends Mobile implements Observable {
         return inventory;
     }
     
+    public void setInvincibleStatus(boolean status) {
+    	this.invincible = status;
+    }
+    
+    public boolean getInvincibleStatus() {
+    	return invincible;
+    }
+    
+    public void enemyEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+		List<Sword> swordList = inventory.getSwordList();
+		if (swordList.size() > 0) {
+			Sword sword = swordList.get(0);
+			inventory.useSword(sword);
+			entity.triggerSeeable(false);
+			dungeon.removeEntity(entity);
+		} else if (getInvincibleStatus()) {
+			entity.triggerSeeable(false);
+			dungeon.removeEntity(entity);
+		} else {
+			dungeon.endGame();
+			System.out.println("You Died!");
+		}
+	}
+    
+    public void tokenEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+		if (entity instanceof Exit) {
+			dungeon.endGame();
+			System.out.println("Game Over");
+		} else if (entity instanceof Treasure) {
+			inventory.collectTreasure((Treasure) entity);
+			entity.triggerSeeable(false);
+			System.out.println("collecting treasure");
+		} else if (entity instanceof Key) {
+			inventory.collectKey((Key) entity);
+			entity.triggerSeeable(false);
+			System.out.println("collecting key");
+		} else if (entity instanceof Sword) {
+			inventory.collectSword((Sword) entity);
+			entity.triggerSeeable(false);
+			System.out.println("collecting sword");
+		} else if (entity instanceof InvincibilityPotion) {
+			InvincibilityPotion potion = (InvincibilityPotion) entity;
+			potion.collectObject(inventory);
+			entity.triggerSeeable(false);
+			System.out.println("collecting potion");
+			setInvincibleStatus(true);
+			System.out.println("potion consumed");
+		}
+    }
+    
     @Override
     public void move(Direction direction) {
     	List<Entity> entities = getDungeon().getEntityList();
@@ -71,33 +123,12 @@ public class Player extends Mobile implements Observable {
             			if (e.getX() == getX() && e.getY() == getY() - 1) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
-            						dungeon.endGame();
-            						System.out.println("You Died!");
+            						enemyEntityBehaviour(dungeon, inventory, e);
             					}
-                				return;
+            					return;
             				} else {
             					y().set(getY() - 1);
-            					if (e instanceof Exit) {
-            						dungeon.endGame();
-            						System.out.println("Game Over");
-            					} else if (e instanceof Treasure) {
-            						inventory.collectTreasure((Treasure) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting treasure");
-            					} else if (e instanceof Key) {
-            						inventory.collectKey((Key) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting key");
-            					} else if (e instanceof Sword) {
-            						inventory.collectSword((Sword) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting sword");
-            					} else if (e instanceof InvincibilityPotion) {
-            						InvincibilityPotion potion = (InvincibilityPotion) e;
-            						potion.collectObject(inventory);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting potion");
-            					}
+            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}
@@ -112,33 +143,12 @@ public class Player extends Mobile implements Observable {
             			if (e.getX() == getX() && e.getY() == getY() + 1) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
-            						dungeon.endGame();
-            						System.out.println("You Died!");
+            						enemyEntityBehaviour(dungeon, inventory, e);
             					}
                 				return;
             				} else {
             					y().set(getY() + 1);
-            					if (e instanceof Exit) {
-            						dungeon.endGame();
-            						System.out.println("Game Over");
-            					} else if (e instanceof Treasure) {
-            						inventory.collectTreasure((Treasure) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting treasure");
-            					} else if (e instanceof Key) {
-            						inventory.collectKey((Key) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting key");
-            					} else if (e instanceof Sword) {
-            						inventory.collectSword((Sword) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting sword");
-            					} else if (e instanceof InvincibilityPotion) {
-            						InvincibilityPotion potion = (InvincibilityPotion) e;
-            						potion.collectObject(inventory);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting potion");
-            					}
+            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}
@@ -153,33 +163,12 @@ public class Player extends Mobile implements Observable {
             			if (e.getX() == getX() + 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
-            						dungeon.endGame();
-            						System.out.println("You Died!");
+            						enemyEntityBehaviour(dungeon, inventory, e);
             					}
                 				return;
             				} else {
             					x().set(getX() + 1);
-            					if (e instanceof Exit) {
-            						dungeon.endGame();
-            						System.out.println("Game Over");
-            					} else if (e instanceof Treasure) {
-            						inventory.collectTreasure((Treasure) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting treasure");
-            					} else if (e instanceof Key) {
-            						inventory.collectKey((Key) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting key");
-            					} else if (e instanceof Sword) {
-            						inventory.collectSword((Sword) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting sword");
-            					} else if (e instanceof InvincibilityPotion) {
-            						InvincibilityPotion potion = (InvincibilityPotion) e;
-            						potion.collectObject(inventory);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting potion");
-            					}
+            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}		
@@ -194,33 +183,12 @@ public class Player extends Mobile implements Observable {
             			if (e.getX() == getX() - 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
-            						dungeon.endGame();
-            						System.out.println("You Died!");
+            						enemyEntityBehaviour(dungeon, inventory, e);
             					}
                 				return;
             				} else {
             					x().set(getX() - 1);
-            					if (e instanceof Exit) {
-            						dungeon.endGame();
-            						System.out.println("Game Over");
-            					} else if (e instanceof Treasure) {
-            						inventory.collectTreasure((Treasure) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting treasure");
-            					} else if (e instanceof Key) {
-            						inventory.collectKey((Key) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting key");
-            					} else if (e instanceof Sword) {
-            						inventory.collectSword((Sword) e);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting sword");
-            					} else if (e instanceof InvincibilityPotion) {
-            						InvincibilityPotion potion = (InvincibilityPotion) e;
-            						potion.collectObject(inventory);
-            						e.triggerSeeable(false);
-            						System.out.println("collecting potion");
-            					}
+            					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
             				}
             			}

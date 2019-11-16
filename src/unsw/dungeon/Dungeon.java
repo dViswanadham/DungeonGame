@@ -69,6 +69,11 @@ public class Dungeon {
         }
     }    
     
+//    public void killEnemy(Enemy enemy) {
+//    	removeEntity(enemy);
+//    	
+//    }
+    
     public void createAim(Goals objectives) {
         this.objectives = objectives;
     }
