@@ -17,25 +17,25 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class ComplexObjectives extends Goals {
-    private String name;
-    private List<Goals> subgoals;
-    private BooleanProperty achieved;
+    private String type;
+    private List<Goals> objectives;
+    private BooleanProperty completedObj;
     
-    public ComplexObjectives(String name) {
-        // name should be either "AND" or "OR" for MultipleGoals
-        this.name = name;
-        this.subgoals = new ArrayList<>();
-        this.achieved = new SimpleBooleanProperty(false);
+    public ComplexObjectives(String type) {
+        // type should be either "AND" or "OR" for MultipleGoals
+        this.type = type;
+        this.objectives = new ArrayList<>();
+        this.completedObj = new SimpleBooleanProperty(false);
     }
 
     /**
-     * Add subgoal for this multiplegoals and attaching a listener for achieved state of the subgoal
+     * Add subgoal for this multiplegoals and attaching a listener for completedObj state of the subgoal
      */
-    public void add(Goals goal) {
-        subgoals.add(goal);
-        goal.achieved().addListener((event) -> {
-            // Call achieved on any change on subgoal
-            achieved();
+    public void append(Goals goal) {
+        objectives.add(goal);
+        goal.completedObj().addListener((event) -> {
+            // Call completedObj on any change on subgoal
+            completedObj();
         });
     }
 
@@ -43,42 +43,42 @@ public class ComplexObjectives extends Goals {
      * Remove subgoal for this multiplegoals
      */
     public void remove(Goals goal) {
-        subgoals.add(goal);
+        objectives.add(goal);
     }
     
     /**
-     * Get subgoals of this multiplegoals
-     * @return subgoals (List<DungeonGoals>)
+     * Get objectives of this multiplegoals
+     * @return objectives (List<DungeonGoals>)
      */
     public List<Goals> getGoals() {
-        return this.subgoals;
+        return this.objectives;
     }
 
     /**
-     * Checks if the status of this multipleGoals is true/false and returns the booleanproperty of the achieved state
+     * Checks if the status of this multipleGoals is true/false and returns the booleanproperty of the completedObj state
      * @return BooleanProperty
      */
-    public BooleanProperty achieved() {
-        if (this.subgoals.size() == 0)
-            return achieved;
+    public BooleanProperty completedObj() {
+        if (this.objectives.size() == 0)
+            return completedObj;
         
         boolean tempStatus = true;
 
-        if (name.equals("AND")) {
-            for (Goals a : subgoals) {
-                if (!a.achieved().get())
+        if (type.equals("AND")) {
+            for (Goals a : objectives) {
+                if (!a.completedObj().get())
                     tempStatus = false;
             }
         } else {
             tempStatus = false;
-            for (Goals a : subgoals) {
-                if (a.achieved().get())
+            for (Goals a : objectives) {
+                if (a.completedObj().get())
                     tempStatus = true;
             }
         }
         
-        achieved.set(tempStatus);
+        completedObj.set(tempStatus);
 
-        return achieved;
+        return completedObj;
     }
 }

@@ -18,28 +18,28 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Goals {
-    public SimpleIntegerProperty getProgress() {
-            
+    public SimpleIntegerProperty obtainCheckpoint() {
+        
         throw new UnsupportedOperationException();
     }
     
-    public SimpleIntegerProperty getTotal() {
-            
+    public SimpleIntegerProperty obtainCombined() {
+        
         throw new UnsupportedOperationException();
     }
         
-    public void add(Goals goal) {
-            
+    public void append(Goals goal) {
+        
         throw new UnsupportedOperationException();
     }
         
-    public void remove(Goals goal) {
-            
+    public void discard(Goals goal) {
+        
         throw new UnsupportedOperationException();
     }
         
-    public BooleanProperty achieved() {
-            
+    public BooleanProperty completedObj() {
+        
         throw new UnsupportedOperationException();
     }
     

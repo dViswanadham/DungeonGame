@@ -142,9 +142,10 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     @Override
     public void flag() {
         this.moveCount++;
-        // Enemy moves to player every 2 keystrokes by player and able to move
-        // diagonally
-        if (this.moveCount % 2 == 0)
+        
+        // can adjust enemy speed as required
+        if (this.moveCount % 1 == 0) {
             huntPlayer();
+        }
     }
 }
