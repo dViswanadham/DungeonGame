@@ -141,7 +141,7 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     public void notifyObservers() {
         if (enemyObserver != null) {
             
-            enemyObserver.update(this);
+            enemyObserver.refresh(this);
         }
     }
     

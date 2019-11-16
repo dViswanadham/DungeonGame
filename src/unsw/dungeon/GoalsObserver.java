@@ -12,7 +12,7 @@ package unsw.dungeon;
 
 public interface GoalsObserver {
     
-    public void update(GoalsObservable o);
+    public void refresh(GoalsObservable o);
     public void appendObs(GoalsObservable o);
     public void deleteObs(GoalsObservable o);
     

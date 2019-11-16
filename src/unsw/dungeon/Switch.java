@@ -12,9 +12,9 @@ package unsw.dungeon;
 
 import java.util.List;
 
-public class Switch extends Entity {
-
-	
+public class Switch extends Entity implements Observer, GoalsObservable {
+	private GoalsObserver switchObserver = null;
+    
     public Switch(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
     }
@@ -31,5 +31,30 @@ public class Switch extends Entity {
     		}
     	}
     	return false;
+    }
+
+    @Override
+    public void registerObserver(GoalsObserver obs) {
+        switchObserver = obs;
+        
+        obs.appendObs(this);
+    }
+
+    @Override
+    public void removeObserver(GoalsObserver obs) {
+        if (switchObserver == obs) {
+            switchObserver.deleteObs(this);
+            
+            switchObserver = null;
+        }
+        
+    }
+
+    @Override
+    public void refresh(Observable e) {
+        if (switchObserver != null) {
+            
+            switchObserver.refresh(this);
+        }
     }
 }

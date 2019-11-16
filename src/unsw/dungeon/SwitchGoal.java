@@ -69,7 +69,7 @@ public class SwitchGoal extends Goals implements GoalsObserver {
      * Function determines whether the switches are activated or not.
      */
     @Override
-    public void update(GoalsObservable obj) {
+    public void refresh(GoalsObservable obj) {
         boolean complete = true;
         int iterator = 0;
         

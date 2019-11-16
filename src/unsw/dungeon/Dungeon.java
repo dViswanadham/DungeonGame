@@ -177,7 +177,7 @@ public class Dungeon {
         for(Boulder boulder : b) {
             for(Switch flswitch : s) {
                 
-                // TODO boulder.registerObserver(flswitch);
+                boulder.registerObserver(flswitch);
             }
         }
     }
@@ -201,9 +201,9 @@ public class Dungeon {
             return;
         }
         
-        System.out.println("adding the exit - player observer");
+        System.out.println("Now adding the exit - player observer");
         
-        // TODO player.registerObserver(ex);
+        player.registerObserver(ex);
     }
     
     public void alertObsBoulders() {

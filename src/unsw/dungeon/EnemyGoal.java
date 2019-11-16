@@ -70,7 +70,7 @@ public class EnemyGoal extends Goals implements GoalsObserver {
      * and sees if the observable objects are alive
      */
     @Override
-    public void update(GoalsObservable ent) {
+    public void refresh(GoalsObservable ent) {
         boolean complete = true;
         int iterator = 0;
         

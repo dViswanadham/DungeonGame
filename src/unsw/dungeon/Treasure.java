@@ -67,7 +67,7 @@ public class Treasure extends Token implements GoalsObservable{
     @Override
     public void notifyObservers() {
         
-        obsTreasure.update(this);
+        obsTreasure.refresh(this);
     }
     
     @Override

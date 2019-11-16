@@ -71,7 +71,7 @@ public class TreasureGoal extends Goals implements GoalsObserver {
      * refreshes completedObj() accordingly
      */
     @Override
-    public void update(GoalsObservable obj) {
+    public void refresh(GoalsObservable obj) {
         boolean complete = true;
         int iterator = 0;
         
