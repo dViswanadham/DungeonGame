@@ -12,6 +12,5 @@ package unsw.dungeon;
 
 public interface Observer {
 
-	public void update(Entity e);
-	
+	public void update(Observable e);
 }

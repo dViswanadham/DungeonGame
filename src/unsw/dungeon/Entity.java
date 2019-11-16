@@ -74,7 +74,7 @@ public abstract class Entity implements Observable {
     }
     
     public boolean collectObject(Inventory inventory) {
-    	getDungeon().removeEntity(this);
+    	getDungeon().delEntity(this);
     	notifyObservers();
     	return true;
     }

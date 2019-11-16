@@ -10,6 +10,6 @@
 
 package unsw.dungeon;
 
-public class ConMixed {
+public class GoalsObserver {
     // #TODO
 }

@@ -16,16 +16,16 @@ import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public class Goal {
+public class DungeonObjectives {
     
 	private Dungeon dungeon;
 	private BooleanProperty status;
-	private List<Goal> subGoals;
+	private List<DungeonObjectives> subGoals;
 
-	public Goal(Dungeon dungeon) {
+	public DungeonObjectives(Dungeon dungeon) {
 		this.dungeon = dungeon;
 		this.status = new SimpleBooleanProperty(false);
-		this.subGoals = new ArrayList<Goal>();
+		this.subGoals = new ArrayList<DungeonObjectives>();
 	}
 	
 	public Dungeon getDungeon() {
@@ -40,15 +40,15 @@ public class Goal {
 		return status;
 	}
 	
-	public void addSubGoal(Goal goal) {
+	public void addSubGoal(DungeonObjectives goal) {
 		subGoals.add(goal);
 	}
 	
-	public void removeSubGoal(Goal goal) {
+	public void removeSubGoal(DungeonObjectives goal) {
 		subGoals.remove(goal);
 	}
 	
-	public List<Goal> getSubGoalList() {
+	public List<DungeonObjectives> getSubGoalList() {
 		return subGoals;
 	}
 	

@@ -29,7 +29,7 @@ public class Token extends Entity {
 	}
 
     public boolean collectObject(Inventory inventory) {
-        getDungeon().removeEntity(this);
+        getDungeon().delEntity(this);
     	notifyObservers();
     	return true;
     }

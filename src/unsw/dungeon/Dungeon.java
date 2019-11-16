@@ -30,6 +30,8 @@ public class Dungeon {
     private boolean status;
     private Inventory inventory;
     private boolean endGame;
+    private DungeonObjectives objectives;
+    private FlagDungeon flagDungeon;
 
     public Dungeon(int width, int height) {
         this.width = width;
@@ -60,9 +62,203 @@ public class Dungeon {
         entities.add(entity);
     }
     
-    public void removeEntity(Entity entity) {
-        entities.remove(entity);
+    public void delEntity(Entity entity) {
+        if (entities.contains(entity)) {
+            
+            entities.remove(entity);
+        }
+    }    
+    
+    public void createAim(DungeonObjectives objectives) {
+        this.objectives = objectives;
     }
+    
+    public DungeonObjectives obtainAim() {
+        return this.objectives;
+    }
+    
+    public List<Entity> obtainTargetSquare(int x, int y) {
+        List<Entity> target = new ArrayList<>();
+        
+        for(Entity e : entities) {
+            if (e.getX() == x && e.getY() == y) {
+                
+                target.add(e);
+            }
+        }
+        
+        return target;
+    }
+    
+    public List<Entity> obtainAdjacentSquares(int x, int y) {
+        List<Entity> adjacent = new ArrayList<>();
+        
+        for(Entity e : entities) {
+            if (e == null) {
+                
+                continue;
+            }
+            
+            if (e.getX() == (x + 1) && e.getY() == y) {
+                
+                adjacent.add(e);
+            }
+            
+            if (e.getX() == (x - 1) && e.getY() == y) {
+                
+                adjacent.add(e);
+            }
+            
+            if (e.getX() == x && e.getY() == (y + 1)) {
+                
+                adjacent.add(e);
+            }
+            
+            if (e.getX() == x && e.getY() == (y - 1)) {
+                
+                adjacent.add(e);
+            }
+        }
+        
+        return adjacent;
+    }
+    
+    public void createSignal() {
+        
+        this.flagDungeon.addTransmitter(this);
+    }
+    
+    public ArrayList<FlagDungeonClient> obtainSignal() {
+        ArrayList<FlagDungeonClient> receiver = new ArrayList<>();
+        
+        for(Entity entity : entities) {
+            if (entity instanceof FlagDungeonClient) {
+                
+                receiver.add((FlagDungeonClient) entity);
+            }
+        }
+        
+        return receiver;
+    }
+    
+    public void bootFlag() {
+        if (flagDungeon != null) {
+            
+            throw new UnsupportedOperationException();
+        }
+        
+        this.flagDungeon = new FlagDungeon(this);
+        this.flagDungeon.addTransmitter(this);
+        
+        // player.registerObserver(this.flagDungeon);
+    }
+    
+    public void linkObsBoulder() {
+        List<Boulder> b = new ArrayList<>();
+        List<Switch> s = new ArrayList<>();
+        
+        for(Entity entity : entities) {
+            if ((entity instanceof Boulder)) {
+                b.add((Boulder) entity);
+                
+            } else if ((entity instanceof Switch)) {
+                
+                s.add((Switch) entity);
+            }
+        }
+
+        for(Boulder boulder : b) {
+            for(Switch flswitch : s) {
+                
+                // TODO boulder.registerObserver(flswitch);
+            }
+        }
+    }
+    
+    public void linkObsExit() {
+        Player pl = null;
+        Exit ex = null;
+        
+        for(Entity entity : entities) {
+            if (entity instanceof Player) {
+                pl = (Player) entity;
+                
+            } else if (entity instanceof Exit) {
+                
+                ex = (Exit) entity;
+            }
+        }
+
+        if (ex == null || pl == null) {
+            
+            return;
+        }
+        
+        System.out.println("adding the exit - player observer");
+        
+        // TODO player.registerObserver(ex);
+    }
+    
+    public void alertObsBoulders() {
+        for(Entity ent : entities) {
+            if ((ent instanceof Boulder)) {
+                
+                ((Boulder) ent).notifyObservers();
+            }
+        }
+    }
+    
+    public Exit obtainExit() {
+        for(Entity ent : entities) {
+            if (ent instanceof Exit) {
+                
+                return ((Exit) ent);
+            }
+        }
+        
+        return null;
+    }
+    
+    public ArrayList<Enemy> obtainEnemies() {
+        ArrayList<Enemy> threats = new ArrayList<>();
+        
+        for(Entity ent : entities) {
+            if (ent instanceof Enemy) {
+                
+                threats.add((Enemy) ent);
+            }
+        }
+        
+        return threats;
+    }
+    
+    public ArrayList<Treasure> obtainTres() {
+        ArrayList<Treasure> money = new ArrayList<>();
+        
+        for(Entity ent : entities) {
+            if (ent instanceof Treasure) {
+                
+                money.add((Treasure) ent);
+            }
+        }
+        
+        return money;
+    }
+    
+    public ArrayList<Switch> obtainSwitch() {
+        ArrayList<Switch> flswitch = new ArrayList<>();
+        
+        for(Entity ent : entities) {
+            if (ent instanceof Switch) {
+                
+                flswitch.add((Switch) ent);
+            }
+        }
+        
+        return flswitch;
+    }
+    
+    
     
     public List<Entity> getEntityList() {
     	return entities;
@@ -115,6 +311,4 @@ public class Dungeon {
         
         return null;
     }
-    
-
 }

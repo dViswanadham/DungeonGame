@@ -30,7 +30,7 @@ public class Sword extends Token {
     @Override
     public boolean collectObject(Inventory inventory) {
     	inventory.collectSword(this);
-    	getDungeon().removeEntity(this);
+    	getDungeon().delEntity(this);
     	notifyObservers();
     	return true;
     }

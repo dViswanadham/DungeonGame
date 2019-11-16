@@ -40,6 +40,7 @@ public class Player extends Mobile implements Observable {
      */
     public Player(Dungeon dungeon, int x, int y) {
         super(x, y, dungeon);
+        
         this.inventory = new Inventory(getDungeon());
         this.observers = new ArrayList<>();
         this.active = new SimpleBooleanProperty(true);
@@ -47,15 +48,19 @@ public class Player extends Mobile implements Observable {
     
     public void dead() {
     	this.triggerSeeable(false);
-    	getDungeon().removeEntity(this);
+    	
+    	getDungeon().delEntity(this);
+    	
         active.set(false);
     }
     
     public BooleanProperty getActiveProperty() {
+    
     	return this.active;
     }
   
     public Inventory getInventory() {
+        
         return inventory;
     }
     
@@ -64,174 +69,245 @@ public class Player extends Mobile implements Observable {
     	List<Entity> entities = getDungeon().getEntityList();
 		Dungeon dungeon = getDungeon();
 		Inventory inventory = getInventory();
+		
     	if (direction == Direction.UP) {
     		if (getY() > 0) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() && e.getY() == getY() - 1) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
             						dungeon.endGame();
+            						
             						System.out.println("You Died!");
             					}
+            					
                 				return;
+                				
             				} else {
             					y().set(getY() - 1);
+            					
             					if (e instanceof Exit) {
             						dungeon.endGame();
+            						
             						System.out.println("Game Over");
+            						
             					} else if (e instanceof Treasure) {
             						inventory.collectTreasure((Treasure) e);
+            						
             						System.out.println("collecting treasure");
+            						
             					} else if (e instanceof Key) {
             						inventory.collectKey((Key) e);
+            						
             						System.out.println("collecting key");
+            						
             					} else if (e instanceof Sword) {
             						inventory.collectSword((Sword) e);
+            						
             						System.out.println("collecting sword");
+            						
             					} else if (e instanceof InvincibilityPotion) {
             						InvincibilityPotion potion = (InvincibilityPotion) e;
+            						
             						potion.collectObject(inventory);
+            						
             						System.out.println("collecting potion");
             					}
+            					
             					return;
             				}
             			}
         			}
         		}
+        		
     			y().set(getY() - 1);
     		}
+    		
     	} else if (direction == Direction.DOWN) {
     		if (getY() < getDungeon().getHeight() - 1) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() && e.getY() == getY() + 1) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
             						dungeon.endGame();
+            						
             						System.out.println("You Died!");
             					}
+            					
                 				return;
+                				
             				} else {
             					y().set(getY() + 1);
+            					
             					if (e instanceof Exit) {
             						dungeon.endGame();
+            						
             						System.out.println("Game Over");
+            						
             					} else if (e instanceof Treasure) {
             						inventory.collectTreasure((Treasure) e);
+            						
             						System.out.println("collecting treasure");
+            						
             					} else if (e instanceof Key) {
             						inventory.collectKey((Key) e);
+            						
             						System.out.println("collecting key");
+            						
             					} else if (e instanceof Sword) {
             						inventory.collectSword((Sword) e);
+            						
             						System.out.println("collecting sword");
+            						
             					} else if (e instanceof InvincibilityPotion) {
             						InvincibilityPotion potion = (InvincibilityPotion) e;
+            						
             						potion.collectObject(inventory);
+            						
             						System.out.println("collecting potion");
             					}
+            					
             					return;
             				}
             			}
         			}
         		}
+        		
         		y().set(getY() + 1);
     		}
+    		
     	} else if (direction == Direction.RIGHT) {
     		if (getX() < getDungeon().getWidth() - 1) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() + 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
             						dungeon.endGame();
+            						
             						System.out.println("You Died!");
             					}
+            					
                 				return;
+                				
             				} else {
             					x().set(getX() + 1);
+            					
             					if (e instanceof Exit) {
             						dungeon.endGame();
+            						
             						System.out.println("Game Over");
+            						
             					} else if (e instanceof Treasure) {
             						inventory.collectTreasure((Treasure) e);
+            						
             						System.out.println("collecting treasure");
+            						
             					} else if (e instanceof Key) {
             						inventory.collectKey((Key) e);
+            						
             						System.out.println("collecting key");
+            						
             					} else if (e instanceof Sword) {
             						inventory.collectSword((Sword) e);
+            						
             						System.out.println("collecting sword");
+            						
             					} else if (e instanceof InvincibilityPotion) {
             						InvincibilityPotion potion = (InvincibilityPotion) e;
+            						
             						potion.collectObject(inventory);
+            						
             						System.out.println("collecting potion");
             					}
+            					
             					return;
             				}
             			}		
         			}
         		}
+        		
         		x().set(getX() + 1);
     		}
     	} else {
         	if (getX() > 0) {
-        		for (Entity e : entities) {
+        		for(Entity e : entities) {
         			if (e != null) {
             			if (e.getX() == getX() - 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
             					if (e instanceof Enemy) {
             						dungeon.endGame();
+            						
             						System.out.println("You Died!");
             					}
+            					
                 				return;
+                				
             				} else {
             					x().set(getX() - 1);
+            					
             					if (e instanceof Exit) {
             						dungeon.endGame();
+            						
             						System.out.println("Game Over");
+            						
             					} else if (e instanceof Treasure) {
             						inventory.collectTreasure((Treasure) e);
+            						
             						System.out.println("collecting treasure");
+            						
             					} else if (e instanceof Key) {
             						inventory.collectKey((Key) e);
+            						
             						System.out.println("collecting key");
+            						
             					} else if (e instanceof Sword) {
             						inventory.collectSword((Sword) e);
+            						
             						System.out.println("collecting sword");
+            						
             					} else if (e instanceof InvincibilityPotion) {
             						InvincibilityPotion potion = (InvincibilityPotion) e;
+            						
             						potion.collectObject(inventory);
+            						
             						System.out.println("collecting potion");
             					}
+            					
             					return;
             				}
             			}
         			}
         		}
+        		
         		x().set(getX() - 1);
         	}
-    	}	
+    	}
+    	
     	notifyObservers();
     }
 
     @Override
-    public void registerObserver(Observer o) {
-        observers.add(o);
+    public void registerObserver(Observer obs) {
+        
+        observers.add(obs);
     }
-
+    
     @Override
-    public void removeObserver(Observer o) {
-        if (observers.contains(o)) {
-            observers.remove(o);
+    public void removeObserver(Observer obs) {
+        if (observers.contains(obs)) {
+            
+            observers.remove(obs);
         }
     }
-
+    
     @Override
     public void notifyObservers() {
-        for(Observer o : observers) {
-            o.update(this);
+        for(Observer obs : observers) {
+            
+            obs.update(this);
         }
     }
 }

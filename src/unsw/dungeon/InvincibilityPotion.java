@@ -35,7 +35,7 @@ public class InvincibilityPotion extends Entity {
     
     @Override
     public boolean collectObject(Inventory inventory) {
-    	getDungeon().removeEntity(this);
+    	getDungeon().delEntity(this);
     	onPlayerGetPotion();
     	notifyObservers();
     	return true;

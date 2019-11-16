@@ -10,6 +10,6 @@
 
 package unsw.dungeon;
 
-public class ObsMixed {
+public class GoalsObservable {
     // #TODO
 }
