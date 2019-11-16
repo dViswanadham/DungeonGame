@@ -18,20 +18,6 @@ public class Switch extends Entity implements Observer, GoalsObservable {
     public Switch(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
     }
-    
-    public boolean isActivated() {
-    	List<Entity> entities = getDungeon().getEntityList();
-    	
-    	for (Entity e : entities) {
-    		if (e instanceof Boulder || e instanceof Player) {
-    			if (e.getX() == getX() && e.getY() == getY()) {
-    				System.out.println("activated");
-    				return true;
-    			}
-    		}
-    	}
-    	return false;
-    }
 
     @Override
     public void registerObserver(GoalsObserver obs) {
