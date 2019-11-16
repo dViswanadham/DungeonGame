@@ -30,7 +30,7 @@ import javafx.scene.layout.GridPane;
 public class DungeonControllerLoader extends DungeonLoader {
 
     private List<ImageView> entities;
-
+    
     //Images
     private Image playerImage;
     private Image wallImage;
@@ -121,14 +121,19 @@ public class DungeonControllerLoader extends DungeonLoader {
 
     private void addEntity(Entity entity, ImageView view) {
         trackPosition(entity, view);
+//        trackImage(entity, view);
         entities.add(view);
     }
     
-    @Override
-    public void removeEntity(Entity entity, ImageView view) {
-    	trackPosition(entity, view);
-    	entities.remove(view);
-    }
+//    private void trackImage(Entity entity, Node node) {
+//        entity.seeable().addListener(new ChangeListener<Boolean>() {
+//        	@Override
+//        	public void changed(ObservableValue<? extends Boolean> observable,
+//        			Boolean oldValue, Boolean newValue) {
+//        		removeEntityImage(entity);
+//        	}
+//        });
+//    }
 
     /**
      * Set a node in a GridPane to have its position track the position of an

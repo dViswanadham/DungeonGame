@@ -30,7 +30,7 @@ public class Dungeon {
     private boolean status;
     private Inventory inventory;
     private boolean endGame;
-    private DungeonObjectives objectives;
+    private Goals objectives;
     private FlagDungeon flagDungeon;
 
     public Dungeon(int width, int height) {
@@ -62,18 +62,18 @@ public class Dungeon {
         entities.add(entity);
     }
     
-    public void delEntity(Entity entity) {
+    public void removeEntity(Entity entity) {
         if (entities.contains(entity)) {
             
             entities.remove(entity);
         }
     }    
     
-    public void createAim(DungeonObjectives objectives) {
+    public void createAim(Goals objectives) {
         this.objectives = objectives;
     }
     
-    public DungeonObjectives obtainAim() {
+    public Goals obtainAim() {
         return this.objectives;
     }
     

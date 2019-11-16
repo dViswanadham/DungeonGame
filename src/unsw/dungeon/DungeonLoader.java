@@ -128,7 +128,5 @@ public abstract class DungeonLoader {
     public abstract void onLoad(Sword sword);
 
     public abstract void onLoad(Enemy enemy);
-    
-    public abstract void removeEntity(Entity entity, ImageView view);
 
 }

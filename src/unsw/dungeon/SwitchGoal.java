@@ -10,7 +10,7 @@
 
 package unsw.dungeon;
 
-public class SwitchGoal extends DungeonObjectives {
+public class SwitchGoal extends Goals {
 
 	public SwitchGoal(Dungeon dungeon) {
 		super(dungeon);

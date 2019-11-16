@@ -20,7 +20,7 @@ public class Treasure extends Token {
     @Override
     public boolean collectObject(Inventory inventory) {
     	inventory.collectTreasure(this);
-        getDungeon().delEntity(this);
+        getDungeon().removeEntity(this);
     	return true;
     }
 }

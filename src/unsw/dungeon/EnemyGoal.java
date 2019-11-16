@@ -10,7 +10,7 @@
 
 package unsw.dungeon;
 
-public class EnemyGoal extends DungeonObjectives {
+public class EnemyGoal extends Goals {
 
 	public EnemyGoal(Dungeon dungeon) {
 		super(dungeon);

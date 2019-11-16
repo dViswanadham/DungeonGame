@@ -10,7 +10,7 @@
 
 package unsw.dungeon;
 
-public class TreasureGoal extends DungeonObjectives {
+public class TreasureGoal extends Goals {
 
 	public TreasureGoal(Dungeon dungeon) {
 		super(dungeon);

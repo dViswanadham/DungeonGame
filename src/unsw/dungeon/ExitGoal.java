@@ -10,7 +10,7 @@
 
 package unsw.dungeon;
 
-public class ExitGoal extends DungeonObjectives {
+public class ExitGoal extends Goals {
 
 	public ExitGoal(Dungeon dungeon) {
 		super(dungeon);

@@ -13,7 +13,9 @@ package unsw.dungeon;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -54,11 +56,17 @@ public class DungeonController {
 
         for (ImageView entity : initialEntities)
             squares.getChildren().add(entity);
-
     }
     
-    public void removeEntity() {
-    	
+    public void removeEntityImage(Entity entity) {
+    	ObservableList<Node> childrens = squares.getChildren();
+    	for (Node node : childrens) {
+    		if (node instanceof ImageView && squares.getRowIndex(node) == entity.getY() && squares.getColumnIndex(node) == entity.getX()) {
+    			ImageView view = (ImageView) node;
+    			squares.getChildren().remove(view);
+    			break;
+    		}
+    	}
     }
 
     @FXML
