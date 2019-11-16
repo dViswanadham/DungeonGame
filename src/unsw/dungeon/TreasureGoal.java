@@ -13,7 +13,7 @@ package unsw.dungeon;
 public class TreasureGoal extends Goals {
 
 	public TreasureGoal(Dungeon dungeon) {
-		super(dungeon);
+		super();
 		// TODO Auto-generated constructor stub
 	}
     // #TODO

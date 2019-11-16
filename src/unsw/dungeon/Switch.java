@@ -18,9 +18,10 @@ public class Switch extends Entity {
     public Switch(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
     }
-
+    
     public boolean isActivated() {
     	List<Entity> entities = getDungeon().getEntityList();
+    	
     	for (Entity e : entities) {
     		if (e instanceof Boulder || e instanceof Player) {
     			if (e.getX() == getX() && e.getY() == getY()) {

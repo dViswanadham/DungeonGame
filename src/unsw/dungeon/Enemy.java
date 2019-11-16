@@ -10,23 +10,141 @@
 
 package unsw.dungeon;
 
+import java.util.List;
+
 /**
  * The player entity
  * @author Robert Clifton-Everest
  *
  */
-public class Enemy extends Mobile {
-	
+public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient {
+    private GoalsObserver enemyObserver = null;
+    private int moveCount;
+
     public Enemy(Dungeon dungeon, int x, int y) {
-        super(x, y, dungeon);
+        super(y, x, dungeon);
+        this.moveCount = 0;
     }
 
-    public void setFoePath() {
-    	
+    public void moveUp() {
+        if (getY() <= 0)
+            return;
+        if (blocked(getX(), getY() - 1))
+            y().set(getY() - 1);
+    }
+
+    public void moveDown() {
+        if (getY() >= getDungeon().getHeight() - 1)
+            return;
+        if (blocked(getX(), getY() + 1))
+            y().set(getY() + 1);
+    }
+
+    public void moveLeft() {
+        if (getX() <= 0)
+            return;
+        if (blocked(getX() - 1, getY()))
+            x().set(getX() - 1);
+    }
+
+    public void moveRight() {
+        if (getX() >= getDungeon().getWidth() - 1)
+            return;
+        if (blocked(getX() + 1, getY()))
+            x().set(getX() + 1);
     }
     
+    public boolean blocked(int x, int y) {
+        List<Entity> colliding = getDungeon().obtainTargetSquare(x, y);
+        
+        if (colliding == null)
+            return true;
+        for (Entity f : colliding) {
+            if (!f.isBlocking())
+                return false;
+        }
+        return true;
+    }
+
+    public boolean resolveCollision(Mobile e) {
+        if (e instanceof Enemy)
+            return true;
+        if (!(e instanceof Player))
+            return true;
+
+        // If player is going to die, player will die and return false
+        Player p = (Player) e;
+        
+        if (!p.getInvincibleStatus()) {
+            System.out.println("1");
+            p.dead();
+            
+            return false;
+            
+        }else {
+            // Else, this entity will die
+            dead();
+            notifyObservers();
+        }
+        return true;
+    }
+
     @Override
-    public boolean isBlocking() {
-    	return true;
+    public void registerObserver(GoalsObserver o) {
+        enemyObserver = o;
+        o.appendObs(this);
+    }
+
+    @Override
+    public void removeObserver(GoalsObserver o) {
+        if (enemyObserver == o) {
+            enemyObserver.deleteObs(this);
+            
+            enemyObserver = null;
+        }
+    }
+
+    @Override
+    public void notifyObservers() {
+        if (enemyObserver != null) {
+            
+            enemyObserver.update(this);
+        }
+    }
+    
+    public void huntPlayer() {
+        Player pl = getDungeon().getPlayer();
+        
+        int eX = pl.getX() - getX();
+        int eY = pl.getY() - getY();
+
+        if (eX > 0) {
+            
+            moveRight();
+        }
+        
+        if (eX < 0) {
+            
+            moveLeft();
+        }
+            
+        if (eY > 0) {
+            
+            moveDown();
+        }
+        
+        if (eY < 0) {
+            
+            moveUp();
+        }
+    }
+
+    @Override
+    public void flag() {
+        this.moveCount++;
+        // Enemy moves to player every 2 keystrokes by player and able to move
+        // diagonally
+        if (this.moveCount % 2 == 0)
+            huntPlayer();
     }
 }
