@@ -32,6 +32,14 @@ public abstract class Mobile extends Entity {
     	return active;
     }
     
+    public void dead() {
+        this.triggerSeeable(false);
+        
+        getDungeon().removeEntity(this);
+        
+        this.active = false;
+    }
+    
     public void move(Direction direction) {
 		List<Entity> entities = getDungeon().getEntityList();
     	if (direction == Direction.UP) {
