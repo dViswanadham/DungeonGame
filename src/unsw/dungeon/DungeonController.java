@@ -11,6 +11,8 @@
 package unsw.dungeon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javafx.beans.value.ChangeListener;
@@ -34,6 +36,8 @@ public class DungeonController {
     private GridPane squares;
 
     private List<ImageView> initialEntities;
+    
+    private HashMap<Entity, ImageView> entityMap = new HashMap<>();
 
     private Player player;
 
@@ -55,11 +59,15 @@ public class DungeonController {
                 squares.add(new ImageView(ground), x, y);
             }
         }
-
-        for (ImageView entity : initialEntities)
-            squares.getChildren().add(entity);
-        
         List<Entity> entities = dungeon.getEntityList();
+        Iterator<Entity> it1 = entities.iterator();
+        Iterator<ImageView> it2 = initialEntities.iterator();
+        while (it1.hasNext() && it2.hasNext()) {
+        	ImageView entity = it2.next();
+        	entityMap.put(it1.next(), entity);
+        	squares.getChildren().add(entity);
+        } 
+        
         for (Entity e : entities) {
         	e.seeable().addListener(new ChangeListener<Boolean>() {
         	@Override
@@ -72,14 +80,8 @@ public class DungeonController {
     }
     
     public void removeEntityImage(Entity entity) {
-    	ObservableList<Node> childrens = squares.getChildren();
-    	for (Node node : childrens) {
-    		if (node instanceof ImageView && GridPane.getRowIndex(node) == entity.getY() && GridPane.getColumnIndex(node) == entity.getX()) {
-    			ImageView view = (ImageView) node;
-    			squares.getChildren().remove(view);
-    			break;
-    		}
-    	}
+    	ImageView view = entityMap.get(entity);
+    	squares.getChildren().remove(view);
     }
 
     @FXML
