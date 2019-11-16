@@ -58,6 +58,7 @@ public abstract class DungeonLoader {
         String type = json.getString("type");
         int x = json.getInt("x");
         int y = json.getInt("y");
+        int id = 0;
 
         Entity entity = null;
         switch (type) {
@@ -107,6 +108,24 @@ public abstract class DungeonLoader {
         	onLoad(enemy);
         	entity = enemy;
         	break;
+        case "portal":
+        	id = json.getInt("id");
+    		Portal portal = new Portal(x, y, dungeon, id);
+    		onLoad(portal);
+    		entity = portal;
+    		break;
+        case "door":
+        	id = json.getInt("id");
+        	Door door = new Door(x, y, dungeon, id);
+        	onLoad(door);
+        	entity = door;
+        	break;
+        case "key":
+        	id = json.getInt("id");
+        	Key key = new Key(x, y, dungeon, id);
+        	onLoad(key);
+        	entity = key;
+        	break;
         }
         dungeon.addEntity(entity);
     }
@@ -128,5 +147,11 @@ public abstract class DungeonLoader {
     public abstract void onLoad(Sword sword);
 
     public abstract void onLoad(Enemy enemy);
+    
+    public abstract void onLoad(Portal portal);
+    
+    public abstract void onLoad(Door door);
+    
+    public abstract void onLoad(Key key);
 
 }

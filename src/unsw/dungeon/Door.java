@@ -37,7 +37,7 @@ public class Door extends Entity {
     }
     
     public boolean openDoor(Key key) {
-    	if (this.key.equals(key)) {
+    	if (this.id == key.getID()) {
     		changeState(OPEN);
     		return true;
     	}

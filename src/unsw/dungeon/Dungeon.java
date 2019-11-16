@@ -64,15 +64,17 @@ public class Dungeon {
     
     public void removeEntity(Entity entity) {
         if (entities.contains(entity)) {
-            
             entities.remove(entity);
         }
     }    
     
-//    public void killEnemy(Enemy enemy) {
-//    	removeEntity(enemy);
-//    	
-//    }
+    public void teleport(Portal portal) {
+    	for (Entity e : entities) {
+    		if (e instanceof Portal && !e.equals(portal)) {
+    			player.changePlayerPosition(e.getX(), e.getY());
+    		}
+    	}
+    }
     
     public void createAim(Goals objectives) {
         this.objectives = objectives;

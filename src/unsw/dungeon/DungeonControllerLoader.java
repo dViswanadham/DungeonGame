@@ -118,6 +118,24 @@ public class DungeonControllerLoader extends DungeonLoader {
     	ImageView view = new ImageView(enemyImage);
     	addEntity(enemy, view);
     }
+    
+	@Override
+	public void onLoad(Portal portal) {
+		ImageView view = new ImageView(portalImage);
+		addEntity(portal, view);
+	}
+	
+	@Override
+	public void onLoad(Door door) {
+		ImageView view = new ImageView(closedDoorImage);
+		addEntity(door, view);
+	}
+	
+	@Override
+	public void onLoad(Key key) {
+		ImageView view = new ImageView(keyImage);
+		addEntity(key, view);
+	}
 
     private void addEntity(Entity entity, ImageView view) {
         trackPosition(entity, view);
@@ -162,6 +180,8 @@ public class DungeonControllerLoader extends DungeonLoader {
     public DungeonController loadController() throws FileNotFoundException {
         return new DungeonController(load(), entities);
     }
+
+
 
 
 }

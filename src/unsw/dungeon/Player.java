@@ -69,20 +69,34 @@ public class Player extends Mobile implements Observable {
     	return invincible;
     }
     
-    public void enemyEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
-		List<Sword> swordList = inventory.getSwordList();
-		if (swordList.size() > 0) {
-			Sword sword = swordList.get(0);
-			inventory.useSword(sword);
-			entity.triggerSeeable(false);
-			dungeon.removeEntity(entity);
-		} else if (getInvincibleStatus()) {
-			entity.triggerSeeable(false);
-			dungeon.removeEntity(entity);
-		} else {
-			dungeon.endGame();
-			System.out.println("You Died!");
-		}
+    public void blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+    	if (entity instanceof Enemy) {
+    		List<Sword> swordList = inventory.getSwordList();
+    		if (getInvincibleStatus()) {
+    			entity.triggerSeeable(false);
+    			dungeon.removeEntity(entity);
+    		} else if (swordList.size() > 0) {
+    			Sword sword = swordList.get(0);
+    			inventory.useSword(sword);
+    			entity.triggerSeeable(false);
+    			dungeon.removeEntity(entity);
+    		} else {
+    			dungeon.endGame();
+    			System.out.println("You Died!");
+    		}
+    	} else if (entity instanceof Door) {
+			Door door = (Door) entity;
+			List<Key> keys = inventory.getKeyList();
+			for (Key k : keys) {
+				if (inventory.useKey(door, k)) {
+					entity.triggerSeeable(false);
+					dungeon.removeEntity(entity);
+					System.out.println("Door unlocked");
+					keys.remove(k);
+					break;
+				}
+			}
+    	}
 	}
     
     public void tokenEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
@@ -108,7 +122,15 @@ public class Player extends Mobile implements Observable {
 			System.out.println("collecting potion");
 			setInvincibleStatus(true);
 			System.out.println("potion consumed");
+		} else if (entity instanceof Portal) {
+			Portal portal = (Portal) entity;
+			dungeon.teleport(portal);
 		}
+    }
+    
+    public void changePlayerPosition(int x, int y) {
+    	x().set(x);
+    	y().set(y);
     }
     
     @Override
@@ -116,17 +138,30 @@ public class Player extends Mobile implements Observable {
     	List<Entity> entities = getDungeon().getEntityList();
 		Dungeon dungeon = getDungeon();
 		Inventory inventory = getInventory();
+		boolean flag = false;
     	if (direction == Direction.UP) {
     		if (getY() > 0) {
         		for (Entity e : entities) {
         			if (e != null) {
+        				if (e.getX() == getX() && e.getY() == getY() - 2 && !(e instanceof Switch)) flag = true; 
             			if (e.getX() == getX() && e.getY() == getY() - 1) {
             				if (e.isBlocking()) {
-            					if (e instanceof Enemy) {
-            						enemyEntityBehaviour(dungeon, inventory, e);
+            					if (e instanceof Boulder) {
+            						if (!flag) {
+            							e.y().set(e.getY() - 1);
+            							y().set(getY() - 1);
+            						}
             					}
-            					return;
+                				return;
             				} else {
+            					if (e instanceof Switch) {
+            						Switch s = (Switch) e;
+            						if (s.isActivated()) {
+            							return;
+            						} else {
+            							continue;
+            						}
+            					}
             					y().set(getY() - 1);
             					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
@@ -140,13 +175,33 @@ public class Player extends Mobile implements Observable {
     		if (getY() < getDungeon().getHeight() - 1) {
         		for (Entity e : entities) {
         			if (e != null) {
+        				if (e.getX() == getX() && e.getY() == getY() + 2 && !(e instanceof Switch)) flag = true; 
             			if (e.getX() == getX() && e.getY() == getY() + 1) {
             				if (e.isBlocking()) {
-            					if (e instanceof Enemy) {
-            						enemyEntityBehaviour(dungeon, inventory, e);
+            					if (e instanceof Boulder) {
+            						if (!flag) {
+            							e.y().set(e.getY() + 1);
+            							y().set(getY() + 1);
+            						}
             					}
                 				return;
             				} else {
+            					if (e instanceof Switch) {
+            						Switch s = (Switch) e;
+            						if (s.isActivated()) {
+            							for (Entity boulder : entities) {
+            								if (boulder instanceof Boulder) {
+            									if (boulder.getX() == e.getX() && boulder.getY() == e.getY()) {
+                        							boulder.y().set(boulder.getY() + 1);
+                        							y().set(getY() + 1);
+            									}
+            								}
+            							}
+            							return;
+            						} else {
+            							continue;
+            						}
+            					}
             					y().set(getY() + 1);
             					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
@@ -160,13 +215,27 @@ public class Player extends Mobile implements Observable {
     		if (getX() < getDungeon().getWidth() - 1) {
         		for (Entity e : entities) {
         			if (e != null) {
+        				if (e.getX() == getX() + 2 && e.getY() == getY() && !(e instanceof Switch)) flag = true; 
             			if (e.getX() == getX() + 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
-            					if (e instanceof Enemy) {
-            						enemyEntityBehaviour(dungeon, inventory, e);
+            					if (e instanceof Boulder) {
+            						if (!flag) {
+            							e.x().set(e.getX() + 1);
+            							x().set(getX() + 1);
+            						}
+            					} else {
+            						blockingEntityBehaviour(dungeon, inventory, e);
             					}
                 				return;
             				} else {
+            					if (e instanceof Switch) {
+            						Switch s = (Switch) e;
+            						if (s.isActivated()) {
+            							return;
+            						} else {
+            							continue;
+            						}
+            					}
             					x().set(getX() + 1);
             					tokenEntityBehaviour(dungeon, inventory, e);
             					return;
@@ -180,13 +249,27 @@ public class Player extends Mobile implements Observable {
         	if (getX() > 0) {
         		for (Entity e : entities) {
         			if (e != null) {
+        				if (e.getX() == getX() - 2 && e.getY() == getY() && !(e instanceof Switch)) flag = true;
             			if (e.getX() == getX() - 1 && e.getY() == getY()) {
             				if (e.isBlocking()) {
-            					if (e instanceof Enemy) {
-            						enemyEntityBehaviour(dungeon, inventory, e);
+            					if (e instanceof Boulder) {
+            						if (!flag) {
+            							e.x().set(e.getX() - 1);
+            							x().set(getX() - 1);
+            						}
+            					} else {
+            						blockingEntityBehaviour(dungeon, inventory, e);
             					}
                 				return;
             				} else {
+            					if (e instanceof Switch) {
+            						Switch s = (Switch) e;
+            						if (s.isActivated()) {
+            							return;
+            						} else {
+            							continue;
+            						}
+            					}
             					x().set(getX() - 1);
             					tokenEntityBehaviour(dungeon, inventory, e);
             					return;

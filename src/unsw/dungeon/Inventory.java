@@ -77,8 +77,8 @@ public class Inventory {
     	keys.add(key);
     }
     
-    public void useKey(Door door, Key key) {
-    	door.openDoor(key);
+    public boolean useKey(Door door, Key key) {
+    	return door.openDoor(key);
     }
     
     public List<Key> getKeyList() {

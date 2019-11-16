@@ -14,20 +14,13 @@ public class Key extends Token {
 
 	private int id;
 	
-    public Key(int x, int y, Dungeon dungeon, Inventory inventory, int id) {
+    public Key(int x, int y, Dungeon dungeon, int id) {
         super(x, y, dungeon);
         this.id = id;
     }
-
-    @Override
-    public boolean collectObject(Inventory inventory) {
-    	inventory.collectKey(this);
-    	getDungeon().addEntity(this);
-    	notifyObservers();
-    	return true;
+    
+    public int getID() {
+    	return id;
     }
     
-    public void applyKey(Door door, Inventory inventory) {
-    	inventory.useKey(door, this);
-    }
 }
