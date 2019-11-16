@@ -170,7 +170,7 @@ public class DungeonControllerLoader extends DungeonLoader {
             }
         });
     }
-
+    
     /**
      * Create a controller that can be attached to the DungeonView with all the
      * loaded entities.
