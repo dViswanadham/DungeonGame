@@ -12,7 +12,7 @@ package unsw.dungeon;
 
 import java.util.ArrayList;
 
-public class FlagDungeon {
+public class FlagDungeon implements Observer {
     private ArrayList<FlagDungeonClient> receiver;
     private int iterator;
     
@@ -25,15 +25,16 @@ public class FlagDungeon {
         
         this.receiver = dungeon.obtainSignal();
     }
-    
-    // @Override
-    public void refresh(Observable obj) {
+
+    @Override
+    public void refresh(Observable e) {
         this.iterator++;
         
-        for(FlagDungeonClient obs : receiver) {
-            
-            obs.flag();
+        for (FlagDungeonClient sub : receiver) {
+            sub.flag();
         }
     }
+    
+    
 
 }

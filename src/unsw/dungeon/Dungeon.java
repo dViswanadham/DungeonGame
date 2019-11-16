@@ -157,7 +157,7 @@ public class Dungeon {
         this.flagDungeon = new FlagDungeon(this);
         this.flagDungeon.addTransmitter(this);
         
-        // player.registerObserver(this.flagDungeon);
+        player.registerObserver(this.flagDungeon);
     }
     
     public void linkObsBoulder() {

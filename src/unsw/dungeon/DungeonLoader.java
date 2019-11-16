@@ -12,6 +12,7 @@ package unsw.dungeon;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,9 +49,21 @@ public abstract class DungeonLoader {
 
         JSONArray jsonEntities = json.getJSONArray("entities");
 
-        for (int i = 0; i < jsonEntities.length(); i++) {
+        for(int i = 0; i < jsonEntities.length(); i++) {
+            
             loadEntity(dungeon, jsonEntities.getJSONObject(i));
         }
+        
+        dungeon.linkObsBoulder();
+        dungeon.alertObsBoulders();
+        dungeon.linkObsExit();
+        dungeon.bootFlag();
+        
+        JSONObject objectives = json.getJSONObject("Goals");
+        
+        Goals conditions = dungeonObjectives(objectives, dungeon);
+        dungeon.createAim(conditions);
+        
         return dungeon;
     }
 
@@ -127,6 +140,7 @@ public abstract class DungeonLoader {
         	entity = key;
         	break;
         }
+        
         dungeon.addEntity(entity);
     }
 
@@ -154,4 +168,136 @@ public abstract class DungeonLoader {
     
     public abstract void onLoad(Key key);
 
+    private Goals dungeonObjectives(JSONObject jsonAims, Dungeon dungeon){
+        String type = jsonAims.getString("goal");
+        
+        Goals conditions = null;
+        
+        switch(type) {
+            case "AND":
+            case "OR":
+                ComplexObjectives complex = new ComplexObjectives(type);
+                JSONArray minigoals = jsonAims.getJSONArray("mini-goals");
+                
+                for(int a = 0; a < minigoals.length(); a = (a + 1)) {
+                    Goals miniGoal = dungeonObjectives(minigoals.getJSONObject(a), dungeon);
+                    
+                    complex.append(miniGoal);
+                }
+                
+                conditions = complex;
+                break;
+                
+            case "exit":
+                ExitGoal exitGoal = new ExitGoal("exit");
+                conditions = exitGoal;
+                observeObjective(exitGoal, dungeon);
+                break;
+                
+            case "enemies":
+                EnemyGoal enemyGoal = new EnemyGoal("enemies");
+                conditions = enemyGoal;
+                observeObjective(enemyGoal, dungeon);
+                break;
+                
+            case "treasure":
+                TreasureGoal treasureGoal = new TreasureGoal("treasure");
+                conditions = treasureGoal;
+                observeObjective(treasureGoal, dungeon);
+                break;
+                
+            case "boulders":
+                SwitchGoal boulderGoal = new SwitchGoal("boulders");
+                conditions = boulderGoal;
+                observeObjective(boulderGoal, dungeon);
+                break;
+                
+            default:
+                break;
+        }
+
+        return conditions;
+    }
+    
+    /**
+     * 
+     * Function observes the Exit goal, so we know wehn it is complete.
+     * 
+     * @param aim (exit)
+     * @param dungeon
+     */
+    private void observeObjective(ExitGoal aim, Dungeon dungeon) {
+        Exit e = dungeon.obtainExit();
+        
+        if (e == null) {
+            
+            throw new UnsupportedOperationException();
+        }
+        
+        e.registerObserver(aim);
+    }
+    
+    /**
+     * 
+     * Function observes each enemy so that we know wehn the Enemy goal is complete.
+     * 
+     * @param aim (enemy)
+     * @param dungeon
+     */
+    private void observeObjective(EnemyGoal aim, Dungeon dungeon) {
+        ArrayList<Enemy> total_threats = dungeon.obtainEnemies();
+        
+        if (total_threats.size() == 0) {
+            
+            throw new UnsupportedOperationException();
+        }
+        
+        for(Enemy single_threat : total_threats) {
+            System.out.println("Threat registered.");
+            
+            single_threat.registerObserver(aim);
+        }
+    }
+    
+    /**
+     * 
+     * Function observes each "coin" so that we know when the Treasure goal is complete.
+     * 
+     * @param aim (treasure)
+     * @param dungeon
+     */
+    private void observeObjective(TreasureGoal aim, Dungeon dungeon) {
+        ArrayList<Treasure> loot = dungeon.obtainTres();
+        
+        if (loot.size() == 0) {
+            
+            throw new UnsupportedOperationException();
+        }
+        
+        for(Treasure single_coin : loot) {
+            
+            single_coin.registerObserver(aim);
+        }
+    }
+    
+    /**
+     * 
+     * Function observes each switch so we know when the Switch goal is complete.
+     * 
+     * @param aim (floor switch)
+     * @param dungeon
+     */
+    private void observeObjective(SwitchGoal aim, Dungeon dungeon) {
+        ArrayList<Switch> switches = dungeon.obtainSwitch();
+        
+        if (switches.size() == 0) {
+            
+            throw new UnsupportedOperationException();
+        }
+        
+        for(Switch floor_switch : switches) {
+            
+            floor_switch.registerObserver(aim);
+        }
+    }
 }
