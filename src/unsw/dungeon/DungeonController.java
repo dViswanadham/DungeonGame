@@ -13,6 +13,8 @@ package unsw.dungeon;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -56,12 +58,23 @@ public class DungeonController {
 
         for (ImageView entity : initialEntities)
             squares.getChildren().add(entity);
+        
+        List<Entity> entities = dungeon.getEntityList();
+        for (Entity e : entities) {
+        	e.seeable().addListener(new ChangeListener<Boolean>() {
+        	@Override
+        	public void changed(ObservableValue<? extends Boolean> observable,
+        			Boolean oldValue, Boolean newValue) {
+        		removeEntityImage(e);
+        	}
+        });
+        }
     }
     
     public void removeEntityImage(Entity entity) {
     	ObservableList<Node> childrens = squares.getChildren();
     	for (Node node : childrens) {
-    		if (node instanceof ImageView && squares.getRowIndex(node) == entity.getY() && squares.getColumnIndex(node) == entity.getX()) {
+    		if (node instanceof ImageView && GridPane.getRowIndex(node) == entity.getY() && GridPane.getColumnIndex(node) == entity.getX()) {
     			ImageView view = (ImageView) node;
     			squares.getChildren().remove(view);
     			break;
