@@ -26,6 +26,11 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         
         this.moveCount = 0;
     }
+    
+    @Override
+    public boolean isBlocking() {
+    	return true;
+    }
 
     public void moveUp() {
         if (getY() <= 0) {

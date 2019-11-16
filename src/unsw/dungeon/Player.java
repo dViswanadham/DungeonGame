@@ -99,22 +99,26 @@ public class Player extends Mobile implements Observable {
     	}
 	}
     
-    public void tokenEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+    public boolean tokenEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
 		if (entity instanceof Exit) {
 			dungeon.endGame();
 			System.out.println("Game Over");
+			return true;
 		} else if (entity instanceof Treasure) {
 			inventory.collectTreasure((Treasure) entity);
 			entity.triggerSeeable(false);
 			System.out.println("collecting treasure");
+			return true;
 		} else if (entity instanceof Key) {
 			inventory.collectKey((Key) entity);
 			entity.triggerSeeable(false);
 			System.out.println("collecting key");
+			return true;
 		} else if (entity instanceof Sword) {
 			inventory.collectSword((Sword) entity);
 			entity.triggerSeeable(false);
 			System.out.println("collecting sword");
+			return true;
 		} else if (entity instanceof InvincibilityPotion) {
 			InvincibilityPotion potion = (InvincibilityPotion) entity;
 			potion.collectObject(inventory);
@@ -122,10 +126,12 @@ public class Player extends Mobile implements Observable {
 			System.out.println("collecting potion");
 			setInvincibleStatus(true);
 			System.out.println("potion consumed");
+			return true;
 		} else if (entity instanceof Portal) {
 			Portal portal = (Portal) entity;
 			dungeon.teleport(portal);
 		}
+		return false;
     }
     
     public void changePlayerPosition(int x, int y) {
@@ -173,7 +179,9 @@ public class Player extends Mobile implements Observable {
                 					} else if (!boulderFlag && e instanceof Switch) {
                 						y().set(getY() - 1);
                 					} else {
-                						tokenEntityBehaviour(dungeon, inventory, e);
+                						if (tokenEntityBehaviour(dungeon, inventory, e)) {
+                							y().set(getY() - 1);
+                						}
                 					}
             					}
             					return;
@@ -216,7 +224,9 @@ public class Player extends Mobile implements Observable {
                 					} else if (!boulderFlag && e instanceof Switch) {
                 						y().set(getY() + 1);
                 					} else {
-                						tokenEntityBehaviour(dungeon, inventory, e);
+                						if (tokenEntityBehaviour(dungeon, inventory, e)) {
+                							y().set(getY() + 1);
+                						}
                 					}
             					}
             					return;
@@ -259,7 +269,9 @@ public class Player extends Mobile implements Observable {
                   					} else if (!boulderFlag && e instanceof Switch) {
                   						x().set(getX() + 1);
                   					} else {
-                  						tokenEntityBehaviour(dungeon, inventory, e);
+                  						if (tokenEntityBehaviour(dungeon, inventory, e)) {
+                  							x().set(getX() + 1);
+                  						}
                   					}
             					}
             					return;
@@ -302,7 +314,9 @@ public class Player extends Mobile implements Observable {
                 					} else if (!boulderFlag && e instanceof Switch) {
                 						x().set(getX() - 1);
                 					} else {
-                						tokenEntityBehaviour(dungeon, inventory, e);
+                  						if (tokenEntityBehaviour(dungeon, inventory, e)) {
+                  							x().set(getX() - 1);
+                  						}
                 					}
             					}
             					return;
