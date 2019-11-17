@@ -10,7 +10,6 @@
 
 package unsw.dungeon;
 
-public interface Observer {
-
-	public void refresh(Observable e);
+public class EndGameController {
+    
 }

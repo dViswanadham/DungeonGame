@@ -10,7 +10,10 @@
 
 package unsw.dungeon;
 
-public interface Observer {
-
-	public void refresh(Observable e);
+public interface GoalsObservable {
+    
+    public void registerObserver(GoalsObserver obs);
+    public void removeObserver(GoalsObserver obs);
+    public void notifyObservers();
+    
 }

@@ -2,7 +2,7 @@
  * Team: Desktop_Support
  * Members: Liam (z5207407) and Dheeraj (z5204820)
  * 
- * Started: 24/10/2019 | Last edited: 3/11/2019
+ * Started: 24/10/2019 | Last edited: 14/11/2019
  * 
  * Acknowledgement: some of the code may be similar to the lab code.
  */
@@ -30,23 +30,23 @@ class Testing {
         dungeon.addEntity(q2);
         dungeon.addEntity(q3);
         
-        Sword sword1 = new Sword(0,0);
-        Sword sword2 = new Sword(2,0);
+        Sword sword1 = new Sword(0, 0, dungeon);
+        Sword sword2 = new Sword(2, 0, dungeon);
         
-        InvincibilityPotion potion = new InvincibilityPotion(2,0);
+        InvincibilityPotion potion = new InvincibilityPotion(2, 0, dungeon);
         
         dungeon.addEntity(sword1);
         dungeon.addEntity(sword2);
         dungeon.addEntity(potion);
         
-        Foe f1 = new Foe(dungeon, 0, 1);
-        Foe f2 = new Foe(dungeon, 1, 1);
-        Foe f3 = new Foe(dungeon, 2, 1);
-        Foe f4 = new Foe(dungeon, 2, 1);
-        Foe f5 = new Foe(dungeon, 2, 1);
-        Foe f6 = new Foe(dungeon, 2, 1);
-        Foe f7 = new Foe(dungeon, 2, 1);
-        Foe f8 = new Foe(dungeon, 2, 1);
+        Enemy f1 = new Enemy(dungeon, 0, 1);
+        Enemy f2 = new Enemy(dungeon, 1, 1);
+        Enemy f3 = new Enemy(dungeon, 2, 1);
+        Enemy f4 = new Enemy(dungeon, 2, 1);
+        Enemy f5 = new Enemy(dungeon, 2, 1);
+        Enemy f6 = new Enemy(dungeon, 2, 1);
+        Enemy f7 = new Enemy(dungeon, 2, 1);
+        Enemy f8 = new Enemy(dungeon, 2, 1);
         
         dungeon.addEntity(f1);
         dungeon.addEntity(f2);
@@ -57,13 +57,12 @@ class Testing {
         dungeon.addEntity(f7);
         dungeon.addEntity(f8);
         
-        q1.moveDown();
-        q2.moveDown();
-        q3.moveDown();
-        
-        assertEquals(q1.active(), true);
-        assertEquals(q2.active(), true);
-        assertEquals(q3.active(), true);
+        q1.move(Direction.DOWN);
+        q2.move(Direction.DOWN);
+        q3.move(Direction.DOWN);
+        assertTrue(q1.isActive());
+        assertTrue(q2.isActive());
+        assertTrue(q3.isActive());
         assertTrue(sword1 != null);
     }
     
@@ -75,14 +74,14 @@ class Testing {
         
         dungeon.addEntity(q1);
         
-        Boulder b1 = new Boulder(1, 0);
+        Boulder b1 = new Boulder(1, 0, dungeon);
         
         dungeon.addEntity(b1);
         
-        Foe e1 = new Foe(dungeon, 2, 0);
+        Enemy e1 = new Enemy(dungeon, 2, 0);
         
         dungeon.addEntity(e1);
-        q1.moveRight();
+        q1.move(Direction.RIGHT);
         
         assertTrue(q1.getX() == 1);
         assertTrue(b1.getX() == 1);
@@ -103,17 +102,17 @@ class Testing {
         dungeon.addEntity(q2);
         dungeon.addEntity(q3);
         
-        InvincibilityPotion p1 = new InvincibilityPotion(0, 0);
-        InvincibilityPotion p2 = new InvincibilityPotion(1, 0);
-        InvincibilityPotion p3 = new InvincibilityPotion(2, 1);
+        InvincibilityPotion p1 = new InvincibilityPotion(0, 0, dungeon);
+        InvincibilityPotion p2 = new InvincibilityPotion(1, 0, dungeon);
+        InvincibilityPotion p3 = new InvincibilityPotion(2, 1, dungeon);
         
         dungeon.addEntity(p1);
         dungeon.addEntity(p2);
         dungeon.addEntity(p3);
         
-        Foe f1 = new Foe(dungeon, 0, 1);
-        Foe f2 = new Foe(dungeon, 1, 1);
-        Foe f3 = new Foe(dungeon, 2, 1);
+        Enemy f1 = new Enemy(dungeon, 0, 1);
+        Enemy f2 = new Enemy(dungeon, 1, 1);
+        Enemy f3 = new Enemy(dungeon, 2, 1);
         
         dungeon.addEntity(f1);
         dungeon.addEntity(f2);
@@ -124,13 +123,13 @@ class Testing {
             p2.getDuration();
         }
         
-        q1.moveDown();
-        q2.moveDown();
-        q3.moveDown();
+        q1.move(Direction.DOWN);
+        q2.move(Direction.DOWN);
+        q3.move(Direction.DOWN);
         
-        assertEquals(q1.active(), true);
-        assertEquals(q2.active(), true);
-        assertEquals(q3.active(), true);
+        assertTrue(q1.isActive());
+        assertTrue(q2.isActive());
+        assertTrue(q3.isActive());
 //        assertEquals(f1.active(), false);
 //        assertEquals(f2.active(), true);
 //        assertEquals(f3.active(), true);

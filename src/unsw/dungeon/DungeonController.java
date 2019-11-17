@@ -2,7 +2,7 @@
  * Team: Desktop_Support
  * Members: Liam (z5207407) and Dheeraj (z5204820)
  * 
- * Started: 24/10/2019 | Last edited: 3/11/2019
+ * Started: 24/10/2019 | Last edited: 14/11/2019
  * 
  * Acknowledgement: some of the code may be similar to the lab code.
  */
@@ -11,9 +11,15 @@
 package unsw.dungeon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -30,6 +36,8 @@ public class DungeonController {
     private GridPane squares;
 
     private List<ImageView> initialEntities;
+    
+    private HashMap<Entity, ImageView> entityMap = new HashMap<>();
 
     private Player player;
 
@@ -51,31 +59,48 @@ public class DungeonController {
                 squares.add(new ImageView(ground), x, y);
             }
         }
-
-        for (ImageView entity : initialEntities)
-            squares.getChildren().add(entity);
-
+        List<Entity> entities = dungeon.getEntityList();
+        Iterator<Entity> it1 = entities.iterator();
+        Iterator<ImageView> it2 = initialEntities.iterator();
+        while (it1.hasNext() && it2.hasNext()) {
+        	ImageView entity = it2.next();
+        	entityMap.put(it1.next(), entity);
+        	squares.getChildren().add(entity);
+        } 
+        
+        for (Entity e : entities) {
+        	e.seeable().addListener(new ChangeListener<Boolean>() {
+        	@Override
+        	public void changed(ObservableValue<? extends Boolean> observable,
+        			Boolean oldValue, Boolean newValue) {
+        		removeEntityImage(e);
+        	}
+        });
+        }
+    }
+    
+    public void removeEntityImage(Entity entity) {
+    	ImageView view = entityMap.get(entity);
+    	squares.getChildren().remove(view);
     }
 
     @FXML
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
         case UP:
-            player.moveUp();
+            player.move(Direction.UP);
             break;
         case DOWN:
-            player.moveDown();
+            player.move(Direction.DOWN);
             break;
         case LEFT:
-            player.moveLeft();
+            player.move(Direction.LEFT);
             break;
         case RIGHT:
-            player.moveRight();
+            player.move(Direction.RIGHT);
             break;
         default:
             break;
         }
     }
-
 }
-

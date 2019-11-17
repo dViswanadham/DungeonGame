@@ -10,7 +10,11 @@
 
 package unsw.dungeon;
 
-public interface Observer {
+import java.io.IOException;
 
-	public void refresh(Observable e);
+public class SuccessScreenHandler {
+    public SuccessScreenHandler(DungeonController dControl, String text) throws IOException {
+        
+    }
+    
 }

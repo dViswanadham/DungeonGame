@@ -2,85 +2,102 @@
  * Team: Desktop_Support
  * Members: Liam (z5207407) and Dheeraj (z5204820)
  * 
- * Started: 24/10/2019 | Last edited: 3/11/2019
+ * Started: 24/10/2019 | Last edited: 14/11/2019
  * 
  * Acknowledgement: some of the code may be similar to the lab code.
  */
 
 
 package unsw.dungeon;
+
+import java.util.List;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 /**
- * Implements the Mobile abstract class, used with entities in the dungeon that are moveable
+ * Implements the Mobile abstract class, used with player and enemy entities
  */
 public abstract class Mobile extends Entity {
 
-    private Dungeon dungeon = null;
-    private boolean active;
+    private BooleanProperty active;
 
-    public Mobile(Dungeon dungeon, int x, int y) {
-        super(x, y);
-        
-        this.dungeon = dungeon;
-        this.active = true;
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     */
+    public Mobile(int x, int y, Dungeon dungeon) {
+        super(x, y, dungeon);
+        this.active = new SimpleBooleanProperty(true);
     }
 
-    public Dungeon dungeon() {
-        
-        return this.dungeon;
+    /**
+     * 
+     */
+    public void inactive() {
+    	if (getDungeon().isGameOver()) active.set(false);
     }
-
+    
+    /**
+     * @return
+     */
+    public boolean isActive() {
+    	return active.get();
+    }
+    
+    /**
+     * @return
+     */
+    public BooleanProperty getActiveProperty() {
+    	return this.active;
+    }
+    
+    /**
+     * marks the player as dead and removes them from the dungeon
+     */
     public void dead() {
         this.triggerSeeable(false);
-        
-        dungeon.removeEntity(this);
-        
-        this.active = false;
-    }
-
-    public boolean active() {
-        
-        return this.active;
-    }
-    
-    public void createActive(boolean active) {
-        
-        this.active = active;
-    }
-
-    /**
-     * 
-     * Function scans for any interaction against a token
-     * 
-     * @param object
-     * @return boolean
-     */
-    public boolean scanSquare(Token object) {
-        
-        return false;
+        getDungeon().removeEntity(this);
+        inactive();
     }
     
     /**
+     * determines the interaction between blocking entities
      * 
-     * Function scans for any interaction against a barrier
-     * 
-     * @param object
-     * @return boolean
+     * @param dungeon
+     * @param inventory
+     * @param entity
      */
-    public boolean scanSquare(Wall object) {
-        
-        return false;
-    }
-
-    
-    /**
-     * 
-     * Function scans for any interaction against a mobile entity (e.g. foes)
-     * 
-     * @param object
-     * @return boolean
-     */
-    public boolean scanSquare(Mobile object) {
-        
-        return false;
-    }
+    public void blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+    	Player player = dungeon.getPlayer();
+    	if (entity instanceof Enemy) {
+    		List<Sword> swordList = inventory.getSwordList();
+    		if (player.getInvincibleStatus()) {
+    			entity.triggerSeeable(false);
+    			dungeon.removeEntity(entity);
+    		} else if (swordList.size() > 0) {
+    			Sword sword = swordList.get(0);
+    			inventory.useSword(sword);
+    			entity.triggerSeeable(false);
+    			dungeon.removeEntity(entity);
+    		} else {
+    			dungeon.endGame();
+    			System.out.println("You Died!");
+    			player.dead();
+    		}
+    	} else if (entity instanceof Door) {
+			Door door = (Door) entity;
+			List<Key> keys = inventory.getKeyList();
+			for (Key k : keys) {
+				if (inventory.useKey(door, k)) {
+					entity.triggerSeeable(false);
+					dungeon.removeEntity(entity);
+					System.out.println("Door unlocked");
+					keys.remove(k);
+					break;
+				}
+			}
+    	}
+	}
 }

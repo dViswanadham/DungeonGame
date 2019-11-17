@@ -7,10 +7,8 @@
  * Acknowledgement: some of the code may be similar to the lab code.
  */
 
-
 package unsw.dungeon;
 
-public interface Observer {
+public class MenuController {
 
-	public void refresh(Observable e);
 }

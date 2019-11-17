@@ -12,8 +12,8 @@ package unsw.dungeon;
 
 public interface Observable {
 	
-	public void registerObserver(Observer o);
-	public void removeObserver(Observer o);
+	public void registerObserver(Observer obs);
+	public void removeObserver(Observer obs);
 	public void notifyObservers();
 	
 }

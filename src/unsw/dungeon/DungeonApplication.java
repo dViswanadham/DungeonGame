@@ -2,7 +2,7 @@
  * Team: Desktop_Support
  * Members: Liam (z5207407) and Dheeraj (z5204820)
  * 
- * Started: 24/10/2019 | Last edited: 3/11/2019
+ * Started: 24/10/2019 | Last edited: 16/11/2019
  * 
  * Acknowledgement: some of the code may be similar to the lab code.
  */
@@ -24,7 +24,7 @@ public class DungeonApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Dungeon");
 
-        DungeonControllerLoader dungeonLoader = new DungeonControllerLoader("maze.json");
+        DungeonControllerLoader dungeonLoader = new DungeonControllerLoader("advanced2.json");
 
         DungeonController controller = dungeonLoader.loadController();
 
@@ -41,5 +41,4 @@ public class DungeonApplication extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
