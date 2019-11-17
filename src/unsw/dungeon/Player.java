@@ -24,11 +24,18 @@ import javafx.beans.property.IntegerProperty;
  * @author Robert Clifton-Everest
  *
  */
+/**
+ * @author z5207407
+ *
+ */
+/**
+ * @author z5207407
+ *
+ */
 public class Player extends Mobile implements Observable {
 	
     private Inventory inventory;
     private ArrayList<Observer> observers;
-    private BooleanProperty active;
     private Boolean invincible;
     
     /**
@@ -43,37 +50,46 @@ public class Player extends Mobile implements Observable {
         super(x, y, dungeon);
         this.inventory = new Inventory(getDungeon());
         this.observers = new ArrayList<>();
-        this.active = new SimpleBooleanProperty(true);
         this.invincible = false;
     }
-    
-    public void dead() {
-    	this.triggerSeeable(false);
-    	getDungeon().removeEntity(this);
-        active.set(false);
-    }
-    
-    public BooleanProperty getActiveProperty() {
-    	return this.active;
-    }
   
+    /**
+     * @return
+     */
     public Inventory getInventory() {
         return inventory;
     }
     
+    /**
+     * @param status
+     */
     public void setInvincibleStatus(boolean status) {
     	this.invincible = status;
     }
     
+    /**
+     * @return
+     */
     public boolean getInvincibleStatus() {
     	return invincible;
     }
     
+    /**
+     *
+     */
     @Override
     public boolean isBlocking() {
     	return true;
     }
     
+    /**
+     * Determines behaviour of player move and tokens within the dungeon
+     * 
+     * @param dungeon
+     * @param inventory
+     * @param entity
+     * @return
+     */
     public boolean tokenEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
 		if (entity instanceof Exit) {
 			dungeon.endGame();
@@ -106,11 +122,18 @@ public class Player extends Mobile implements Observable {
 		return false;
     }
     
+    /**
+     * @param x
+     * @param y
+     */
     public void changePlayerPosition(int x, int y) {
     	x().set(x);
     	y().set(y);
     }
     
+    /**
+     * Determines the behaviour of the next player move
+     */
     @Override
     public void move(Direction direction) {
     	List<Entity> entities = getDungeon().getEntityList();
@@ -118,6 +141,7 @@ public class Player extends Mobile implements Observable {
 		Inventory inventory = getInventory();
 		boolean flag = false;
 		boolean boulderFlag = false;
+		if (!isActive()) return;
     	if (direction == Direction.UP) {
     		if (getY() > 0) {
         		for (Entity e : entities) {
@@ -302,11 +326,17 @@ public class Player extends Mobile implements Observable {
     	notifyObservers();
     }
 
+    /**
+     *
+     */
     @Override
     public void registerObserver(Observer o) {
         observers.add(o);
     }
 
+    /**
+     *
+     */
     @Override
     public void removeObserver(Observer o) {
         if (observers.contains(o)) {
@@ -314,6 +344,9 @@ public class Player extends Mobile implements Observable {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void notifyObservers() {
         for(Observer o : observers) {

@@ -12,37 +12,42 @@ package unsw.dungeon;
 
 import java.util.List;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 /**
  * Implements the Mobile abstract class, used with entities in the dungeon that are moveable
  */
 public abstract class Mobile extends Entity {
 
-    private boolean active;
+    private BooleanProperty active;
 
     public Mobile(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.active = true;
+        this.active = new SimpleBooleanProperty(true);
     }
 
     public void inactive() {
-    	if (getDungeon().isGameOver()) this.active = false;
+    	if (getDungeon().isGameOver()) active.set(false);
     }
     
     public boolean isActive() {
-    	return active;
+    	return active.get();
+    }
+    
+    public BooleanProperty getActiveProperty() {
+    	return this.active;
     }
     
     public void dead() {
         this.triggerSeeable(false);
-        
         getDungeon().removeEntity(this);
-        
-        this.active = false;
+        inactive();
     }
     
     public void blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+    	Player player = dungeon.getPlayer();
     	if (entity instanceof Enemy) {
-    		Player player = dungeon.getPlayer();
     		List<Sword> swordList = inventory.getSwordList();
     		if (player.getInvincibleStatus()) {
     			entity.triggerSeeable(false);
@@ -55,6 +60,7 @@ public abstract class Mobile extends Entity {
     		} else {
     			dungeon.endGame();
     			System.out.println("You Died!");
+    			player.dead();
     		}
     	} else if (entity instanceof Door) {
 			Door door = (Door) entity;
@@ -71,6 +77,7 @@ public abstract class Mobile extends Entity {
     	} else if (entity instanceof Player) {
 			dungeon.endGame();
 			System.out.println("You Died!");
+			player.dead();
     	}
 	}
     
