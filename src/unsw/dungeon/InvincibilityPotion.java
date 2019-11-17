@@ -13,10 +13,12 @@ package unsw.dungeon;
 public class InvincibilityPotion extends Entity {
 
 	private int duration;
+	private Player player;
 	
     public InvincibilityPotion(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.duration = 5000;
+        this.duration = 25;
+        this.player = getDungeon().getPlayer();
         
     }
 
@@ -25,12 +27,13 @@ public class InvincibilityPotion extends Entity {
     }
     
     public void onPlayerGetPotion() {
-    	// update player and monster interaction
-    	System.out.println("updating player and monster interaction");
+    	player.setInvincibleStatus(true);
+    	System.out.println("potion consumed");
     }
     
     public void onPotionExpires() {
-    	// return state of monster and player interaction
+    	player.setInvincibleStatus(false);
+    	System.out.println("potion expired");
     }
     
     @Override

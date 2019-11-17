@@ -81,7 +81,8 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     
     public boolean blocked(int x, int y) {
         List<Entity> blocking = getDungeon().obtainTargetSquare(x, y);
-        
+        Dungeon dungeon = getDungeon();
+        Player player = dungeon.getPlayer();
         if (blocking == null) {
             return true;
         }
@@ -89,8 +90,7 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         for(Entity e : blocking) {
             if (e.isBlocking()) {
             	if (e instanceof Player) {
-            		System.out.println("You Died!");
-            		getDungeon().endGame();
+            		blockingEntityBehaviour(dungeon, player.getInventory(), player);
             	}
                 return false;
             }
@@ -153,25 +153,38 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         
         int eX = pl.getX() - getX();
         int eY = pl.getY() - getY();
-
-        if (eX > 0) {
-            
-            moveRight();
-        }
         
-        if (eX < 0) {
+        if (pl.getInvincibleStatus()) {
+            if (eX > 0) {
+                moveLeft();
+            }
             
-            moveLeft();
-        }
+            if (eX < 0) {
+                moveRight();
+            }
+                
+            if (eY > 0) {
+                moveUp();
+            }
+            if (eY < 0) {
+                moveDown();
+            }
+        } else {
+            if (eX > 0) {
+                moveRight();
+            }
             
-        if (eY > 0) {
+            if (eX < 0) {
+                moveLeft();
+            }
+                
+            if (eY > 0) {
+                moveDown();
+            }
             
-            moveDown();
-        }
-        
-        if (eY < 0) {
-            
-            moveUp();
+            if (eY < 0) {
+                moveUp();
+            }
         }
     }
 

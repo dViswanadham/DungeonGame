@@ -40,6 +40,40 @@ public abstract class Mobile extends Entity {
         this.active = false;
     }
     
+    public void blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+    	if (entity instanceof Enemy) {
+    		Player player = dungeon.getPlayer();
+    		List<Sword> swordList = inventory.getSwordList();
+    		if (player.getInvincibleStatus()) {
+    			entity.triggerSeeable(false);
+    			dungeon.removeEntity(entity);
+    		} else if (swordList.size() > 0) {
+    			Sword sword = swordList.get(0);
+    			inventory.useSword(sword);
+    			entity.triggerSeeable(false);
+    			dungeon.removeEntity(entity);
+    		} else {
+    			dungeon.endGame();
+    			System.out.println("You Died!");
+    		}
+    	} else if (entity instanceof Door) {
+			Door door = (Door) entity;
+			List<Key> keys = inventory.getKeyList();
+			for (Key k : keys) {
+				if (inventory.useKey(door, k)) {
+					entity.triggerSeeable(false);
+					dungeon.removeEntity(entity);
+					System.out.println("Door unlocked");
+					keys.remove(k);
+					break;
+				}
+			}
+    	} else if (entity instanceof Player) {
+			dungeon.endGame();
+			System.out.println("You Died!");
+    	}
+	}
+    
     public void move(Direction direction) {
 		List<Entity> entities = getDungeon().getEntityList();
     	if (direction == Direction.UP) {

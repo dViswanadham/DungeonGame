@@ -74,36 +74,6 @@ public class Player extends Mobile implements Observable {
     	return true;
     }
     
-    public void blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
-    	if (entity instanceof Enemy) {
-    		List<Sword> swordList = inventory.getSwordList();
-    		if (getInvincibleStatus()) {
-    			entity.triggerSeeable(false);
-    			dungeon.removeEntity(entity);
-    		} else if (swordList.size() > 0) {
-    			Sword sword = swordList.get(0);
-    			inventory.useSword(sword);
-    			entity.triggerSeeable(false);
-    			dungeon.removeEntity(entity);
-    		} else {
-    			dungeon.endGame();
-    			System.out.println("You Died!");
-    		}
-    	} else if (entity instanceof Door) {
-			Door door = (Door) entity;
-			List<Key> keys = inventory.getKeyList();
-			for (Key k : keys) {
-				if (inventory.useKey(door, k)) {
-					entity.triggerSeeable(false);
-					dungeon.removeEntity(entity);
-					System.out.println("Door unlocked");
-					keys.remove(k);
-					break;
-				}
-			}
-    	}
-	}
-    
     public boolean tokenEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
 		if (entity instanceof Exit) {
 			dungeon.endGame();
@@ -125,12 +95,9 @@ public class Player extends Mobile implements Observable {
 			System.out.println("collecting sword");
 			return true;
 		} else if (entity instanceof InvincibilityPotion) {
-			InvincibilityPotion potion = (InvincibilityPotion) entity;
-			potion.collectObject(inventory);
+			((InvincibilityPotion) entity).collectObject(inventory);
 			entity.triggerSeeable(false);
 			System.out.println("collecting potion");
-			setInvincibleStatus(true);
-			System.out.println("potion consumed");
 			return true;
 		} else if (entity instanceof Portal) {
 			Portal portal = (Portal) entity;
