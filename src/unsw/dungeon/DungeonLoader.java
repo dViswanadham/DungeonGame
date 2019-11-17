@@ -188,7 +188,7 @@ public abstract class DungeonLoader {
                     complex.append(subgoal);
                     loadGoal(dungeon, subgoals.getJSONObject(i));
                 }
-                
+                System.out.println(subgoals.length());
                 conditions = complex;
                 break;
                 

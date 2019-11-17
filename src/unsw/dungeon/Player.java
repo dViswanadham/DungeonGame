@@ -69,6 +69,11 @@ public class Player extends Mobile implements Observable {
     	return invincible;
     }
     
+    @Override
+    public boolean isBlocking() {
+    	return true;
+    }
+    
     public void blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
     	if (entity instanceof Enemy) {
     		List<Sword> swordList = inventory.getSwordList();

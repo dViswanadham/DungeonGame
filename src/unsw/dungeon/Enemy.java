@@ -23,7 +23,6 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
 
     public Enemy(Dungeon dungeon, int x, int y) {
         super(y, x, dungeon);
-        
         this.moveCount = 0;
     }
     
