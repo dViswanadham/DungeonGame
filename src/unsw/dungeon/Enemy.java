@@ -80,14 +80,14 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     }
     
     public boolean blocked(int x, int y) {
-        List<Entity> colliding = getDungeon().obtainTargetSquare(x, y);
+        List<Entity> blocking = getDungeon().obtainTargetSquare(x, y);
         
-        if (colliding == null) {
+        if (blocking == null) {
             return true;
         }
         
-        for(Entity f : colliding) {
-            if (f.isBlocking()) {
+        for(Entity e : blocking) {
+            if (e.isBlocking()) {
                 return false;
             }
         }
@@ -141,6 +141,9 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         }
     }
     
+    /**
+     * Enemy follows player and can move diagonally
+     */
     public void huntPlayer() {
         Player pl = getDungeon().getPlayer();
         
