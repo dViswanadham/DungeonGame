@@ -84,13 +84,11 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         List<Entity> colliding = getDungeon().obtainTargetSquare(x, y);
         
         if (colliding == null) {
-            
             return true;
         }
         
         for(Entity f : colliding) {
-            if (!f.isBlocking()) {
-                
+            if (f.isBlocking()) {
                 return false;
             }
         }
@@ -100,12 +98,10 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
 
     public boolean scanSquare(Mobile e) {
         if (e instanceof Enemy) {
-            
             return true;
         }
         
         if (!(e instanceof Player)) {
-            
             return true;
         }
         
@@ -119,7 +115,6 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
             
         } else {
             dead();
-            
             notifyObservers();
         }
         
@@ -129,7 +124,6 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     @Override
     public void registerObserver(GoalsObserver o) {
         enemyObserver = o;
-        
         o.appendObs(this);
     }
 
@@ -137,7 +131,6 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     public void removeObserver(GoalsObserver o) {
         if (enemyObserver == o) {
             enemyObserver.deleteObs(this);
-            
             enemyObserver = null;
         }
     }
@@ -145,7 +138,6 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     @Override
     public void notifyObservers() {
         if (enemyObserver != null) {
-            
             enemyObserver.refresh(this);
         }
     }
@@ -182,7 +174,7 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         this.moveCount++;
         
         // can adjust enemy speed as required
-        if (this.moveCount % 1 == 0) {
+        if (this.moveCount % 2 == 0) {
             huntPlayer();
         }
     }
