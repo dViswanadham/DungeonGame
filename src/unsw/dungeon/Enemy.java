@@ -27,7 +27,7 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
      * @param y
      */
     public Enemy(Dungeon dungeon, int x, int y) {
-        super(y, x, dungeon);
+        super(x, y, dungeon);
         this.moveCount = 0;
     }
     
@@ -109,6 +109,8 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         for(Entity e : blocking) {
             if (e.isBlocking()) {
             	if (e instanceof Player) {
+            		player.dead();
+            	} else {
             		blockingEntityBehaviour(dungeon, player.getInventory(), player);
             	}
                 return false;

@@ -98,10 +98,6 @@ public abstract class Mobile extends Entity {
 					break;
 				}
 			}
-    	} else if (entity instanceof Player) {
-			dungeon.endGame();
-			System.out.println("You Died!");
-			player.dead();
     	}
 	}
 }
