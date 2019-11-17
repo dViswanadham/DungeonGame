@@ -179,6 +179,13 @@ public abstract class DungeonLoader {
         switch(type) {
             case "AND":
             	complex = new ComplexObjectives(type);
+            	JSONArray andSubGoals = aims.getJSONArray("subgoals");
+            	for (int i = 0; i < andSubGoals.length(); i++) {
+            		Goals subgoal = dungeonObjectives(andSubGoals.getJSONObject(i), dungeon);
+            		complex.append(subgoal);
+            		loadGoal(dungeon, andSubGoals.getJSONObject(i));
+            	}
+            	conditions = complex;
             	break;
             case "OR":
                 complex = new ComplexObjectives(type);
@@ -188,7 +195,6 @@ public abstract class DungeonLoader {
                     complex.append(subgoal);
                     loadGoal(dungeon, subgoals.getJSONObject(i));
                 }
-                System.out.println(subgoals.length());
                 conditions = complex;
                 break;
                 
