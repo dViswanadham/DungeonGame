@@ -88,6 +88,10 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         
         for(Entity e : blocking) {
             if (e.isBlocking()) {
+            	if (e instanceof Player) {
+            		System.out.println("You Died!");
+            		getDungeon().endGame();
+            	}
                 return false;
             }
         }
