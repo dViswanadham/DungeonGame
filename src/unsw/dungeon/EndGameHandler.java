@@ -27,7 +27,7 @@ public class EndGameHandler {
     public EndGameHandler(DungeonController master, String text) throws IOException {
         final Stage show = new Stage();
         
-        FXMLLoader deploy = new FXMLLoader(getClass().getResource("PopupOnDeath.fxml"));
+        FXMLLoader deploy = new FXMLLoader(getClass().getResource("EndGame.fxml"));
         
         EndGameController controlling = new EndGameController(master, show, text);
 
