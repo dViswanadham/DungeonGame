@@ -109,7 +109,7 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         for(Entity e : blocking) {
             if (e.isBlocking()) {
             	if (e instanceof Player) {
-            		player.dead();
+            		dead();
             	} else {
             		blockingEntityBehaviour(dungeon, player.getInventory(), player);
             	}
@@ -158,7 +158,9 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         
         int eX = pl.getX() - getX();
         int eY = pl.getY() - getY();
-        
+        if (eX == 0 && eY == 0) {
+        	dead();
+        }
         if (pl.getInvincibleStatus()) {
             if (eX > 0) {
                 moveLeft();
