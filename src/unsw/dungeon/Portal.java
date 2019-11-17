@@ -14,15 +14,27 @@ public class Portal extends Entity {
 	
 	private int id;
 	
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     * @param id
+     */
     public Portal(int x, int y, Dungeon dungeon, int id) {
         super(x, y, dungeon);
         this.id = id;
     }
     
+    /**
+     * @return
+     */
     public int getID() {
     	return id;
     }
     
+    /**
+     * @param newID
+     */
     public void setID(int newID) {
     	this.id = newID;
     }

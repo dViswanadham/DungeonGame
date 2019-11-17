@@ -31,11 +31,12 @@ public abstract class Entity implements Observable {
     private BooleanProperty seeable;
     private ArrayList<Observer> observers;
     private Dungeon dungeon;
+    
     /**
      * Create an entity positioned in square (x,y)
-     * 
      * @param x
      * @param y
+     * @param dungeon
      */
     public Entity(int x, int y, Dungeon dungeon) {
         this.x = new SimpleIntegerProperty(x);
@@ -45,44 +46,75 @@ public abstract class Entity implements Observable {
         this.observers = new ArrayList<>();
     }
     
+    /**
+     * @return
+     */
     public IntegerProperty x() {
         return x;
     }
 
+    /**
+     * @return
+     */
     public IntegerProperty y() {
         return y;
     }
     
+    /**
+     * @return
+     */
     public Dungeon getDungeon() {
     	return dungeon;
     }
     
+    /**
+     * @return
+     */
     public BooleanProperty seeable() {
     	return seeable;
     }
     
+    /**
+     * @param transparency
+     */
     public void triggerSeeable(boolean transparency) {
     	this.seeable.set(transparency);
     }
     
+    /**
+     * @return
+     */
     public int getY() {
         return y().get();
     }
     
+    /**
+     * @return
+     */
     public int getX() {
         return x().get();
     }
     
+    /**
+     * @param inventory
+     * @return
+     */
     public boolean collectObject(Inventory inventory) {
     	getDungeon().removeEntity(this);
     	notifyObservers();
     	return true;
     }
     
+	/**
+	 * @return
+	 */
 	public boolean isBlocking() {
 		return false;
 	}
     
+	/**
+	 *
+	 */
 	@Override
 	public void registerObserver(Observer o) {
 		if (!observers.contains(o)) {
@@ -90,11 +122,17 @@ public abstract class Entity implements Observable {
 		}
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void removeObserver(Observer o) {
 		observers.remove(o);
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void notifyObservers() {
 		for (Observer o : observers) {

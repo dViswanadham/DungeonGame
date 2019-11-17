@@ -14,11 +14,20 @@ public class Key extends Token {
 
 	private int id;
 	
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     * @param id
+     */
     public Key(int x, int y, Dungeon dungeon, int id) {
         super(x, y, dungeon);
         this.id = id;
     }
     
+    /**
+     * @return
+     */
     public int getID() {
     	return id;
     }

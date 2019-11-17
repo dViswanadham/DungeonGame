@@ -21,64 +21,83 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     private GoalsObserver enemyObserver = null;
     private int moveCount;
 
+    /**
+     * @param dungeon
+     * @param x
+     * @param y
+     */
     public Enemy(Dungeon dungeon, int x, int y) {
         super(y, x, dungeon);
         this.moveCount = 0;
     }
     
+    /**
+     *
+     */
     @Override
     public boolean isBlocking() {
     	return true;
     }
 
+    /**
+     * 
+     */
     public void moveUp() {
         if (getY() <= 0) {
-            
             return;
         }
         
         if (blocked(getX(), getY() - 1)) {
-            
             y().set(getY() - 1);
         }
     }
 
+    /**
+     * 
+     */
     public void moveDown() {
         if (getY() >= getDungeon().getHeight() - 1) {
-            
             return;
         }
         
         if (blocked(getX(), getY() + 1)) {
-            
             y().set(getY() + 1);
         }
     }
 
+    /**
+     * 
+     */
     public void moveLeft() {
         if (getX() <= 0) {
-            
             return;
         }
         
         if (blocked(getX() - 1, getY())) {
-            
             x().set(getX() - 1);
         }
     }
 
+    /**
+     * 
+     */
     public void moveRight() {
         if (getX() >= getDungeon().getWidth() - 1) {
-            
             return;
         }
         
         if (blocked(getX() + 1, getY())) {
-            
             x().set(getX() + 1);
         }
     }
     
+    /**
+     * checks if a given x, y position has a blocked entity on it
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean blocked(int x, int y) {
         List<Entity> blocking = getDungeon().obtainTargetSquare(x, y);
         Dungeon dungeon = getDungeon();
@@ -99,37 +118,18 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         return true;
     }
 
-    public boolean scanSquare(Mobile e) {
-        if (e instanceof Enemy) {
-            return true;
-        }
-        
-        if (!(e instanceof Player)) {
-            return true;
-        }
-        
-        Player p = (Player) e;
-        
-        if (!p.getInvincibleStatus()) {
-            System.out.println("1");
-            p.dead();
-            
-            return false;
-            
-        } else {
-            dead();
-            notifyObservers();
-        }
-        
-        return true;
-    }
-
+    /**
+     *
+     */
     @Override
     public void registerObserver(GoalsObserver o) {
         enemyObserver = o;
         o.appendObs(this);
     }
 
+    /**
+     *
+     */
     @Override
     public void removeObserver(GoalsObserver o) {
         if (enemyObserver == o) {
@@ -138,6 +138,9 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void notifyObservers() {
         if (enemyObserver != null) {
@@ -146,7 +149,7 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
     }
     
     /**
-     * Enemy follows player and can move diagonally
+     * Enemy follows player and can move diagonally. Updated when player status changes.
      */
     public void huntPlayer() {
         Player pl = getDungeon().getPlayer();
@@ -188,6 +191,9 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void flag() {
         this.moveCount++;

@@ -14,19 +14,33 @@ public class Sword extends Token {
 	
 	private int durability;
 	
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     */
     public Sword(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
         this.durability = 5;
     }
     
+    /**
+     * @return
+     */
     public int getDurability() {
     	return durability;
     }
     
+    /**
+     * @param newDurability
+     */
     public void setDurability(int newDurability) {
     	this.durability = newDurability;
     }
 
+    /**
+     *
+     */
     @Override
     public boolean collectObject(Inventory inventory) {
     	inventory.collectSword(this);

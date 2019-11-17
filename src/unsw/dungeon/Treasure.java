@@ -14,47 +14,36 @@ public class Treasure extends Token implements GoalsObservable{
     private GoalsObserver obsTreasure = null;
     private boolean take;
 	
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     */
     public Treasure(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
         this.take = false;
     }
     
+    /**
+     * @return
+     */
     public boolean take() {
         
         return this.take;
     }
-    
+
     /**
-     * Function attempts to detect collisions with other entities. 
-     * An entity which isn't a player_object will pass through the treasure
-     * whilst a player_object would collect the treasure.
-     * 
-     * @return boolean 
+     *
      */
-    public boolean scanSquare(Mobile object) {
-        if (!(object instanceof Player)) {
-            
-            return true;
-        }
-        
-        Inventory inventory = ((Player) object).getInventory();
-        
-        inventory.collectTreasure(this);
-        this.take = true;
-        
-        System.out.println("Treasure collected.");
-        
-        notifyObservers();
-
-        return true;
-    }
-
     @Override
     public void registerObserver(GoalsObserver observer) {
         obsTreasure = observer;
         observer.appendObs(this);
     }
 
+    /**
+     *
+     */
     @Override
     public void removeObserver(GoalsObserver observer) {
         if (obsTreasure == observer) {
@@ -64,12 +53,18 @@ public class Treasure extends Token implements GoalsObservable{
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void notifyObservers() {
         
         obsTreasure.refresh(this);
     }
     
+    /**
+     *
+     */
     @Override
     public boolean collectObject(Inventory inventory) {
     	inventory.collectTreasure(this);

@@ -18,24 +18,43 @@ public class Door extends Entity {
 	public static final boolean OPEN = true;
 	public static final boolean CLOSED = false;
 	
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     * @param id
+     */
     public Door(int x, int y, Dungeon dungeon, int id) {
     	super(x, y, dungeon);
     	this.id = id;
     	this.state = CLOSED;
     }
 
+    /**
+     * @return
+     */
     public int getDoorID() {
     	return this.id;
     }
     
+    /**
+     * @param key
+     */
     public void setKey(Key key) {
     	this.key = key;
     }
     
+    /**
+     * @return
+     */
     public Key getKey() {
     	return this.key;
     }
     
+    /**
+     * @param key
+     * @return
+     */
     public boolean openDoor(Key key) {
     	if (this.id == key.getID()) {
     		changeState(OPEN);
@@ -44,10 +63,16 @@ public class Door extends Entity {
     	return false;
     }
     
+    /**
+     * @param newState
+     */
     public void changeState(boolean newState) {
     	this.state = newState;
     }
     
+    /**
+     *
+     */
     @Override
     public boolean isBlocking() {
     	return this.state == Door.CLOSED;

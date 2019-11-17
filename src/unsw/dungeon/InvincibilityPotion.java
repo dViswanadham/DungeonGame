@@ -15,27 +15,37 @@ public class InvincibilityPotion extends Entity {
 	private int duration;
 	private Player player;
 	
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     */
     public InvincibilityPotion(int x, int y, Dungeon dungeon) {
         super(x, y, dungeon);
-        this.duration = 25;
+        this.duration = 20;
         this.player = getDungeon().getPlayer();
         
     }
 
+    /**
+     * @return
+     */
     public int getDuration() {
     	return this.duration;
     }
     
+    /**
+     * changes the player's invincible status
+     */
     public void onPlayerGetPotion() {
     	player.setInvincibleStatus(true);
+    	player.setDuration(duration);
     	System.out.println("potion consumed");
     }
     
-    public void onPotionExpires() {
-    	player.setInvincibleStatus(false);
-    	System.out.println("potion expired");
-    }
-    
+    /**
+     *
+     */
     @Override
     public boolean collectObject(Inventory inventory) {
     	getDungeon().removeEntity(this);

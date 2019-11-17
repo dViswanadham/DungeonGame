@@ -14,13 +14,21 @@ public class Exit extends Entity implements Observer, Observable {
     private boolean exitPl = false;
     private Observer exitObs = null;
     
+    /**
+     * @param x
+     * @param y
+     * @param dungeon
+     */
     public Exit(int x, int y, Dungeon dungeon) {
         
         super(x, y, dungeon);
     }
     
     /**
-     * Function is used to alert oberservers when the player_object is on the exit
+     * Function is used to alert observers when the player_object is on the exit
+     */
+    /**
+     *
      */
     @Override
     public void refresh(Observable o) {
@@ -41,11 +49,17 @@ public class Exit extends Entity implements Observer, Observable {
         }
     }
 
+    /**
+     * @return
+     */
     public boolean obtainCondition() {
         
         return exitPl;
     }
 
+    /**
+     *
+     */
     @Override
     public void registerObserver(Observer observer) {
         System.out.println("Catalogued the observer " + observer.getClass());
@@ -53,6 +67,9 @@ public class Exit extends Entity implements Observer, Observable {
         exitObs = observer;
     }
 
+    /**
+     *
+     */
     @Override
     public void removeObserver(Observer observer) {
         if (exitObs == observer) {
@@ -61,6 +78,9 @@ public class Exit extends Entity implements Observer, Observable {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void notifyObservers() {
         if (exitObs != null) {
