@@ -76,10 +76,9 @@ public abstract class Mobile extends Entity {
      * @param inventory
      * @param entity
      */
-    public boolean blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
+    public void blockingEntityBehaviour(Dungeon dungeon, Inventory inventory, Entity entity) {
     	Player player = dungeon.getPlayer();
     	if (entity instanceof Enemy) {
-    		System.out.println("here");
 			Enemy enemy = (Enemy) entity;
     		List<Sword> swordList = inventory.getSwordList();
     		if (enemy.isActive()) {
@@ -87,21 +86,16 @@ public abstract class Mobile extends Entity {
         			entity.triggerSeeable(false);
         			dungeon.removeEntity(entity);
         			enemy.setActive(false);
-        			System.out.println(enemy.isActive());
-        			return true;
         		} else if (swordList.size() > 0) {
         			Sword sword = swordList.get(0);
         			inventory.useSword(sword);
         			entity.triggerSeeable(false);
         			dungeon.removeEntity(entity);
         			enemy.setActive(false);
-        			System.out.println(enemy.isActive());
-        			return true;
         		} else {
         			dungeon.endGame();
         			System.out.println("You Died!");
         			player.dead();
-        			return true;
         		}
     		}
     	} else if (entity instanceof Door) {
@@ -113,10 +107,9 @@ public abstract class Mobile extends Entity {
 					dungeon.removeEntity(entity);
 					System.out.println("Door unlocked");
 					keys.remove(k);
-					return true;
+					break;
 				}
 			}
     	}
-    	return false;
 	}
 }
