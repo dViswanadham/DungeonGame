@@ -61,8 +61,8 @@ public abstract class DungeonLoader {
         
         JSONObject objectives = json.getJSONObject("goal-condition");
         
-        Goals conditions = dungeonObjectives(objectives, dungeon);
-        dungeon.createAim(conditions);
+        // Goals conditions = dungeonObjectives(objectives, dungeon);
+        // dungeon.createAim(conditions);
         
         return dungeon;
     }
@@ -242,58 +242,58 @@ public abstract class DungeonLoader {
 //	    }
 //    }
     
-    private Goals dungeonObjectives(JSONObject jsonAims, Dungeon dungeon){
-        String type = jsonAims.getString("goal");
-        
-        Goals conditions = null;
-        
-        switch(type) {
-            case "AND":
-                break;
-                
-            case "OR":
-                ComplexObjectives complex = new ComplexObjectives(type);
-                JSONArray minigoals = jsonAims.getJSONArray("subgoals");
-                
-                for(int a = 0; a < minigoals.length(); a = (a + 1)) {
-                    Goals miniGoal = dungeonObjectives(minigoals.getJSONObject(a), dungeon);
-                    
-                    complex.append(miniGoal);
-                }
-                
-                conditions = complex;
-                break;
-                
-            case "exit":
-                ExitGoal exitGoal = new ExitGoal("exit");
-                conditions = exitGoal;
-                observeObjective(exitGoal, dungeon);
-                break;
-                
-            case "enemies":
-                EnemyGoal enemyGoal = new EnemyGoal("enemies");
-                conditions = enemyGoal;
-                observeObjective(enemyGoal, dungeon);
-                break;
-                
-            case "treasure":
-                TreasureGoal treasureGoal = new TreasureGoal("treasure");
-                conditions = treasureGoal;
-                observeObjective(treasureGoal, dungeon);
-                break;
-                
-            case "boulders":
-                SwitchGoal boulderGoal = new SwitchGoal("boulders");
-                conditions = boulderGoal;
-                observeObjective(boulderGoal, dungeon);
-                break;
-                
-            default:
-                break;
-        }
-
-        return conditions;
-    }
+//    private Goals dungeonObjectives(JSONObject jsonAims, Dungeon dungeon){
+//        String type = jsonAims.getString("goal");
+//        
+//        Goals conditions = null;
+//        
+//        switch(type) {
+//            case "AND":
+//                break;
+//                
+//            case "OR":
+//                ComplexObjectives complex = new ComplexObjectives(type);
+//                JSONArray minigoals = jsonAims.getJSONArray("subgoals");
+//                
+//                for(int a = 0; a < minigoals.length(); a = (a + 1)) {
+//                    Goals miniGoal = dungeonObjectives(minigoals.getJSONObject(a), dungeon);
+//                    
+//                    complex.append(miniGoal);
+//                }
+//                
+//                conditions = complex;
+//                break;
+//                
+//            case "exit":
+//                ExitGoal exitGoal = new ExitGoal("exit");
+//                conditions = exitGoal;
+//                observeObjective(exitGoal, dungeon);
+//                break;
+//                
+//            case "enemies":
+//                EnemyGoal enemyGoal = new EnemyGoal("enemies");
+//                conditions = enemyGoal;
+//                observeObjective(enemyGoal, dungeon);
+//                break;
+//                
+//            case "treasure":
+//                TreasureGoal treasureGoal = new TreasureGoal("treasure");
+//                conditions = treasureGoal;
+//                observeObjective(treasureGoal, dungeon);
+//                break;
+//                
+//            case "boulders":
+//                SwitchGoal boulderGoal = new SwitchGoal("boulders");
+//                conditions = boulderGoal;
+//                observeObjective(boulderGoal, dungeon);
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//
+//        return conditions;
+//    }
     
 
     

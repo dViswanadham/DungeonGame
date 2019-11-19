@@ -43,12 +43,19 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
      * 
      */
     public void moveUp() {
+    	Dungeon dungeon = getDungeon();
+    	Player player = getDungeon().getPlayer();
         if (getY() <= 0) {
             return;
         }
         
         if (blocked(getX(), getY() - 1)) {
             y().set(getY() - 1);
+            int eX = player.getX() - getX();
+            int eY = player.getY() - getY();
+            if (eX == 0 && eY == 0) {
+            	blockingEntityBehaviour(dungeon, player.getInventory(), this);
+            }
         }
     }
 
@@ -56,12 +63,19 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
      * 
      */
     public void moveDown() {
+    	Dungeon dungeon = getDungeon();
+    	Player player = getDungeon().getPlayer();
         if (getY() >= getDungeon().getHeight() - 1) {
             return;
         }
         
         if (blocked(getX(), getY() + 1)) {
             y().set(getY() + 1);
+            int eX = player.getX() - getX();
+            int eY = player.getY() - getY();
+            if (eX == 0 && eY == 0) {
+            	blockingEntityBehaviour(dungeon, player.getInventory(), this);
+            }
         }
     }
 
@@ -69,12 +83,18 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
      * 
      */
     public void moveLeft() {
+    	Dungeon dungeon = getDungeon();
+    	Player player = getDungeon().getPlayer();
         if (getX() <= 0) {
             return;
         }
-        
         if (blocked(getX() - 1, getY())) {
             x().set(getX() - 1);
+            int eX = player.getX() - getX();
+            int eY = player.getY() - getY();
+            if (eX == 0 && eY == 0) {
+            	blockingEntityBehaviour(dungeon, player.getInventory(), this);
+            }
         }
     }
 
@@ -82,12 +102,18 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
      * 
      */
     public void moveRight() {
-        if (getX() >= getDungeon().getWidth() - 1) {
+    	Dungeon dungeon = getDungeon();
+        if (getX() >= dungeon.getWidth() - 1) {
             return;
         }
-        
+        Player player = dungeon.getPlayer();
         if (blocked(getX() + 1, getY())) {
             x().set(getX() + 1);
+            int eX = player.getX() - getX();
+            int eY = player.getY() - getY();
+            if (eX == 0 && eY == 0) {
+            	blockingEntityBehaviour(dungeon, player.getInventory(), this);
+            }
         }
     }
     
@@ -99,19 +125,19 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
      * @return
      */
     public boolean blocked(int x, int y) {
-        List<Entity> blocking = getDungeon().obtainTargetSquare(x, y);
-        Dungeon dungeon = getDungeon();
-        Player player = dungeon.getPlayer();
+    	Dungeon dungeon = getDungeon();
+        List<Entity> blocking = dungeon.obtainTargetSquare(x, y);
         if (blocking == null) {
             return true;
         }
-        
         for(Entity e : blocking) {
             if (e.isBlocking()) {
             	if (e instanceof Player) {
-            		dead();
-            	} else {
-            		blockingEntityBehaviour(dungeon, player.getInventory(), player);
+            		if (this.isActive()) {
+            			return true;
+            		} else {
+            			dead();
+            		}
             	}
                 return false;
             }
@@ -154,14 +180,11 @@ public class Enemy extends Mobile implements GoalsObservable, FlagDungeonClient 
      * Enemy follows player and can move diagonally. Updated when player status changes.
      */
     public void huntPlayer() {
-        Player pl = getDungeon().getPlayer();
-        
-        int eX = pl.getX() - getX();
-        int eY = pl.getY() - getY();
-        if (eX == 0 && eY == 0) {
-        	dead();
-        }
-        if (pl.getInvincibleStatus()) {
+    	Dungeon dungeon = getDungeon();
+        Player player = dungeon.getPlayer();
+        int eX = player.getX() - getX();
+        int eY = player.getY() - getY();
+        if (player.getInvincibleStatus()) {
             if (eX > 0) {
                 moveLeft();
             }
