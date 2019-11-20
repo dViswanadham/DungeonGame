@@ -280,6 +280,7 @@ public class Player extends Mobile implements Observable {
 									}
 								} else {
 									blockingEntityBehaviour(dungeon, inventory, e);
+									
 								}
 								return;
 							} else {

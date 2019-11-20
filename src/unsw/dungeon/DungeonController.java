@@ -108,6 +108,10 @@ public class DungeonController {
         this.initialEntities = new ArrayList<>(initialEntities);
     }
 
+    public DungeonController(List<String> dungeonLevels) {
+        this.dungeonLevels = dungeonLevels;
+    }
+
     @FXML
     public void initialize() {
         // Determines dungeon difficulty
@@ -142,6 +146,7 @@ public class DungeonController {
             levelSelect.getItems().add(loc);
             dungeonSelect.getItems().add(a, titleLoc);
         }
+    }
         
 //        Image ground = new Image("/dirt_0_new.png");
 //        
@@ -151,28 +156,28 @@ public class DungeonController {
 //                grid.add(new ImageView(ground), x, y);
 //            }
 //        }
-        List<Entity> entities = dungeon.getEntityList();
-        Iterator<Entity> it1 = entities.iterator();
-        Iterator<ImageView> it2 = initialEntities.iterator();
-        
-        while(it1.hasNext() && it2.hasNext()) {
-        	ImageView entity = it2.next();
-        	entityMap.put(it1.next(), entity);
-        	grid.getChildren().add(entity);
-        } 
-        
-        for(Entity e : entities) {
-        	e.seeable().addListener(new ChangeListener<Boolean>() {
-        	    
-        	@Override
-        	public void changed(ObservableValue<? extends Boolean> observable, 
-        	                    Boolean old, Boolean newV) {
-        	    
-        		removeEntityImage(e);
-        	}
-        });
-        }
-    }
+//        List<Entity> entities = dungeon.getEntityList();
+//        Iterator<Entity> it1 = entities.iterator();
+//        Iterator<ImageView> it2 = initialEntities.iterator();
+//        
+//        while(it1.hasNext() && it2.hasNext()) {
+//        	ImageView entity = it2.next();
+//        	entityMap.put(it1.next(), entity);
+//        	grid.getChildren().add(entity);
+//        } 
+//        
+//        for(Entity e : entities) {
+//        	e.seeable().addListener(new ChangeListener<Boolean>() {
+//        	    
+//        	@Override
+//        	public void changed(ObservableValue<? extends Boolean> observable, 
+//        	                    Boolean old, Boolean newV) {
+//        	    
+//        		removeEntityImage(e);
+//        	}
+//        });
+//        }
+//    }
     
     public void removeEntityImage(Entity entity) {
     	ImageView view = entityMap.get(entity);
@@ -181,6 +186,18 @@ public class DungeonController {
 
     @FXML
     public void handleKeyPress(KeyEvent event) {
+        if (currDungeon == null) {
+            
+            return;
+        }
+        
+        if (inputEnabled == false) {
+            
+            return;
+        }
+        
+        Player player = currDungeon.getPlayer();
+        
         switch (event.getCode()) {
         case UP:
             player.move(Direction.UP);
@@ -195,13 +212,11 @@ public class DungeonController {
             player.move(Direction.RIGHT);
             break;
         case R:
-            // Key restarts dungeon
+            // Restart the game
             try {
                 dungeonRetry();
-                
-            } catch (FileNotFoundException notFound1) {
-                
-                notFound1.printStackTrace();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
             }
             break;
         default:

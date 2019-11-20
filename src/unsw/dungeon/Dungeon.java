@@ -71,7 +71,9 @@ public class Dungeon {
     public void teleport(Portal portal) {
     	for (Entity e : entities) {
     		if (e instanceof Portal && !e.equals(portal)) {
-    			player.changePlayerPosition(e.getX(), e.getY());
+    			if (((Portal)e).getID() == portal.getID()) {
+    				player.changePlayerPosition(e.getX(), e.getY());
+    			}
     		}
     	}
     }

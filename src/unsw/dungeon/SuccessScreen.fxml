@@ -5,7 +5,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="143.0" prefWidth="270.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane fx:id="text" layoutX="26.0" layoutY="30.0" prefHeight="34.0" prefWidth="218.0" />
+      <Pane fx:id="placeholder" layoutX="26.0" layoutY="30.0" prefHeight="34.0" prefWidth="218.0" />
       <Button layoutX="36.0" layoutY="71.0" mnemonicParsing="false" onAction="#freshDungeon" prefHeight="25.0" prefWidth="189.0" text="Create New Dungeon" />
       <Button layoutX="36.0" layoutY="104.0" mnemonicParsing="false" onAction="#masterMenu" prefHeight="25.0" prefWidth="126.0" text="Master Menu" />
       <Button layoutX="180.0" layoutY="104.0" mnemonicParsing="false" onAction="#terminate" text="Close" />

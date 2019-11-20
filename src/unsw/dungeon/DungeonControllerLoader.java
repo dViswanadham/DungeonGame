@@ -37,7 +37,6 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image exitImage;
     private Image boulderImage;
     private Image swordImage;
-    private Image openDoorImage;
     private Image closedDoorImage;
     private Image keyImage;
     private Image floorSwitchImage;
@@ -55,7 +54,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         exitImage = new Image("/exit.png");
         boulderImage = new Image("/boulder.png");
         swordImage = new Image("/greatsword_1_new.png");
-        openDoorImage = new Image("/open_door.png");
+        new Image("/open_door.png");
         closedDoorImage = new Image("/closed_door.png");
         keyImage = new Image("/key.png");
         floorSwitchImage = new Image("/pressure_plate.png");
@@ -179,6 +178,7 @@ public class DungeonControllerLoader extends DungeonLoader {
      * @throws FileNotFoundException
      */
     public DungeonController loadController() throws FileNotFoundException {
+        
         return new DungeonController(load(), entities);
     }
 

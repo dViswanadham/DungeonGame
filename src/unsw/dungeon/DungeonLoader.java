@@ -61,8 +61,8 @@ public abstract class DungeonLoader {
         
         JSONObject objectives = json.getJSONObject("goal-condition");
         
-        Goals conditions = dungeonObjectives(objectives, dungeon);
-        dungeon.createAim(conditions);
+        // Goals conditions = dungeonObjectives(objectives, dungeon);
+        // dungeon.createAim(conditions);
         
         return dungeon;
     }
@@ -218,30 +218,30 @@ public abstract class DungeonLoader {
 //    	switch(type) {
 //	        case "exit":
 //	            ExitGoal exitGoal = new ExitGoal("exit");
-////	            conditions = exitGoal;
+//	            conditions = exitGoal;
 //	            observeObjective(exitGoal, dungeon);
 //	            break;
 //	            
 //	        case "enemies":
 //	            EnemyGoal enemyGoal = new EnemyGoal("enemies");
-////	            conditions = enemyGoal;
+//	            conditions = enemyGoal;
 //	            observeObjective(enemyGoal, dungeon);
 //	            break;
 //	            
 //	        case "treasure":
 //	            TreasureGoal treasureGoal = new TreasureGoal("treasure");
-////	            conditions = treasureGoal;
+//	            conditions = treasureGoal;
 //	            observeObjective(treasureGoal, dungeon);
 //	            break;
 //	            
 //	        case "boulders":
 //	            SwitchGoal boulderGoal = new SwitchGoal("boulders");
-////	            conditions = boulderGoal;
+//	            conditions = boulderGoal;
 //	            observeObjective(boulderGoal, dungeon);
 //	            break;
 //	    }
 //    }
-    
+
     private Goals dungeonObjectives(JSONObject jsonAims, Dungeon dungeon){
         String type = jsonAims.getString("goal");
         
@@ -294,7 +294,6 @@ public abstract class DungeonLoader {
 
         return conditions;
     }
-    
 
     
     /**
